@@ -30,7 +30,7 @@ model Profile {
   userId    String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Folder {
@@ -40,7 +40,7 @@ model Folder {
   description String?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  user        User       @relation(fields: [userId], references: [id])
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   taskLists   TaskList[]
 }
 
@@ -52,18 +52,18 @@ model TaskList {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id])
-  folder      Folder?  @relation(fields: [folderId], references: [id])
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folder      Folder?  @relation(fields: [folderId], references: [id], onDelete: SetNull)
   tasks       Task[]
 }
 
 model Task {
   id          String    @id @default(uuid())
-  taskListId  String
+  taskListId  String?
   name        String
   description String?
   dueBy       DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  taskList    TaskList  @relation(fields: [taskListId], references: [id])
+  taskList    TaskList? @relation(fields: [taskListId], references: [id], onDelete: SetNull)
 }
