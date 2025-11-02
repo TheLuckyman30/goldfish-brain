@@ -3,10 +3,11 @@ import { AppService } from './app.service';
 import { AppController } from './app.controller';
 import { UsersModule } from './users/users.module';
 import { TasksModule } from './tasks/tasks.module';
-import { TaskListsModule } from './task-lists/task-list.module';
+import { TaskListsModule } from './task-lists/task-lists.module';
+import { FoldersModule } from './folders/folders.module';
 
 @Module({
-  imports: [UsersModule, TasksModule, TaskListsModule],
+  imports: [UsersModule, TasksModule, TaskListsModule, FoldersModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -1,11 +1,5 @@
-export {
-    UserOut
-} from './user';
+export { UserOut } from './user';
 
-export {
-    TaskOut
-} from './task'
+export { TaskOut } from './task';
 
-export {
-    TaskListOut
-} from './task-list'
+export { TaskListOut } from './task-list';
