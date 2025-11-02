@@ -5,3 +5,7 @@ export {
 export {
     TaskOut
 } from './task'
+
+export {
+    TaskListOut
+} from './task-list'
