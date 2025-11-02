@@ -13,8 +13,57 @@ generator client {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(uuid())
   name          String?
-  email         String?   @unique
+  username      String?
+  email         String?    @unique
   emailVerified DateTime?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  profile       Profile?
+  folders       Folder[]
+  taskLists     TaskList[]
+}
+
+model Profile {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Folder {
+  id          String     @id @default(uuid())
+  userId      String
+  name        String
+  description String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  taskLists   TaskList[]
+}
+
+model TaskList {
+  id          String   @id @default(uuid())
+  userId      String
+  folderId    String?
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folder      Folder?  @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  tasks       Task[]
+}
+
+model Task {
+  id          String    @id @default(uuid())
+  taskListId  String?
+  name        String
+  description String?
+  dueBy       DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  taskList    TaskList? @relation(fields: [taskListId], references: [id], onDelete: SetNull)
 }
