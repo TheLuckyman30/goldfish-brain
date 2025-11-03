@@ -1,32 +1,25 @@
-import { prisma } from "./client";
-
-import type { User } from "../generated/client";
-
-const DEFAULT_USERS = [
-  // Add your own user to pre-populate the database with
-  {
-    name: "Tim Apple",
-    email: "tim@apple.com",
-  },
-] as Array<Partial<User>>;
+import { prisma } from './client';
+import {users, taskLists, tasks} from './fake-data.json'
 
 (async () => {
   try {
     await Promise.all(
-      DEFAULT_USERS.map((user) =>
-        prisma.user.upsert({
-          where: {
-            email: user.email!,
-          },
-          update: {
-            ...user,
-          },
-          create: {
-            ...user,
-          },
-        })
-      )
+      users.map(async (user) => {
+        await prisma.user.create({data: {id: user.id, name: user.name, username: user.username, email: user.email}})
+      })
     );
+
+    await Promise.all(
+      taskLists.map(async (list) => {
+        await prisma.taskList.create({data: {id: list.id, userId: list.userId, name: list.name, description: list.description}})
+      })
+    );
+
+    await Promise.all(
+      tasks.map(async (task) => {
+        await prisma.task.create({data: {id: task.id, taskListId: task.taskListId, name: task.name, description: task.description}})
+      })
+    )
   } catch (error) {
     console.error(error);
     process.exit(1);
