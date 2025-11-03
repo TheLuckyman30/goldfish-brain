@@ -13,14 +13,14 @@ export function CreateTaskForm(): React.JSX.Element {
 
     return (
         <form onSubmit={handleSubmit}>
-            <label>Task Name</label>
+            <label htmlFor="taskName">Task Name</label>
             <input
                 type="text"
                 value={taskName}
                 onChange={(e) => setTaskName(e.target.value)}
                 id="taskName">
             </input>
-            <label>Task Description</label>
+            <label htmlFor="taskDescription">Task Description</label>
             <input
                 type="text"
                 value={taskDescription}
