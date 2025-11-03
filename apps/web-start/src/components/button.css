@@ -10,6 +10,22 @@
     justify-content: center;
 }
 
+.buttonStyling {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 24px;
+  background-color: #fddbcdeb;
+  color: #6c3b27ee;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  min-width: 200px;
+  flex-shrink: 0;
+  cursor: pointer;
+  
+}
+
 .button:hover{
     color:black;
     background-color: rgb(221, 226, 231);
