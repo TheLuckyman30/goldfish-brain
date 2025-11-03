@@ -1,5 +1,6 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
 import './../../components/button.css';
+import { CreateTaskForm } from '../../components/CreateTaskForm';
 
 export const Route = createFileRoute('/create-task/')({
   component: RouteComponent,
@@ -14,5 +15,7 @@ function RouteComponent() {
         className='button'
     >Back to task list</Link>
     <Link to="/" className="button">Home</Link>
+    <br></br>
+    <CreateTaskForm></CreateTaskForm>
   </div>
 }
