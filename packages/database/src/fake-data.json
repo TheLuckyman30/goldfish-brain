@@ -1,0 +1,132 @@
+{
+  "users": [
+    {
+      "id": "user-1",
+      "name": "Maya Patel",
+      "username": "mayap",
+      "email": "maya.patel@example.com",
+      "emailVerified": null,
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    },
+    {
+      "id": "user-2",
+      "name": "Ethan Brooks",
+      "username": "ebrooks",
+      "email": "ethan.brooks@example.com",
+      "emailVerified": null,
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    }
+  ],
+
+  "taskLists": [
+    {
+      "id": "list-1a",
+      "userId": "user-1",
+      "name": "Product Design",
+      "description": "Brainstorming and prototyping new product features.",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    },
+    {
+      "id": "list-1b",
+      "userId": "user-1",
+      "name": "Personal Errands",
+      "description": "Household and personal tasks to complete this week.",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    },
+    {
+      "id": "list-2a",
+      "userId": "user-2",
+      "name": "Development Sprint",
+      "description": "Backend work for Q4 release.",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    },
+    {
+      "id": "list-2b",
+      "userId": "user-2",
+      "name": "Fitness Goals",
+      "description": "Daily routines and exercise tracking.",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    }
+  ],
+
+  "tasks": [
+    {
+      "id": "task-1a-1",
+      "taskListId": "list-1a",
+      "name": "Sketch landing page redesign",
+      "description": "Draw wireframes for new homepage layout.",
+      "dueBy": "2025-11-05T00:00:00.000Z",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    },
+    {
+      "id": "task-1a-2",
+      "taskListId": "list-1a",
+      "name": "Test new icon set",
+      "description": "Check scalability and clarity of new SVG icons.",
+      "dueBy": "2025-11-06T00:00:00.000Z",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    },
+    {
+      "id": "task-1b-1",
+      "taskListId": "list-1b",
+      "name": "Pick up dry cleaning",
+      "description": "Order #4812 at CleanWave Laundry.",
+      "dueBy": "2025-11-04T00:00:00.000Z",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    },
+    {
+      "id": "task-1b-2",
+      "taskListId": "list-1b",
+      "name": "Book dentist appointment",
+      "description": "Schedule cleaning before the holidays.",
+      "dueBy": "2025-11-07T00:00:00.000Z",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    },
+    {
+      "id": "task-2a-1",
+      "taskListId": "list-2a",
+      "name": "Implement authentication flow",
+      "description": "Add JWT-based auth with refresh tokens.",
+      "dueBy": "2025-11-05T00:00:00.000Z",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    },
+    {
+      "id": "task-2a-2",
+      "taskListId": "list-2a",
+      "name": "Review PR #102",
+      "description": "Check code for caching implementation.",
+      "dueBy": "2025-11-06T00:00:00.000Z",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    },
+    {
+      "id": "task-2b-1",
+      "taskListId": "list-2b",
+      "name": "Morning run",
+      "description": "Run 3 miles along the river trail.",
+      "dueBy": "2025-11-04T00:00:00.000Z",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    },
+    {
+      "id": "task-2b-2",
+      "taskListId": "list-2b",
+      "name": "Stretching routine",
+      "description": "15-minute flexibility and mobility session.",
+      "dueBy": "2025-11-05T00:00:00.000Z",
+      "createdAt": "2025-11-03T00:00:00.000Z",
+      "updatedAt": "2025-11-03T00:00:00.000Z"
+    }
+  ]
+}

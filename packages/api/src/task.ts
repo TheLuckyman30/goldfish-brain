@@ -8,3 +8,7 @@ export const TaskOut = z.object({
   dueBy: z.date(),
 });
 export type TaskOut = z.infer<typeof TaskOut>;
+
+export const CreateTask = z.object({
+  
+})
