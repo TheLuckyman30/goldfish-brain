@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
-import { TaskOut } from '@repo/api/task';
+import { CreateTask, TaskOut } from '@repo/api/task';
 
 @Injectable()
 export class TasksService {
@@ -32,5 +32,13 @@ export class TasksService {
       },
       where,
     });
+  }
+
+  createTask(newTask: CreateTask): Promise<TaskOut> {
+    return this.prisma.task.create({data: newTask, select: {id: true,
+        taskListId: true,
+        name: true,
+        description: true,
+        dueBy: true,}})
   }
 }
