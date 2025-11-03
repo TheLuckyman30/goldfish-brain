@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from '@tanstack/react-router'
-import './../styles.css'
+import './../../components/button.css';
 
 export const Route = createFileRoute('/profile/')({
   component: RouteComponent,
