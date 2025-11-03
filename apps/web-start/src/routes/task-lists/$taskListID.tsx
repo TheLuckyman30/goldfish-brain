@@ -18,15 +18,15 @@ function TaskList() {
     queryKey: ['task-list', taskListID],
     queryFn: backendFetcher<TaskListOut>(`/task-lists/${taskListID}`),
   });
-  const { data: tasks, isFetching: tasksIsFetching } = useQuery<Array<TaskOut>>(
-    {
-      queryKey: ['tasks', taskListID],
-      queryFn: backendFetcher<Array<TaskOut>>(
-        `/task-lists/${taskListID}/tasks`,
-      ),
-      initialData: [],
-    },
-  );
+  const {
+    data: tasks,
+    isFetching: tasksIsFetching,
+    refetch: tasksRefetch,
+  } = useQuery<Array<TaskOut>>({
+    queryKey: ['tasks', taskListID],
+    queryFn: backendFetcher<Array<TaskOut>>(`/task-lists/${taskListID}/tasks`),
+    initialData: [],
+  });
 
   if (listIsFetching || tasksIsFetching) {
     return <body style={{ backgroundColor: '#815656' }}>Loading...</body>;
@@ -49,9 +49,22 @@ function TaskList() {
             Task List: {taskList.name}
           </h1>
           <br></br>
-          <div className="buttonStyling" onClick={() => setCreateForm(true)}>
-            Create a Task
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '15vh', // space between buttons
+            }}
+          >
+            <div className="buttonStyling" onClick={() => setCreateForm(true)}>
+              Create a Task
+            </div>
+            <div className="buttonStyling" onClick={() => tasksRefetch()}>
+              Refresh
+            </div>
           </div>
+
           <div className="flex flex-col gap-2">
             <div className="rounded-md bg-[#fddbcdeb] text-[#6c3b27ee] text-4xl p-1">
               Tasks:
