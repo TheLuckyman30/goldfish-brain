@@ -2,10 +2,10 @@ import { Link, createFileRoute } from '@tanstack/react-router';
 import './../../components/button.css';
 
 export const Route = createFileRoute('/task-lists/$taskListID')({
-  component: RouteComponent,
+  component: TaskList,
 });
 
-function RouteComponent() {
+function TaskList() {
   const { taskListID } = Route.useParams();
 
   return (
@@ -21,7 +21,7 @@ function RouteComponent() {
             marginTop: '20vh',
           }}
         >
-          Task List ID: {taskListID}
+          Task List: {taskListID}
         </h1>
         <br></br>
 
