@@ -15,6 +15,7 @@ function RouteComponent() {
         className='button'
     >Back to task list</Link>
     <Link to="/" className="button">Home</Link>
+    <br></br>
     <CreateTaskForm></CreateTaskForm>
   </div>
 }
