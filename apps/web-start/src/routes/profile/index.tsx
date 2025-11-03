@@ -8,6 +8,6 @@ export const Route = createFileRoute('/profile/')({
 function RouteComponent() {
   return <div>
     <h1>Profile Page</h1>
-    <Link to="/" className="button">Back</Link>
+    <Link to="/" className="button">Home</Link>
     </div>
 }
