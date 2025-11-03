@@ -10,33 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TaskListsIndexRouteImport } from './routes/task-lists/index'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
+import { Route as ProfileIndexRouteImport } from './routes/profile/index'
+import { Route as PondIndexRouteImport } from './routes/pond/index'
+import { Route as CreateTaskIndexRouteImport } from './routes/create-task/index'
+import { Route as TaskListsTaskListIDRouteImport } from './routes/task-lists/$taskListID'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TaskListsIndexRoute = TaskListsIndexRouteImport.update({
+  id: '/task-lists/',
+  path: '/task-lists/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PondIndexRoute = PondIndexRouteImport.update({
+  id: '/pond/',
+  path: '/pond/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreateTaskIndexRoute = CreateTaskIndexRouteImport.update({
+  id: '/create-task/',
+  path: '/create-task/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TaskListsTaskListIDRoute = TaskListsTaskListIDRouteImport.update({
+  id: '/task-lists/$taskListID',
+  path: '/task-lists/$taskListID',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/task-lists/$taskListID': typeof TaskListsTaskListIDRoute
+  '/create-task': typeof CreateTaskIndexRoute
+  '/pond': typeof PondIndexRoute
+  '/profile': typeof ProfileIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/task-lists': typeof TaskListsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/task-lists/$taskListID': typeof TaskListsTaskListIDRoute
+  '/create-task': typeof CreateTaskIndexRoute
+  '/pond': typeof PondIndexRoute
+  '/profile': typeof ProfileIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/task-lists': typeof TaskListsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/task-lists/$taskListID': typeof TaskListsTaskListIDRoute
+  '/create-task/': typeof CreateTaskIndexRoute
+  '/pond/': typeof PondIndexRoute
+  '/profile/': typeof ProfileIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/task-lists/': typeof TaskListsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/task-lists/$taskListID'
+    | '/create-task'
+    | '/pond'
+    | '/profile'
+    | '/settings'
+    | '/task-lists'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/task-lists/$taskListID'
+    | '/create-task'
+    | '/pond'
+    | '/profile'
+    | '/settings'
+    | '/task-lists'
+  id:
+    | '__root__'
+    | '/'
+    | '/task-lists/$taskListID'
+    | '/create-task/'
+    | '/pond/'
+    | '/profile/'
+    | '/settings/'
+    | '/task-lists/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  TaskListsTaskListIDRoute: typeof TaskListsTaskListIDRoute
+  CreateTaskIndexRoute: typeof CreateTaskIndexRoute
+  PondIndexRoute: typeof PondIndexRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
+  TaskListsIndexRoute: typeof TaskListsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +130,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/task-lists/': {
+      id: '/task-lists/'
+      path: '/task-lists'
+      fullPath: '/task-lists'
+      preLoaderRoute: typeof TaskListsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings/': {
+      id: '/settings/'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pond/': {
+      id: '/pond/'
+      path: '/pond'
+      fullPath: '/pond'
+      preLoaderRoute: typeof PondIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/create-task/': {
+      id: '/create-task/'
+      path: '/create-task'
+      fullPath: '/create-task'
+      preLoaderRoute: typeof CreateTaskIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/task-lists/$taskListID': {
+      id: '/task-lists/$taskListID'
+      path: '/task-lists/$taskListID'
+      fullPath: '/task-lists/$taskListID'
+      preLoaderRoute: typeof TaskListsTaskListIDRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  TaskListsTaskListIDRoute: TaskListsTaskListIDRoute,
+  CreateTaskIndexRoute: CreateTaskIndexRoute,
+  PondIndexRoute: PondIndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
+  TaskListsIndexRoute: TaskListsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
