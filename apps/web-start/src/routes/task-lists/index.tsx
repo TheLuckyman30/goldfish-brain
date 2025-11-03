@@ -1,36 +1,47 @@
-import { Link, createFileRoute } from '@tanstack/react-router'
+import { Link, createFileRoute } from '@tanstack/react-router';
 import './../../components/button.css';
-import { Navbar } from '../../components/navbar';
-import { Sidebar } from '../../components/sidebar';
+import { useQuery } from '@tanstack/react-query';
+import { backendFetcher } from '../../integrations/fetcher';
+import type { TaskListOut } from '@repo/api/task-list';
 
 export const Route = createFileRoute('/task-lists/')({
-  component: RouteComponent,
-})
+  component: TaskLists,
+});
 
-function RouteComponent() {
-  return(
-    
-     <body style={{backgroundColor: "#815656"}}>
-      
-      <Sidebar isOpen={false} setIsOpening={function (isOpen: boolean): void {
-          throw new Error('Function not implemented.');
-        } }></Sidebar>
-      <Navbar></Navbar>
-      <div style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "15vh", // space between buttons
-          marginTop: "40vh",
-        }}>
-        <Link
-            to='/task-lists/$taskListID'
-            params = {{taskListID: "groceries"/* placeholder*/ }}
-            className='buttonStyling'
-            
-        >View a task List</Link>
-        <Link to="/" className="buttonStyling">Home</Link>
+function TaskLists() {
+  const { data: taskLists, isFetching } = useQuery<Array<TaskListOut>>({
+    queryKey: ['task-lists'],
+    queryFn: backendFetcher<Array<TaskListOut>>('/task-lists'),
+    initialData: [],
+  });
+
+  if (isFetching) {
+    return <body style={{ backgroundColor: '#815656' }}>Loading...</body>;
+  }
+
+  return (
+    <body style={{ backgroundColor: '#815656' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '15vh', // space between buttons
+          marginTop: '40vh',
+        }}
+      >
+        <div className="flex flex-col gap-5 justify-center align-center">
+          {taskLists.map((list) => (
+            <Link
+              to="/task-lists/$taskListID"
+              params={{ taskListID: list.id }}
+              className="buttonStyling"
+            >
+              {list.name}
+            </Link>
+          ))}
+        </div>
       </div>
-  </body>
+    </body>
   );
 }

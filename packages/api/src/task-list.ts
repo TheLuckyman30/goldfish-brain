@@ -5,6 +5,6 @@ export const TaskListOut = z.object({
   userId: z.uuid(),
   folderId: z.uuid(),
   name: z.string(),
-  description: z.string(),
+  description: z.string()
 });
 export type TaskListOut = z.infer<typeof TaskListOut>;
