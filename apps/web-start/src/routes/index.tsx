@@ -9,5 +9,8 @@ function RouteComponent() {
   return <div>
     <h1>Landing Page</h1>
     <Link to='/pond' className="button">pond</Link>
+    <Link to='/task-lists' className="button">task lists</Link>
+    <Link to='/profile' className="button">profile</Link>
+    <Link to='/settings' className="button">settings</Link>
   </div>
 }
