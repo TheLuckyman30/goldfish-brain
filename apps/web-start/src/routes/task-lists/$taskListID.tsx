@@ -1,7 +1,9 @@
-import { Link, createFileRoute } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import './../../components/button.css';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { backendFetcher } from '../../integrations/fetcher';
+import { CreateTaskForm } from '../../components/CreateTaskForm';
 import type { TaskListOut } from '@repo/api/task-list';
 import type { TaskOut } from '@repo/api/task';
 
@@ -11,6 +13,7 @@ export const Route = createFileRoute('/task-lists/$taskListID')({
 
 function TaskList() {
   const { taskListID } = Route.useParams();
+  const [createForm, setCreateForm] = useState<boolean>(false);
   const { data: taskList, isFetching: listIsFetching } = useQuery<TaskListOut>({
     queryKey: ['task-list', taskListID],
     queryFn: backendFetcher<TaskListOut>(`/task-lists/${taskListID}`),
@@ -46,10 +49,8 @@ function TaskList() {
             Task List: {taskList.name}
           </h1>
           <br></br>
-          <div>
-            <Link to="/create-task" className="buttonStyling">
-              Create a Task
-            </Link>
+          <div className="buttonStyling" onClick={() => setCreateForm(true)}>
+            Create a Task
           </div>
           <div className="flex flex-col gap-2">
             <div className="rounded-md bg-[#fddbcdeb] text-[#6c3b27ee] text-4xl p-1">
@@ -62,6 +63,12 @@ function TaskList() {
             ))}
           </div>
         </div>
+        {createForm && (
+          <CreateTaskForm
+            taskListId={taskListID}
+            setCreateForm={setCreateForm}
+          />
+        )}
       </body>
     );
   }
