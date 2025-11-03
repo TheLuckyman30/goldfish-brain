@@ -1,0 +1,24 @@
+.navbarring{
+    background-color: #c0e3f1b2;
+    border-Radius:"90vh";
+    min-Height: "8vh";
+    max-Width:"50%";
+    margin-Top:"20%"; 
+    align-Items: "center"; 
+    justify-Content:"center"; 
+    display: "flex";
+    margin: "auto";
+    max-Height: "10vh";
+    color: #6c3b27fb;
+    gap: 10vh;
+
+}
+
+.tinyButtons{
+    border-Radius:"10vh";
+    background-color: #c3edffb2;
+    border-Radius:"90vh";
+    padding: "5vh";
+    
+
+}
