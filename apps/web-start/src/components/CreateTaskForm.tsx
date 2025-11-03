@@ -17,13 +17,15 @@ export function CreateTaskForm(): React.JSX.Element {
             <input
                 type="text"
                 value={taskName}
-                onChange={(e) => setTaskName(e.target.value)}>
+                onChange={(e) => setTaskName(e.target.value)}
+                id="taskName">
             </input>
             <label>Task Description</label>
             <input
                 type="text"
                 value={taskDescription}
-                onChange={(e) => setTaskDescription(e.target.value)}>
+                onChange={(e) => setTaskDescription(e.target.value)}
+                id="taskDescription">
             </input>
             <button type="submit" className="button">Submit</button>
         </form>
