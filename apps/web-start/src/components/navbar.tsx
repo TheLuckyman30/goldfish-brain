@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./navbar.css";
 import { Sidebar } from "./sidebar";
+import { Link } from "@tanstack/react-router";
 
 
 
@@ -54,9 +55,11 @@ export function Navbar() {
       color: "#6c3b27d7",
     }}
   >
-    <div className="bg-white hover:bg-sky-100 rounded-md p-5">Home</div>
-    <div className="bg-white hover:bg-sky-100 rounded-md p-5">About</div>
-    <div className="bg-white hover:bg-sky-100 rounded-md p-5">Contact</div>
+    
+    <Link to='/' className="bg-white hover:bg-sky-100 rounded-md p-5" >Home</Link>
+    <Link to='/task-lists' className="bg-white hover:bg-sky-100 rounded-md p-5" >Lists</Link>
+    <Link to='/settings' className="bg-white hover:bg-sky-100 rounded-md p-5">settings</Link>
+    
   </div>
 
   {isOpen && <Sidebar isOpen={isOpen} setIsOpening={setIsOpen} />}

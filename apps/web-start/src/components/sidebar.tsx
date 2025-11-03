@@ -1,4 +1,6 @@
+import { Link } from "@tanstack/react-router";
 import React, { useState } from "react";
+import "./sidebar.css";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -10,11 +12,9 @@ export  function Sidebar( { isOpen, setIsOpening }: SidebarProps) {
  
 
   return (
-    <div>
-      {/* Top Section with Main Navbar */}
-      
+    <div className="sidebar"
+    >
 
-      {/* Sidebar*/}
       <div
         style={{
           position: "fixed",
@@ -22,13 +22,13 @@ export  function Sidebar( { isOpen, setIsOpening }: SidebarProps) {
           left: isOpen ? 0 : "-300px",
           height: "100vh",
           width: "300px",
-          backgroundColor: "#ebf9ff",
+          backgroundColor: "white",
           boxShadow: "0 0 10px rgba(0,0,0,0.2)",
-          transition: "right 0.3s ease-in-out",
+          transition: "left 0.3s ease-in-out",
           padding: "2rem",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+          justifyContent: "flex-start",
           alignItems: "center",
           color: "#6c3b27d7",
         }}
@@ -49,9 +49,24 @@ export  function Sidebar( { isOpen, setIsOpening }: SidebarProps) {
           ✕
         </button>
 
-        {/* Your same horizontal navbar can go here */}
+        
+        <div style={{marginBottom: "20px", padding: "4px 10%", borderRadius: "6px", marginTop: "4rem",}}>
+            <h3 style={{ textAlign: "left", fontSize: "4vh"}}>Welcome !</h3>
+            <hr style={{ backgroundColor: "#f8d8d1", border: "1px solid #6c3b27d7" }} />
+            <br />
+            <Link to='/pond' className="buttonStyle" >pond</Link>
+            <br />
+            <Link to='/task-lists' className="buttonStyle" >task lists</Link>
+            <br />
+            <Link to='/profile' className="buttonStyle" >profile</Link>
+            <br />
+            <Link to='/settings' className="buttonStyle" >settings</Link>
+            <br />        
+        </div>
         
       </div>
     </div>
+
+    
   );
 }

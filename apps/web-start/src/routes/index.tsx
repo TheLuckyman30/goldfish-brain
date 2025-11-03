@@ -1,8 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router';
+
 import { Navbar } from '../components/navbar';
 import { Sidebar } from '../components/sidebar';
 import goldfishBrain from '../images/GoldfishBrain.png';
 import { url } from 'inspector';
+import { Link, createFileRoute } from '@tanstack/react-router';
+import './../styles.css'
 
 export const Route = createFileRoute('/')({
   component: RouteComponent,
@@ -34,7 +36,7 @@ function RouteComponent() {
         <div
           
           style={{
-            backgroundColor: "#6c3b27",
+            backgroundColor: "#794531fb",
             color: "white",
             borderRadius: "50%",
             width: "25vh",
@@ -52,7 +54,7 @@ function RouteComponent() {
         <div
           
           style={{
-            backgroundColor: "#6c3b27",
+            backgroundColor: "#794531fb",
             color: "white",
             borderRadius: "50%",
             width: "25vh",

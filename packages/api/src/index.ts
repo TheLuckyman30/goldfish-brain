@@ -1,14 +1,5 @@
-import { Link } from './links/entities/link.entity';
+export { UserOut } from './user';
 
-import { CreateLinkDto } from './links/dto/create-link.dto';
-import { UpdateLinkDto } from './links/dto/update-link.dto';
+export { TaskOut } from './task';
 
-export const links = {
-  dto: {
-    CreateLinkDto,
-    UpdateLinkDto,
-  },
-  entities: {
-    Link,
-  },
-};
+export { TaskListOut } from './task-list';
