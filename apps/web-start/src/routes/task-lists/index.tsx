@@ -1,7 +1,6 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 import './../../components/button.css';
-import { useQuery } from '@tanstack/react-query';
-import { backendFetcher } from '../../integrations/fetcher';
+import { useApiQuery } from '../../integrations/api';
 import type { TaskListOut } from '@repo/api/task-list';
 
 export const Route = createFileRoute('/task-lists/')({
@@ -9,11 +8,10 @@ export const Route = createFileRoute('/task-lists/')({
 });
 
 function TaskLists() {
-  const { data: taskLists, isFetching } = useQuery<Array<TaskListOut>>({
-    queryKey: ['task-lists'],
-    queryFn: backendFetcher<Array<TaskListOut>>('/task-lists'),
-    initialData: [],
-  });
+  const { data: taskLists = [], isFetching } = useApiQuery<Array<TaskListOut>>(
+    ['task-lists'],
+    '/task-lists',
+  );
 
   if (isFetching) {
     return <body style={{ backgroundColor: '#815656' }}>Loading...</body>;
@@ -36,6 +34,7 @@ function TaskLists() {
               to="/task-lists/$taskListID"
               params={{ taskListID: list.id }}
               className="buttonStyling"
+              key={list.id}
             >
               {list.name}
             </Link>

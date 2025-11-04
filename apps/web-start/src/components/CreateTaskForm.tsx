@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import './CreateTaskForm.css';
 import './button.css';
-import { useMutation } from '@tanstack/react-query';
-import { mutateBackend } from '../integrations/fetcher';
+import { useApiMutation } from '../integrations/api';
 import type { CreateTask, TaskOut } from '@repo/api/task';
 
 interface CreateFormProps {
@@ -16,10 +15,8 @@ export function CreateTaskForm({
 }: CreateFormProps): React.JSX.Element {
   const [taskName, setTaskName] = useState<string>('');
   const [taskDescription, setTaskDescription] = useState<string>('');
-  const mutation = useMutation({
-    mutationFn: (newTask: CreateTask) => {
-      return mutateBackend<CreateTask, TaskOut>('/tasks', 'POST', newTask);
-    },
+  const mutation = useApiMutation<CreateTask, TaskOut>({
+    endpoint: () => ({ path: '/tasks', method: 'POST' }),
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
