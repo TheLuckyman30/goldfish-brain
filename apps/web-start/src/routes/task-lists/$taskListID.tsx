@@ -1,9 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router';
 import './../../components/button.css';
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { backendFetcher } from '../../integrations/fetcher';
 import { CreateTaskForm } from '../../components/CreateTaskForm';
+import { useApiQuery } from '../../integrations/api';
 import type { TaskListOut } from '@repo/api/task-list';
 import type { TaskOut } from '@repo/api/task';
 
@@ -14,19 +13,19 @@ export const Route = createFileRoute('/task-lists/$taskListID')({
 function TaskList() {
   const { taskListID } = Route.useParams();
   const [createForm, setCreateForm] = useState<boolean>(false);
-  const { data: taskList, isFetching: listIsFetching } = useQuery<TaskListOut>({
-    queryKey: ['task-list', taskListID],
-    queryFn: backendFetcher<TaskListOut>(`/task-lists/${taskListID}`),
-  });
+  const { data: taskList, isFetching: listIsFetching } =
+    useApiQuery<TaskListOut>(
+      ['task-list', taskListID],
+      `/task-lists/${taskListID}`,
+    );
   const {
-    data: tasks,
+    data: tasks = [],
     isFetching: tasksIsFetching,
     refetch: tasksRefetch,
-  } = useQuery<Array<TaskOut>>({
-    queryKey: ['tasks', taskListID],
-    queryFn: backendFetcher<Array<TaskOut>>(`/task-lists/${taskListID}/tasks`),
-    initialData: [],
-  });
+  } = useApiQuery<Array<TaskOut>>(
+    ['tasks', taskListID],
+    `/task-lists/${taskListID}/tasks`,
+  );
 
   if (listIsFetching || tasksIsFetching) {
     return <body style={{ backgroundColor: '#815656' }}>Loading...</body>;

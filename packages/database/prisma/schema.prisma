@@ -13,16 +13,17 @@ generator client {
 }
 
 model User {
-  id            String     @id @default(uuid())
-  name          String?
-  username      String?
-  email         String?    @unique
-  emailVerified DateTime?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  profile       Profile?
-  folders       Folder[]
-  taskLists     TaskList[]
+  id             String          @id @default(uuid())
+  name           String?
+  username       String?
+  email          String?         @unique
+  emailVerified  DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  profile        Profile?
+  folders        Folder[]
+  taskLists      TaskList[]
+  authentication Authentication?
 }
 
 model Profile {
@@ -66,4 +67,12 @@ model Task {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   taskList    TaskList? @relation(fields: [taskListId], references: [id], onDelete: SetNull)
+}
+
+model Authentication {
+  id         String @id @default(uuid())
+  userId     String @unique
+  provider   String
+  providerId String
+  user       User   @relation(references: [id], fields: [userId])
 }
