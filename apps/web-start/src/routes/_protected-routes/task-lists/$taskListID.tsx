@@ -1,12 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router';
-import './../../components/button.css';
+import '../../../components/button.css';
 import { useState } from 'react';
-import { CreateTaskForm } from '../../components/CreateTaskForm';
-import { useApiQuery } from '../../integrations/api';
+import { CreateTaskForm } from '../../../components/CreateTaskForm';
+import { useApiQuery } from '../../../integrations/api';
 import type { TaskListOut } from '@repo/api/task-list';
 import type { TaskOut } from '@repo/api/task';
 
-export const Route = createFileRoute('/task-lists/$taskListID')({
+export const Route = createFileRoute(
+  '/_protected-routes/task-lists/$taskListID',
+)({
   component: TaskList,
 });
 

@@ -15,7 +15,7 @@ const navItems = [
 export function Navbar({ setSideBarOpen }: NavbarProps) {
   const { loginWithRedirect } = useAuth0();
   return (
-    <div className="flex items-center justify-between w-full relative mt-[5vh] pl-[8vh]">
+    <div className="flex items-center justify-between w-full absolute mt-[5vh] pl-[8vh]">
       <button
         className="bg-[#6c3b27d7] text-white rounded-[50%] w-[6vh] h-[6vh] border-none cursor-pointer"
         onClick={() => setSideBarOpen(true)}
