@@ -2,10 +2,10 @@ import { Link, createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
 
 export const Route = createFileRoute('/_protected-routes/profile/')({
-  component: RouteComponent,
+  component: Profile,
 });
 
-function RouteComponent() {
+function Profile() {
   return (
     <div>
       <h1>Profile Page</h1>

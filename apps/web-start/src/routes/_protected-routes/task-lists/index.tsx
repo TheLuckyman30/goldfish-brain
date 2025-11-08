@@ -14,7 +14,11 @@ function TaskLists() {
   );
 
   if (isFetching) {
-    return <div className="bg-[#815656] h-full w-full">Loading...</div>;
+    return (
+      <div className="bg-[#815656] flex justify-center items-center min-h-lvh w-lvw pt-20">
+        Loading...
+      </div>
+    );
   }
 
   return (

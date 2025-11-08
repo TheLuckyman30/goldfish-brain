@@ -2,10 +2,10 @@ import { Link, createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
-  component: RouteComponent,
+  component: Pond,
 });
 
-function RouteComponent() {
+function Pond() {
   return (
     <div>
       <h1>Pond Page</h1>
