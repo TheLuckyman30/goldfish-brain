@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
-import { TaskListOut } from '@repo/api/task-list';
+import { TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
 
 @Injectable()
 export class TaskListsService {
@@ -23,8 +23,8 @@ export class TaskListsService {
     });
   }
 
-  findTaskList(where: Prisma.TaskListWhereInput): Promise<TaskListOut> {
-    return this.prisma.taskList.findFirst({
+  async findTaskList(where: Prisma.TaskListWhereUniqueInput, userId: string): Promise<TaskListOut> {
+    const taskList = await this.prisma.taskList.findUnique({
       select: {
         id: true,
         userId: true,
@@ -34,5 +34,33 @@ export class TaskListsService {
       },
       where,
     });
+
+    if (taskList.userId !== userId) {
+      throw new ForbiddenException()
+    }
+
+    return taskList;
   }
+
+  async findTasksByList(where: Prisma.TaskListWhereUniqueInput, userId: string): Promise<TaskListTasksOut> {
+    const taskList = await this.prisma.taskList.findUnique({
+      select: {
+        id: true,
+        userId: true,
+        folderId: true,
+        name: true,
+        description: true,
+        tasks: true,
+      },
+      where,
+    });
+
+    if (taskList.userId !== userId) {
+      throw new ForbiddenException()
+    }
+
+    return taskList;
+  }
+  
+  
 }
