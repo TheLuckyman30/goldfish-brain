@@ -8,6 +8,7 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import TanStackQueryDevtools from '../integrations/devtools';
 import appCss from '../styles.css?url';
+import AuthZustandSync from '../components/AuthZustandSync';
 import type { QueryClient } from '@tanstack/react-query';
 
 export interface MyRouterContext {
@@ -46,6 +47,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <AuthZustandSync />
         {children}
         <TanStackDevtools
           config={{

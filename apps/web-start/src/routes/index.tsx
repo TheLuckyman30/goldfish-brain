@@ -6,10 +6,10 @@ import { Navbar } from '../components/navbar';
 import { Sidebar } from '../components/sidebar';
 
 export const Route = createFileRoute('/')({
-  component: Dashboard,
+  component: Home,
 });
 
-function Dashboard() {
+function Home() {
   const { sideBarOpen, setSidebarOpen } = useSideBarStore();
 
   return (
@@ -17,7 +17,7 @@ function Dashboard() {
       <Navbar setSideBarOpen={setSidebarOpen} />
       {sideBarOpen && <Sidebar setIsOpen={setSidebarOpen} />}
       <div
-        className={`flex justify-center items-center min-h-lvh w-lvw pt-20 bg-cover bg-no-repeat bg-top`}
+        className="flex justify-center items-center min-h-lvh w-lvw pt-20 bg-cover bg-no-repeat bg-top"
         style={{
           backgroundImage: `url(${goldfishBrain})`,
         }}

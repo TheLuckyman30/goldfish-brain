@@ -1,10 +1,17 @@
-import { Outlet, createFileRoute } from '@tanstack/react-router';
+import { Outlet, createFileRoute, redirect } from '@tanstack/react-router';
 import { Navbar } from '../../components/navbar';
 import { useSideBarStore } from '../../zustand/sidebar-store';
 import { Sidebar } from '../../components/sidebar';
+import { useAuthStore } from '../../zustand/auth-store';
 
 export const Route = createFileRoute('/_protected-routes')({
   component: RouteComponent,
+  beforeLoad: () => {
+    const { isAuthenticated } = useAuthStore.getState();
+    if (!isAuthenticated) {
+      throw redirect({ to: '/' });
+    }
+  },
 });
 
 function RouteComponent() {

@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoadingRouteImport } from './routes/loading'
 import { Route as ProtectedRoutesRouteRouteImport } from './routes/_protected-routes/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CreateUserIndexRouteImport } from './routes/create-user/index'
@@ -19,6 +20,11 @@ import { Route as ProtectedRoutesPondIndexRouteImport } from './routes/_protecte
 import { Route as ProtectedRoutesCreateTaskIndexRouteImport } from './routes/_protected-routes/create-task/index'
 import { Route as ProtectedRoutesTaskListsTaskListIDRouteImport } from './routes/_protected-routes/task-lists/$taskListID'
 
+const LoadingRoute = LoadingRouteImport.update({
+  id: '/loading',
+  path: '/loading',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProtectedRoutesRouteRoute = ProtectedRoutesRouteRouteImport.update({
   id: '/_protected-routes',
   getParentRoute: () => rootRouteImport,
@@ -72,6 +78,7 @@ const ProtectedRoutesTaskListsTaskListIDRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/loading': typeof LoadingRoute
   '/create-user': typeof CreateUserIndexRoute
   '/task-lists/$taskListID': typeof ProtectedRoutesTaskListsTaskListIDRoute
   '/create-task': typeof ProtectedRoutesCreateTaskIndexRoute
@@ -82,6 +89,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/loading': typeof LoadingRoute
   '/create-user': typeof CreateUserIndexRoute
   '/task-lists/$taskListID': typeof ProtectedRoutesTaskListsTaskListIDRoute
   '/create-task': typeof ProtectedRoutesCreateTaskIndexRoute
@@ -94,6 +102,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_protected-routes': typeof ProtectedRoutesRouteRouteWithChildren
+  '/loading': typeof LoadingRoute
   '/create-user/': typeof CreateUserIndexRoute
   '/_protected-routes/task-lists/$taskListID': typeof ProtectedRoutesTaskListsTaskListIDRoute
   '/_protected-routes/create-task/': typeof ProtectedRoutesCreateTaskIndexRoute
@@ -106,6 +115,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/loading'
     | '/create-user'
     | '/task-lists/$taskListID'
     | '/create-task'
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/loading'
     | '/create-user'
     | '/task-lists/$taskListID'
     | '/create-task'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_protected-routes'
+    | '/loading'
     | '/create-user/'
     | '/_protected-routes/task-lists/$taskListID'
     | '/_protected-routes/create-task/'
@@ -139,11 +151,19 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ProtectedRoutesRouteRoute: typeof ProtectedRoutesRouteRouteWithChildren
+  LoadingRoute: typeof LoadingRoute
   CreateUserIndexRoute: typeof CreateUserIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/loading': {
+      id: '/loading'
+      path: '/loading'
+      fullPath: '/loading'
+      preLoaderRoute: typeof LoadingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_protected-routes': {
       id: '/_protected-routes'
       path: ''
@@ -235,6 +255,7 @@ const ProtectedRoutesRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ProtectedRoutesRouteRoute: ProtectedRoutesRouteRouteWithChildren,
+  LoadingRoute: LoadingRoute,
   CreateUserIndexRoute: CreateUserIndexRoute,
 }
 export const routeTree = rootRouteImport

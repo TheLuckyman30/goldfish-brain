@@ -12,7 +12,9 @@ export const getRouter = () => {
 
   // Create the redirect URI based on the current origin, which may be undefined during SSR
   const redirect_uri =
-    typeof window !== 'undefined' ? window.location.origin + '/' : undefined;
+    typeof window !== 'undefined'
+      ? window.location.origin + '/loading'
+      : undefined;
 
   const router = createRouter({
     routeTree,
