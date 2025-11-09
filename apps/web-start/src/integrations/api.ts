@@ -1,5 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type {UserOut} from '@repo/api/user'
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL as string;
 const AUDIENCE = import.meta.env.VITE_AUTH0_AUDIENCE as string;
@@ -140,7 +141,7 @@ export type CurrentUser = {
 };
 
 export function useCurrentUser(opts?: { scope?: string }) {
-  return useApiQuery<CurrentUser>(['users', 'me'], '/users/me', {
+  return useApiQuery<UserOut>(['users', 'me'], '/users/me', {
     // pass through an optional scope if your API requires it
     scope: opts?.scope,
     // You can uncomment any of these if you want the same perf tweaks everywhere:
