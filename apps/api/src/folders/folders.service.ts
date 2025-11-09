@@ -17,8 +17,8 @@ export class FoldersService {
     });
   }
 
-  findFolder(where: Prisma.FolderWhereUniqueInput): Promise<FolderOut> {
-    return this.prisma.folder.findUnique({
+  findFolder(where: Prisma.FolderWhereInput): Promise<FolderOut> {
+    return this.prisma.folder.findFirst({
       select: { id: true, userId: true, name: true, description: true },
       where,
     });
