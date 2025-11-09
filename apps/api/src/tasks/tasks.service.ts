@@ -21,8 +21,8 @@ export class TasksService {
     });
   }
 
-  findTask(where: Prisma.TaskWhereUniqueInput): Promise<TaskOut> {
-    return this.prisma.task.findUnique({
+  findTask(where: Prisma.TaskWhereInput): Promise<TaskOut> {
+    return this.prisma.task.findFirst({
       select: {
         id: true,
         taskListId: true,

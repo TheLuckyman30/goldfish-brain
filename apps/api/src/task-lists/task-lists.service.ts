@@ -23,8 +23,8 @@ export class TaskListsService {
     });
   }
 
-  findTaskList(where: Prisma.TaskListWhereUniqueInput): Promise<TaskListOut> {
-    return this.prisma.taskList.findUnique({
+  findTaskList(where: Prisma.TaskListWhereInput): Promise<TaskListOut> {
+    return this.prisma.taskList.findFirst({
       select: {
         id: true,
         userId: true,
