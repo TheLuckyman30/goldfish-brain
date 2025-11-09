@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
 import { TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
@@ -54,6 +54,10 @@ export class TaskListsService {
       },
       where,
     });
+
+    if (!taskList) {
+      throw new NotFoundException()
+    }
 
     if (taskList.userId !== userId) {
       throw new ForbiddenException()

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
 import { FolderOut } from '@repo/api/folder';
@@ -17,10 +17,20 @@ export class FoldersService {
     });
   }
 
-  findFolder(where: Prisma.FolderWhereInput): Promise<FolderOut> {
-    return this.prisma.folder.findFirst({
+  async findFolder(where: Prisma.FolderWhereUniqueInput, userId: string): Promise<FolderOut> {
+    const folder = await this.prisma.folder.findUnique({
       select: { id: true, userId: true, name: true, description: true },
       where,
     });
+
+    if (!folder) {
+      throw new NotFoundException();
+    }
+
+    if (folder.userId !== userId) {
+      throw new ForbiddenException();
+    }
+
+    return folder;
   }
 }

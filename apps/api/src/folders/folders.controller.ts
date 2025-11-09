@@ -18,6 +18,6 @@ export class FoldersController {
   @UseGuards(AuthGuard('jwt'))
   @Get()
   find(@Param('id') folderId: string, @CurrentUser() user: JwtUser): Promise<FolderOut> {
-    return this.foldersService.findFolder({ id: folderId, userId: user.userId});
+    return this.foldersService.findFolder({ id: folderId}, user.userId);
   }
 }

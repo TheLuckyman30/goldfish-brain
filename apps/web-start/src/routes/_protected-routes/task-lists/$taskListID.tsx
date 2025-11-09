@@ -47,7 +47,10 @@ function TaskList() {
               Tasks:
             </div>
             {data.tasks.map((task) => (
-              <div className="rounded-md bg-[#fddbcdeb] text-[#6c3b27ee] text-2xl p-1">
+              <div
+                className="rounded-md bg-[#fddbcdeb] text-[#6c3b27ee] text-2xl p-1"
+                key={task.id}
+              >
                 {task.name}
               </div>
             ))}

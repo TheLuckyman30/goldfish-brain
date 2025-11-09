@@ -18,7 +18,7 @@ export class TasksController {
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   find(@Param('id') taskId: string, @CurrentUser() user: JwtUser): Promise<TaskOut> {
-    return this.tasksService.findTask({ id: taskId, taskList: {userId: user.userId} });
+    return this.tasksService.findTask({ id: taskId }, user.userId);
   }
 
   @UseGuards(AuthGuard('jwt'))
