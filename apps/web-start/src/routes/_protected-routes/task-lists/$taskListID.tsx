@@ -3,8 +3,7 @@ import '../../../components/button.css';
 import { useState } from 'react';
 import { CreateTaskForm } from '../../../components/CreateTaskForm';
 import { useApiQuery } from '../../../integrations/api';
-import type { TaskListOut } from '@repo/api/task-list';
-import type { TaskOut } from '@repo/api/task';
+import type { TaskListTasksOut } from '@repo/api/task-list';
 
 export const Route = createFileRoute(
   '/_protected-routes/task-lists/$taskListID',
@@ -15,21 +14,12 @@ export const Route = createFileRoute(
 function TaskList() {
   const { taskListID } = Route.useParams();
   const [createForm, setCreateForm] = useState<boolean>(false);
-  const { data: taskList, isFetching: listIsFetching } =
-    useApiQuery<TaskListOut>(
-      ['task-list', taskListID],
-      `/task-lists/${taskListID}`,
-    );
-  const {
-    data: tasks = [],
-    isFetching: tasksIsFetching,
-    refetch: tasksRefetch,
-  } = useApiQuery<Array<TaskOut>>(
+  const { data, isFetching, refetch, error } = useApiQuery<TaskListTasksOut>(
     ['tasks', taskListID],
     `/task-lists/${taskListID}/tasks`,
   );
 
-  if (listIsFetching || tasksIsFetching) {
+  if (isFetching) {
     return (
       <div className="bg-[#815656] flex justify-center items-center min-h-lvh w-lvw pt-20">
         Loading...
@@ -37,18 +27,18 @@ function TaskList() {
     );
   }
 
-  if (taskList) {
+  if (data) {
     return (
       <div className="bg-[#815656] flex justify-center items-center min-h-lvh w-lvw pt-20">
         <div className="flex flex-col gap-10">
           <h1 className="text-[20px] text-white text-center">
-            Task List: {taskList.name}
+            Task List: {data.name}
           </h1>
           <div className="flex gap-15">
             <div className="buttonStyling" onClick={() => setCreateForm(true)}>
               Create a Task
             </div>
-            <div className="buttonStyling" onClick={() => tasksRefetch()}>
+            <div className="buttonStyling" onClick={() => refetch()}>
               Refresh
             </div>
           </div>
@@ -56,8 +46,11 @@ function TaskList() {
             <div className="rounded-md bg-[#fddbcdeb] text-[#6c3b27ee] text-4xl p-1">
               Tasks:
             </div>
-            {tasks.map((task) => (
-              <div className="rounded-md bg-[#fddbcdeb] text-[#6c3b27ee] text-2xl p-1">
+            {data.tasks.map((task) => (
+              <div
+                className="rounded-md bg-[#fddbcdeb] text-[#6c3b27ee] text-2xl p-1"
+                key={task.id}
+              >
                 {task.name}
               </div>
             ))}
@@ -69,6 +62,12 @@ function TaskList() {
             setCreateForm={setCreateForm}
           />
         )}
+      </div>
+    );
+  } else {
+    return (
+      <div className="bg-[#815656] flex justify-center items-center min-h-lvh w-lvw pt-20">
+        {error?.message}
       </div>
     );
   }

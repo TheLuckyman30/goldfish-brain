@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
 import { CreateTask, TaskOut } from '@repo/api/task';
@@ -21,17 +21,28 @@ export class TasksService {
     });
   }
 
-  findTask(where: Prisma.TaskWhereUniqueInput): Promise<TaskOut> {
-    return this.prisma.task.findUnique({
+  async findTask(where: Prisma.TaskWhereUniqueInput, userId: string): Promise<TaskOut> {
+    const task = await this.prisma.task.findUnique({
       select: {
         id: true,
         taskListId: true,
         name: true,
         description: true,
         dueBy: true,
+        taskList: {select: {userId: true}}
       },
       where,
     });
+
+    if (!task) {
+      throw new NotFoundException();
+    }
+
+    if (task.taskListId && (task.taskList.userId !== userId)) {
+      throw new ForbiddenException();
+    }
+
+    return {id: task.id, taskListId: task.taskListId, name: task.name, description: task.description, dueBy: task.dueBy}
   }
 
   createTask(newTask: CreateTask): Promise<TaskOut> {
