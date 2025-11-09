@@ -1,4 +1,4 @@
-export { UserOut } from './user';
+export { UserOut, UpdateUser } from './user';
 
 export { TaskOut, CreateTask } from './task';
 

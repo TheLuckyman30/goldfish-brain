@@ -1,6 +1,6 @@
-import { Controller, Get, Param, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UserOut } from '@repo/api/user';
+import { UpdateUser, UserOut } from '@repo/api/user';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
@@ -28,5 +28,11 @@ export class UsersController {
   @Get(':id')
   find(@Param('id') userId: string): Promise<UserOut> {
     return this.usersService.findUser({ id: userId });
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch()
+  update(@Body() updateUserDto: UpdateUser): Promise<UserOut> {
+    return this.usersService.updateUser(updateUserDto)
   }
 }

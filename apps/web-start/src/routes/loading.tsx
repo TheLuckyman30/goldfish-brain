@@ -15,14 +15,15 @@ function RouteComponent() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isLoading && !isUserLoading) {
+    if (!isLoading && !isUserLoading && data) {
       setIsAuthenticated(isAuthenticated);
-      if (data?.name && data.email && data.username) {
+      if (data.name && data.email && data.username) {
         navigate({ to: '/' });
+      } else {
+        navigate({ to: '/create-user' });
       }
-      navigate({ to: '/create-user' });
     }
-  }, [isLoading, isAuthenticated, isUserLoading]);
+  }, [isLoading, isAuthenticated, isUserLoading, data]);
 
   return <div>Loading...</div>;
 }

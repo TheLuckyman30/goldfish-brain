@@ -1,6 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
 import goldfishBrain from '../../images/GoldfishBrain.png';
+import { useApiMutation, useCurrentUser } from '../../integrations/api';
+import type { UpdateUser, UserOut } from '@repo/api/user';
 
 export const Route = createFileRoute('/create-user/')({
   component: CreateUser,
@@ -10,9 +12,29 @@ function CreateUser() {
   const [newName, setNewName] = useState<string>('');
   const [newUserName, setNewUserName] = useState<string>('');
   const [newEmail, setNewEmail] = useState<string>('');
+  const navigate = useNavigate();
+  const { data } = useCurrentUser();
+  const mutation = useApiMutation<UpdateUser, UserOut>({
+    endpoint: () => ({ path: '/users', method: 'PATCH' }),
+  });
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      navigate({ to: '/' });
+    }
+  }, [mutation.isSuccess]);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page reload
+
+    if (data) {
+      mutation.mutate({
+        id: data.id,
+        name: newName,
+        username: newUserName,
+        email: newEmail,
+      });
+    }
   }
 
   return (
@@ -80,6 +102,9 @@ function CreateUser() {
                 >
                   Submit
                 </button>
+                {mutation.isPending && <div>Loading...</div>}
+                {mutation.isError && <div>{mutation.error.message}</div>}
+                {mutation.isSuccess && <div>Updated</div>}
               </div>
             </div>
           </form>
