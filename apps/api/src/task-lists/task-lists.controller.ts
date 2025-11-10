@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { TaskListsService } from './task-lists.service';
-import { CreateTaskList, TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
+import { CreateTaskList, DeleteTaskList, TaskListOut, TaskListTasksOut, UpdateTaskList } from '@repo/api/task-list';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
@@ -29,7 +29,19 @@ export class TaskListsController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@CurrentUser() user: JwtUser, @Body() newTaskList: CreateTaskList): Promise<TaskListOut> {
-    return this.taskListsService.createTaskList(user.userId, newTaskList);
+  create(@Body() createTaskListDto: CreateTaskList, @CurrentUser() user: JwtUser): Promise<TaskListOut> {
+    return this.taskListsService.createTaskList(createTaskListDto, user.userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch()
+  update(@Body() updateTaskListDto: UpdateTaskList, @CurrentUser() user: JwtUser): Promise<TaskListOut> {
+    return this.taskListsService.updateTaskList(updateTaskListDto, user.userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete()
+  delete(@Body() deleteTaskListDto: DeleteTaskList, @CurrentUser() user: JwtUser): Promise<TaskListOut> {
+    return this.taskListsService.deleteTaskList(deleteTaskListDto, user.userId);
   }
 }

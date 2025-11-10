@@ -1,5 +1,5 @@
 export { UserOut, UpdateUser } from './user';
 
-export { TaskOut, CreateTask } from './task';
+export { TaskOut, CreateTask, UpdateTask, DeleteTask } from './task';
 
-export { TaskListOut, TaskListTasksOut, CreateTaskList } from './task-list';
+export { TaskListOut, TaskListTasksOut, CreateTaskList, UpdateTaskList, DeleteTaskList } from './task-list';
