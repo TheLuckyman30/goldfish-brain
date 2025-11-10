@@ -51,7 +51,9 @@ export function Navbar({ setSideBarOpen }: NavbarProps) {
         )}
         {isAuthenticated && (
           <button
-            onClick={() => logout()}
+            onClick={() =>
+              logout({ logoutParams: { returnTo: window.location.origin } })
+            }
             className="bg-white hover:bg-sky-100 rounded-md p-5 cursor-pointer"
           >
             Logout
