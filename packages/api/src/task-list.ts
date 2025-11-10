@@ -21,8 +21,8 @@ export const TaskListTasksOut = z.object({
 export type TaskListTasksOut = z.infer<typeof TaskListTasksOut>
 
 export const CreateTaskList = z.object({
-  name: z.uuid(),
+  name: z.string(),
   description: z.string().nullable(),
-  folderId: z.string().nullable(),
+  folderId: z.string().uuid().nullable(),
 });
 export type CreateTaskList = z.infer<typeof CreateTaskList>
