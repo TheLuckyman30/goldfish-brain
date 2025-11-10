@@ -66,15 +66,20 @@ export class TaskListsService {
     return taskList;
   }
   
-  createTaskList(newTaskList: CreateTaskList): Promise<TaskListOut> {
+  createTaskList(userId: string, dto: CreateTaskList) {
     return this.prisma.taskList.create({
-      data: newTaskList,
+      data: {
+        name: dto.name,
+        description: dto.description ?? null,
+        
+        user: { connect: { id: userId } },
+        ...(dto.folderId ? { folder: { connect: { id: dto.folderId } } } : {}),
+      },
       select: {
         id: true,
-        userId: true,
         folderId: true,
         name: true,
-        description: true,
-    }})
+        description: true },
+    });
   }
 }
