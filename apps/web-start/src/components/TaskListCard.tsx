@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router';
-import type { TaskListOut } from '@repo/api/task-list';
+import { useApiMutation } from '../integrations/api';
+import type { DeleteTaskList, TaskListOut } from '@repo/api/task-list';
 
 interface TaskListCardProps {
   taskList: TaskListOut;
@@ -12,6 +13,11 @@ function TaskListCard({
   setSelectedTaskList,
   setEditForm,
 }: TaskListCardProps) {
+  // This is temporary
+  const mutation = useApiMutation<DeleteTaskList, TaskListOut>({
+    endpoint: () => ({ path: '/task-lists', method: 'DELETE' }),
+  });
+
   return (
     <div className="flex flex-col flex-wrap rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] w-[40vh] bg-[#815656] text-[#f8d8d1]">
       <header className="flex items-center relative p-[1vh] h-[6vh]">
@@ -29,9 +35,21 @@ function TaskListCard({
             >
               Edit
             </button>
-            <button className="bg-transparent border-2 rounded-sm p-1.5 text-[#815656] cursor-pointer hover:bg-yellow-950/20">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                mutation.mutate({
+                  id: taskList.id,
+                  userId: taskList.userId,
+                });
+              }}
+              className="bg-transparent border-2 rounded-sm p-1.5 text-[#815656] cursor-pointer hover:bg-yellow-950/20"
+            >
               Delete
             </button>
+            {mutation.isPending && <div>Loading...</div>}
+            {mutation.isError && <div>{mutation.error.message}</div>}
+            {mutation.isSuccess && <div>Task List Deleted</div>}
           </div>
         </details>
       </header>

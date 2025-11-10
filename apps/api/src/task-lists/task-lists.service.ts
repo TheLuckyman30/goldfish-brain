@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
-import { CreateTaskList, TaskListOut, TaskListTasksOut, UpdateTaskList } from '@repo/api/task-list';
+import { CreateTaskList, DeleteTaskList, TaskListOut, TaskListTasksOut, UpdateTaskList } from '@repo/api/task-list';
 
 @Injectable()
 export class TaskListsService {
@@ -97,5 +97,21 @@ export class TaskListsService {
     }
 
     return this.prisma.taskList.update({data: updateTaskListDto, where: {id: updateTaskListDto.id}});
+  }
+
+  async deleteTaskList(deleteTaskListDto: DeleteTaskList, userId: string): Promise<TaskListOut> {
+    const taskList = await this.prisma.taskList.findUnique({
+      where: {id: deleteTaskListDto.id},
+    });
+
+    if (!taskList) {
+      throw new NotFoundException()
+    }
+
+    if (taskList.userId !== userId) {
+      throw new ForbiddenException()
+    }
+
+    return this.prisma.taskList.delete({ where: {id: deleteTaskListDto.id}});
   }
 }
