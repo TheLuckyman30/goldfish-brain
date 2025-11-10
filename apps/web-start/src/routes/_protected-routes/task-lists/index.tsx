@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
-import { useApiQuery } from '../../../integrations/api';
 import { useState } from 'react';
+import { useApiQuery } from '../../../integrations/api';
 import { CreateListForm } from '../../../components/CreateListForm';
 import type { TaskListOut } from '@repo/api/task-list';
 
@@ -11,7 +11,7 @@ export const Route = createFileRoute('/_protected-routes/task-lists/')({
 
 function TaskLists() {
   const [createForm, setCreateForm] = useState<boolean>(false);
-  const { data: taskLists = [], isFetching } = useApiQuery<Array<TaskListOut>>(
+  const { data: taskLists = [], isFetching, refetch } = useApiQuery<Array<TaskListOut>>(
     ['task-lists'],
     '/task-lists',
   );
@@ -40,6 +40,9 @@ function TaskLists() {
         <br></br>
         <br></br>
         <div className="buttonStyling" onClick={() => setCreateForm(true)}>Create New Task List</div>
+        <div className="buttonStyling" onClick={() => refetch()}>
+              Refresh
+            </div>
       </div>
       {createForm && (
         <CreateListForm
