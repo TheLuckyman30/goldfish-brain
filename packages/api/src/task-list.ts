@@ -3,18 +3,18 @@ import { TaskOut } from './task';
 
 export const TaskListOut = z.object({
   id: z.uuid(),
-  folderId: z.uuid(),
+  folderId: z.uuid().nullable(),
   name: z.string(),
-  description: z.string()
+  description: z.string().nullable(),
 });
 export type TaskListOut = z.infer<typeof TaskListOut>;
 
 export const TaskListTasksOut = z.object({
   id: z.uuid(),
   userId: z.uuid(),
-  folderId: z.uuid(),
+  folderId: z.uuid().nullable(),
   name: z.string(),
-  description: z.string(),
+  description: z.string().nullable(),
   tasks: z.array(TaskOut)
 });
 export type TaskListTasksOut = z.infer<typeof TaskListTasksOut>
