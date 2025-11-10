@@ -1,6 +1,6 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { TaskListsService } from './task-lists.service';
-import { TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
+import { CreateTaskList, TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
@@ -25,5 +25,11 @@ export class TaskListsController {
   @Get(':id/tasks')
   findAllTasksByList(@Param('id') taskLisId: string, @CurrentUser() user: JwtUser): Promise<TaskListTasksOut> {
     return this.taskListsService.findTasksByList({id: taskLisId}, user.userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post()
+  create(@Body() newTaskList: CreateTaskList): Promise<TaskListOut> {
+    return this.taskListsService.createTaskList(newTaskList);
   }
 }
