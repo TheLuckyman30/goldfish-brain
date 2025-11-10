@@ -6,11 +6,9 @@ import {
 } from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { TanStackDevtools } from '@tanstack/react-devtools';
-import { useState } from 'react';
 import TanStackQueryDevtools from '../integrations/devtools';
 import appCss from '../styles.css?url';
-import { Navbar } from '../components/navbar';
-import { Sidebar } from '../components/sidebar';
+import AuthZustandSync from '../components/AuthZustandSync';
 import type { QueryClient } from '@tanstack/react-query';
 
 export interface MyRouterContext {
@@ -43,16 +41,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  const [sideBarOpen, setSideBarOpen] = useState<boolean>(false);
   return (
     <html lang="en">
       <head>
         <HeadContent />
       </head>
       <body>
-        <Navbar setSideBarOpen={setSideBarOpen} />
+        <AuthZustandSync />
         {children}
-        {sideBarOpen && <Sidebar setIsOpen={setSideBarOpen} />}
         <TanStackDevtools
           config={{
             position: 'bottom-right',

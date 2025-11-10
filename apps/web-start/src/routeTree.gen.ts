@@ -9,82 +9,114 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoadingRouteImport } from './routes/loading'
+import { Route as ProtectedRoutesRouteRouteImport } from './routes/_protected-routes/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TaskListsIndexRouteImport } from './routes/task-lists/index'
-import { Route as SettingsIndexRouteImport } from './routes/settings/index'
-import { Route as ProfileIndexRouteImport } from './routes/profile/index'
-import { Route as PondIndexRouteImport } from './routes/pond/index'
-import { Route as CreateTaskIndexRouteImport } from './routes/create-task/index'
-import { Route as TaskListsTaskListIDRouteImport } from './routes/task-lists/$taskListID'
+import { Route as CreateUserIndexRouteImport } from './routes/create-user/index'
+import { Route as ProtectedRoutesTaskListsIndexRouteImport } from './routes/_protected-routes/task-lists/index'
+import { Route as ProtectedRoutesSettingsIndexRouteImport } from './routes/_protected-routes/settings/index'
+import { Route as ProtectedRoutesProfileIndexRouteImport } from './routes/_protected-routes/profile/index'
+import { Route as ProtectedRoutesPondIndexRouteImport } from './routes/_protected-routes/pond/index'
+import { Route as ProtectedRoutesCreateTaskIndexRouteImport } from './routes/_protected-routes/create-task/index'
+import { Route as ProtectedRoutesTaskListsTaskListIDRouteImport } from './routes/_protected-routes/task-lists/$taskListID'
 
+const LoadingRoute = LoadingRouteImport.update({
+  id: '/loading',
+  path: '/loading',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProtectedRoutesRouteRoute = ProtectedRoutesRouteRouteImport.update({
+  id: '/_protected-routes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TaskListsIndexRoute = TaskListsIndexRouteImport.update({
-  id: '/task-lists/',
-  path: '/task-lists/',
+const CreateUserIndexRoute = CreateUserIndexRouteImport.update({
+  id: '/create-user/',
+  path: '/create-user/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SettingsIndexRoute = SettingsIndexRouteImport.update({
-  id: '/settings/',
-  path: '/settings/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileIndexRoute = ProfileIndexRouteImport.update({
-  id: '/profile/',
-  path: '/profile/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PondIndexRoute = PondIndexRouteImport.update({
-  id: '/pond/',
-  path: '/pond/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CreateTaskIndexRoute = CreateTaskIndexRouteImport.update({
-  id: '/create-task/',
-  path: '/create-task/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TaskListsTaskListIDRoute = TaskListsTaskListIDRouteImport.update({
-  id: '/task-lists/$taskListID',
-  path: '/task-lists/$taskListID',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const ProtectedRoutesTaskListsIndexRoute =
+  ProtectedRoutesTaskListsIndexRouteImport.update({
+    id: '/task-lists/',
+    path: '/task-lists/',
+    getParentRoute: () => ProtectedRoutesRouteRoute,
+  } as any)
+const ProtectedRoutesSettingsIndexRoute =
+  ProtectedRoutesSettingsIndexRouteImport.update({
+    id: '/settings/',
+    path: '/settings/',
+    getParentRoute: () => ProtectedRoutesRouteRoute,
+  } as any)
+const ProtectedRoutesProfileIndexRoute =
+  ProtectedRoutesProfileIndexRouteImport.update({
+    id: '/profile/',
+    path: '/profile/',
+    getParentRoute: () => ProtectedRoutesRouteRoute,
+  } as any)
+const ProtectedRoutesPondIndexRoute =
+  ProtectedRoutesPondIndexRouteImport.update({
+    id: '/pond/',
+    path: '/pond/',
+    getParentRoute: () => ProtectedRoutesRouteRoute,
+  } as any)
+const ProtectedRoutesCreateTaskIndexRoute =
+  ProtectedRoutesCreateTaskIndexRouteImport.update({
+    id: '/create-task/',
+    path: '/create-task/',
+    getParentRoute: () => ProtectedRoutesRouteRoute,
+  } as any)
+const ProtectedRoutesTaskListsTaskListIDRoute =
+  ProtectedRoutesTaskListsTaskListIDRouteImport.update({
+    id: '/task-lists/$taskListID',
+    path: '/task-lists/$taskListID',
+    getParentRoute: () => ProtectedRoutesRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/task-lists/$taskListID': typeof TaskListsTaskListIDRoute
-  '/create-task': typeof CreateTaskIndexRoute
-  '/pond': typeof PondIndexRoute
-  '/profile': typeof ProfileIndexRoute
-  '/settings': typeof SettingsIndexRoute
-  '/task-lists': typeof TaskListsIndexRoute
+  '/loading': typeof LoadingRoute
+  '/create-user': typeof CreateUserIndexRoute
+  '/task-lists/$taskListID': typeof ProtectedRoutesTaskListsTaskListIDRoute
+  '/create-task': typeof ProtectedRoutesCreateTaskIndexRoute
+  '/pond': typeof ProtectedRoutesPondIndexRoute
+  '/profile': typeof ProtectedRoutesProfileIndexRoute
+  '/settings': typeof ProtectedRoutesSettingsIndexRoute
+  '/task-lists': typeof ProtectedRoutesTaskListsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/task-lists/$taskListID': typeof TaskListsTaskListIDRoute
-  '/create-task': typeof CreateTaskIndexRoute
-  '/pond': typeof PondIndexRoute
-  '/profile': typeof ProfileIndexRoute
-  '/settings': typeof SettingsIndexRoute
-  '/task-lists': typeof TaskListsIndexRoute
+  '/loading': typeof LoadingRoute
+  '/create-user': typeof CreateUserIndexRoute
+  '/task-lists/$taskListID': typeof ProtectedRoutesTaskListsTaskListIDRoute
+  '/create-task': typeof ProtectedRoutesCreateTaskIndexRoute
+  '/pond': typeof ProtectedRoutesPondIndexRoute
+  '/profile': typeof ProtectedRoutesProfileIndexRoute
+  '/settings': typeof ProtectedRoutesSettingsIndexRoute
+  '/task-lists': typeof ProtectedRoutesTaskListsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/task-lists/$taskListID': typeof TaskListsTaskListIDRoute
-  '/create-task/': typeof CreateTaskIndexRoute
-  '/pond/': typeof PondIndexRoute
-  '/profile/': typeof ProfileIndexRoute
-  '/settings/': typeof SettingsIndexRoute
-  '/task-lists/': typeof TaskListsIndexRoute
+  '/_protected-routes': typeof ProtectedRoutesRouteRouteWithChildren
+  '/loading': typeof LoadingRoute
+  '/create-user/': typeof CreateUserIndexRoute
+  '/_protected-routes/task-lists/$taskListID': typeof ProtectedRoutesTaskListsTaskListIDRoute
+  '/_protected-routes/create-task/': typeof ProtectedRoutesCreateTaskIndexRoute
+  '/_protected-routes/pond/': typeof ProtectedRoutesPondIndexRoute
+  '/_protected-routes/profile/': typeof ProtectedRoutesProfileIndexRoute
+  '/_protected-routes/settings/': typeof ProtectedRoutesSettingsIndexRoute
+  '/_protected-routes/task-lists/': typeof ProtectedRoutesTaskListsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/loading'
+    | '/create-user'
     | '/task-lists/$taskListID'
     | '/create-task'
     | '/pond'
@@ -94,6 +126,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/loading'
+    | '/create-user'
     | '/task-lists/$taskListID'
     | '/create-task'
     | '/pond'
@@ -103,26 +137,40 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/task-lists/$taskListID'
-    | '/create-task/'
-    | '/pond/'
-    | '/profile/'
-    | '/settings/'
-    | '/task-lists/'
+    | '/_protected-routes'
+    | '/loading'
+    | '/create-user/'
+    | '/_protected-routes/task-lists/$taskListID'
+    | '/_protected-routes/create-task/'
+    | '/_protected-routes/pond/'
+    | '/_protected-routes/profile/'
+    | '/_protected-routes/settings/'
+    | '/_protected-routes/task-lists/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  TaskListsTaskListIDRoute: typeof TaskListsTaskListIDRoute
-  CreateTaskIndexRoute: typeof CreateTaskIndexRoute
-  PondIndexRoute: typeof PondIndexRoute
-  ProfileIndexRoute: typeof ProfileIndexRoute
-  SettingsIndexRoute: typeof SettingsIndexRoute
-  TaskListsIndexRoute: typeof TaskListsIndexRoute
+  ProtectedRoutesRouteRoute: typeof ProtectedRoutesRouteRouteWithChildren
+  LoadingRoute: typeof LoadingRoute
+  CreateUserIndexRoute: typeof CreateUserIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/loading': {
+      id: '/loading'
+      path: '/loading'
+      fullPath: '/loading'
+      preLoaderRoute: typeof LoadingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected-routes': {
+      id: '/_protected-routes'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ProtectedRoutesRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -130,59 +178,85 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/task-lists/': {
-      id: '/task-lists/'
+    '/create-user/': {
+      id: '/create-user/'
+      path: '/create-user'
+      fullPath: '/create-user'
+      preLoaderRoute: typeof CreateUserIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_protected-routes/task-lists/': {
+      id: '/_protected-routes/task-lists/'
       path: '/task-lists'
       fullPath: '/task-lists'
-      preLoaderRoute: typeof TaskListsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ProtectedRoutesTaskListsIndexRouteImport
+      parentRoute: typeof ProtectedRoutesRouteRoute
     }
-    '/settings/': {
-      id: '/settings/'
+    '/_protected-routes/settings/': {
+      id: '/_protected-routes/settings/'
       path: '/settings'
       fullPath: '/settings'
-      preLoaderRoute: typeof SettingsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ProtectedRoutesSettingsIndexRouteImport
+      parentRoute: typeof ProtectedRoutesRouteRoute
     }
-    '/profile/': {
-      id: '/profile/'
+    '/_protected-routes/profile/': {
+      id: '/_protected-routes/profile/'
       path: '/profile'
       fullPath: '/profile'
-      preLoaderRoute: typeof ProfileIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ProtectedRoutesProfileIndexRouteImport
+      parentRoute: typeof ProtectedRoutesRouteRoute
     }
-    '/pond/': {
-      id: '/pond/'
+    '/_protected-routes/pond/': {
+      id: '/_protected-routes/pond/'
       path: '/pond'
       fullPath: '/pond'
-      preLoaderRoute: typeof PondIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ProtectedRoutesPondIndexRouteImport
+      parentRoute: typeof ProtectedRoutesRouteRoute
     }
-    '/create-task/': {
-      id: '/create-task/'
+    '/_protected-routes/create-task/': {
+      id: '/_protected-routes/create-task/'
       path: '/create-task'
       fullPath: '/create-task'
-      preLoaderRoute: typeof CreateTaskIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ProtectedRoutesCreateTaskIndexRouteImport
+      parentRoute: typeof ProtectedRoutesRouteRoute
     }
-    '/task-lists/$taskListID': {
-      id: '/task-lists/$taskListID'
+    '/_protected-routes/task-lists/$taskListID': {
+      id: '/_protected-routes/task-lists/$taskListID'
       path: '/task-lists/$taskListID'
       fullPath: '/task-lists/$taskListID'
-      preLoaderRoute: typeof TaskListsTaskListIDRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ProtectedRoutesTaskListsTaskListIDRouteImport
+      parentRoute: typeof ProtectedRoutesRouteRoute
     }
   }
 }
 
+interface ProtectedRoutesRouteRouteChildren {
+  ProtectedRoutesTaskListsTaskListIDRoute: typeof ProtectedRoutesTaskListsTaskListIDRoute
+  ProtectedRoutesCreateTaskIndexRoute: typeof ProtectedRoutesCreateTaskIndexRoute
+  ProtectedRoutesPondIndexRoute: typeof ProtectedRoutesPondIndexRoute
+  ProtectedRoutesProfileIndexRoute: typeof ProtectedRoutesProfileIndexRoute
+  ProtectedRoutesSettingsIndexRoute: typeof ProtectedRoutesSettingsIndexRoute
+  ProtectedRoutesTaskListsIndexRoute: typeof ProtectedRoutesTaskListsIndexRoute
+}
+
+const ProtectedRoutesRouteRouteChildren: ProtectedRoutesRouteRouteChildren = {
+  ProtectedRoutesTaskListsTaskListIDRoute:
+    ProtectedRoutesTaskListsTaskListIDRoute,
+  ProtectedRoutesCreateTaskIndexRoute: ProtectedRoutesCreateTaskIndexRoute,
+  ProtectedRoutesPondIndexRoute: ProtectedRoutesPondIndexRoute,
+  ProtectedRoutesProfileIndexRoute: ProtectedRoutesProfileIndexRoute,
+  ProtectedRoutesSettingsIndexRoute: ProtectedRoutesSettingsIndexRoute,
+  ProtectedRoutesTaskListsIndexRoute: ProtectedRoutesTaskListsIndexRoute,
+}
+
+const ProtectedRoutesRouteRouteWithChildren =
+  ProtectedRoutesRouteRoute._addFileChildren(ProtectedRoutesRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TaskListsTaskListIDRoute: TaskListsTaskListIDRoute,
-  CreateTaskIndexRoute: CreateTaskIndexRoute,
-  PondIndexRoute: PondIndexRoute,
-  ProfileIndexRoute: ProfileIndexRoute,
-  SettingsIndexRoute: SettingsIndexRoute,
-  TaskListsIndexRoute: TaskListsIndexRoute,
+  ProtectedRoutesRouteRoute: ProtectedRoutesRouteRouteWithChildren,
+  LoadingRoute: LoadingRoute,
+  CreateUserIndexRoute: CreateUserIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

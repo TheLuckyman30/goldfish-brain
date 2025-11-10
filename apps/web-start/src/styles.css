@@ -1,7 +1,11 @@
 @import "tailwindcss";
 
-body {
-    @apply m-0;
+body, html {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow-x: hidden;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
         "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
         sans-serif;
@@ -14,21 +18,3 @@ code {
         monospace;
 }
 
-/* I'm a bit confused about tailwind at the moment so these are temporary -Ben */
-.button {
-    width: 40%;
-    height:auto;
-    color:black;
-    background-color: rgb(190, 201, 211);
-    border: solid 1px black;
-    border-radius:8px;
-    display: flex;
-    justify-content: center;
-}
-
-.button:hover{
-    color:black;
-    background-color: rgb(221, 226, 231);
-    border: solid 1px black;
-    box-shadow: 0px 2px 3px black;
-}

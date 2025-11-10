@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
-import { TaskListOut } from '@repo/api/task-list';
+import { CreateTaskList, DeleteTaskList, TaskListOut, TaskListTasksOut, UpdateTaskList } from '@repo/api/task-list';
 
 @Injectable()
 export class TaskListsService {
@@ -23,8 +23,8 @@ export class TaskListsService {
     });
   }
 
-  findTaskList(where: Prisma.TaskListWhereUniqueInput): Promise<TaskListOut> {
-    return this.prisma.taskList.findUnique({
+  async findTaskList(where: Prisma.TaskListWhereUniqueInput, userId: string): Promise<TaskListOut> {
+    const taskList = await this.prisma.taskList.findUnique({
       select: {
         id: true,
         userId: true,
@@ -34,5 +34,84 @@ export class TaskListsService {
       },
       where,
     });
+
+    if (!taskList) {
+      throw new NotFoundException();
+    }
+
+    if (taskList.userId !== userId) {
+      throw new ForbiddenException();
+    }
+
+    return taskList;
+  }
+
+  async findTasksByList(where: Prisma.TaskListWhereUniqueInput, userId: string): Promise<TaskListTasksOut> {
+    const taskList = await this.prisma.taskList.findUnique({
+      select: {
+        id: true,
+        userId: true,
+        folderId: true,
+        name: true,
+        description: true,
+        tasks: true,
+      },
+      where,
+    });
+
+    if (!taskList) {
+      throw new NotFoundException()
+    }
+
+    if (taskList.userId !== userId) {
+      throw new ForbiddenException()
+    }
+
+    return taskList;
+  }
+  
+  createTaskList(createTaskListDto: CreateTaskList, userId: string): Promise<TaskListOut> {
+    const newDto = {userId, ...createTaskListDto}
+    return this.prisma.taskList.create({
+      data: newDto,
+      select: {
+        id: true,
+        userId: true,
+        folderId: true,
+        name: true,
+        description: true },
+    });
+  }
+
+  async updateTaskList(updateTaskListDto: UpdateTaskList, userId: string): Promise<TaskListOut> {
+    const taskList = await this.prisma.taskList.findUnique({
+      where: {id: updateTaskListDto.id},
+    });
+
+    if (!taskList) {
+      throw new NotFoundException()
+    }
+
+    if (taskList.userId !== userId) {
+      throw new ForbiddenException()
+    }
+
+    return this.prisma.taskList.update({data: updateTaskListDto, where: {id: updateTaskListDto.id}});
+  }
+
+  async deleteTaskList(deleteTaskListDto: DeleteTaskList, userId: string): Promise<TaskListOut> {
+    const taskList = await this.prisma.taskList.findUnique({
+      where: {id: deleteTaskListDto.id},
+    });
+
+    if (!taskList) {
+      throw new NotFoundException()
+    }
+
+    if (taskList.userId !== userId) {
+      throw new ForbiddenException()
+    }
+
+    return this.prisma.taskList.delete({ where: {id: deleteTaskListDto.id}});
   }
 }

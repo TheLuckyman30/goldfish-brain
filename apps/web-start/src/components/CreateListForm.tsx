@@ -1,32 +1,31 @@
 import React, { useState } from 'react';
-import './CreateTaskForm.css';
 import './button.css';
 import { useApiMutation } from '../integrations/api';
-import type { CreateTask, TaskOut } from '@repo/api/task';
+import type { CreateTaskList, TaskListOut } from '@repo/api/task-list';
 
 interface CreateFormProps {
-  taskListId: string;
   setCreateForm: (isOpen: boolean) => void;
 }
 
-export function CreateTaskForm({
-  taskListId,
+export function CreateListForm({
   setCreateForm,
 }: CreateFormProps): React.JSX.Element {
-  const [taskName, setTaskName] = useState<string>('');
-  const [taskDescription, setTaskDescription] = useState<string>('');
-  const mutation = useApiMutation<CreateTask, TaskOut>({
-    endpoint: () => ({ path: '/tasks', method: 'POST' }),
-    invalidateKeys: [['tasks', taskListId]],
+  const [listName, setListName] = useState<string>('');
+  const [listDescription, setListDescription] = useState<string>('');
+  const mutation = useApiMutation<CreateTaskList, TaskListOut>({
+    endpoint: () => ({
+      path: '/task-lists',
+      method: 'POST',
+    }),
+    invalidateKeys: [['task-lists']],
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // prevent page reload
     mutation.mutate({
-      taskListId: taskListId,
-      name: taskName,
-      description: taskDescription,
-      dueBy: null,
+      name: listName,
+      description: listDescription,
+      folderId: null,
     });
   };
 
@@ -37,35 +36,34 @@ export function CreateTaskForm({
     >
       <div className="flex flex-col items-center bg-white shadow-md p-5 rounded-lg w-[25%]">
         <span
-          className="self-end text-orange-900 cursor-pointer text-2xl"
+          className="self-end text-red-500 cursor-pointer text-xl"
           onClick={() => setCreateForm(false)}
         >
-          x
+          X
         </span>
-        <form onSubmit={handleSubmit} className="text-orange-950">
-          <label htmlFor="taskName">Task Name</label>
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="listName">Task List Name</label>
           <input
             type="text"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-            id="taskName"
+            value={listName}
+            onChange={(e) => setListName(e.target.value)}
+            id="listName"
           ></input>
           <br></br>
-          <label htmlFor="taskDescription">Task Description</label>
+          <label htmlFor="taskDescription">Task List Description</label>
           <input
             type="text"
-            value={taskDescription}
-            onChange={(e) => setTaskDescription(e.target.value)}
-            id="taskDescription"
+            value={listDescription}
+            onChange={(e) => setListDescription(e.target.value)}
+            id="listDescription"
           ></input>
-          <div style={{ margin: '5vh' }}></div>
           <div>
             <button type="submit" className="button">
               Submit
             </button>
             {mutation.isPending && <div>Loading...</div>}
             {mutation.isError && <div>{mutation.error.message}</div>}
-            {mutation.isSuccess && <div>Task Added</div>}
+            {mutation.isSuccess && <div>Task List Added</div>}
           </div>
         </form>
       </div>

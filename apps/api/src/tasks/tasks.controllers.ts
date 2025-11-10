@@ -1,23 +1,41 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { CreateTask, TaskOut } from '@repo/api/task';
+import { CreateTask, TaskOut, UpdateTask } from '@repo/api/task';
+import { AuthGuard } from '@nestjs/passport';
+import { CurrentUser } from 'src/auth/current-user.decorator';
+import { JwtUser } from 'src/auth/jwt.strategy';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
+  @UseGuards(AuthGuard('jwt'))
   @Get()
-  findAll(): Promise<TaskOut[]> {
-    return this.tasksService.findAllTasks({});
+  findAll(@CurrentUser() user: JwtUser): Promise<TaskOut[]> {
+    return this.tasksService.findAllTasks({where: {taskList: {userId: user.userId}}});
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
-  find(@Param('id') taskId: string): Promise<TaskOut> {
-    return this.tasksService.findTask({ id: taskId });
+  find(@Param('id') taskId: string, @CurrentUser() user: JwtUser): Promise<TaskOut> {
+    return this.tasksService.findTask({ id: taskId }, user.userId);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Body() newTask: CreateTask): Promise<TaskOut> {
-    return this.tasksService.createTask(newTask);
+  create(@Body() newTaskDto: CreateTask, @CurrentUser() user: JwtUser): Promise<TaskOut> {
+    return this.tasksService.createTask(newTaskDto, user.userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch()
+  update(@Body() updateTaskDto: UpdateTask, @CurrentUser() user: JwtUser): Promise<TaskOut> {
+    return this.tasksService.updateTask(updateTaskDto, user.userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete()
+  delete(@Body() updateTaskDto: UpdateTask, @CurrentUser() user: JwtUser): Promise<TaskOut> {
+    return this.tasksService.deleteTask(updateTaskDto, user.userId);
   }
 }

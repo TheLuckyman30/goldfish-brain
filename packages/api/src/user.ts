@@ -7,3 +7,11 @@ export const UserOut = z.object({
   email: z.string(),
 });
 export type UserOut = z.infer<typeof UserOut>;
+
+export const UpdateUser = z.object({
+  id: z.uuid(),
+  name: z.string(),
+  username: z.string(),
+  email: z.string(),
+});
+export type UpdateUser = z.infer<typeof UpdateUser>;

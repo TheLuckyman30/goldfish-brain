@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { UserOut } from '@repo/api/user';
+import { UpdateUser, UserOut } from '@repo/api/user';
 import { Prisma } from '@repo/database';
 
 @Injectable()
@@ -20,5 +20,9 @@ export class UsersService {
       select: { id: true, name: true, username: true, email: true },
       where,
     });
+  }
+
+  updateUser(updateUserDto: UpdateUser): Promise<UserOut> {
+    return this.prisma.user.update({select: { id: true, name: true, username: true, email: true }, where: {id: updateUserDto.id}, data: updateUserDto})
   }
 }

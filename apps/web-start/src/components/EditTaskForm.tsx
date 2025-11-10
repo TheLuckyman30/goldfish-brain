@@ -2,32 +2,37 @@ import React, { useState } from 'react';
 import './CreateTaskForm.css';
 import './button.css';
 import { useApiMutation } from '../integrations/api';
-import type { CreateTask, TaskOut } from '@repo/api/task';
+import type { TaskOut, UpdateTask } from '@repo/api/task';
 
-interface CreateFormProps {
-  taskListId: string;
-  setCreateForm: (isOpen: boolean) => void;
+interface EditFormProps {
+  task: TaskOut | null;
+  setEditForm: (isOpen: boolean) => void;
 }
 
-export function CreateTaskForm({
-  taskListId,
-  setCreateForm,
-}: CreateFormProps): React.JSX.Element {
-  const [taskName, setTaskName] = useState<string>('');
-  const [taskDescription, setTaskDescription] = useState<string>('');
-  const mutation = useApiMutation<CreateTask, TaskOut>({
-    endpoint: () => ({ path: '/tasks', method: 'POST' }),
-    invalidateKeys: [['tasks', taskListId]],
+export function EditTaskForm({
+  task,
+  setEditForm,
+}: EditFormProps): React.JSX.Element {
+  const [taskName, setTaskName] = useState<string>(task?.name ?? '');
+  const [taskDescription, setTaskDescription] = useState<string>(
+    task?.description ?? '',
+  );
+  const mutation = useApiMutation<UpdateTask, TaskOut>({
+    endpoint: () => ({ path: '/tasks', method: 'PATCH' }),
+    invalidateKeys: [['tasks', task?.taskListId]],
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // prevent page reload
-    mutation.mutate({
-      taskListId: taskListId,
-      name: taskName,
-      description: taskDescription,
-      dueBy: null,
-    });
+    if (task) {
+      mutation.mutate({
+        id: task.id,
+        taskListId: task.taskListId,
+        name: taskName,
+        description: taskDescription,
+        dueBy: null,
+      });
+    }
   };
 
   return (
@@ -38,7 +43,7 @@ export function CreateTaskForm({
       <div className="flex flex-col items-center bg-white shadow-md p-5 rounded-lg w-[25%]">
         <span
           className="self-end text-orange-900 cursor-pointer text-2xl"
-          onClick={() => setCreateForm(false)}
+          onClick={() => setEditForm(false)}
         >
           x
         </span>
@@ -65,7 +70,7 @@ export function CreateTaskForm({
             </button>
             {mutation.isPending && <div>Loading...</div>}
             {mutation.isError && <div>{mutation.error.message}</div>}
-            {mutation.isSuccess && <div>Task Added</div>}
+            {mutation.isSuccess && <div>Task Edited</div>}
           </div>
         </form>
       </div>

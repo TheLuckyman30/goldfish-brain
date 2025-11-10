@@ -7,7 +7,7 @@ interface SidebarProps {
 
 export function Sidebar({ setIsOpen }: SidebarProps) {
   return (
-    <div className="sidebar">
+    <div className="sidebar absolute">
       <div
         style={{
           position: 'fixed',
