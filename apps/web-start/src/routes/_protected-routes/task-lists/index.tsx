@@ -2,7 +2,7 @@ import { Link, createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
 import { useState } from 'react';
 import { useApiQuery } from '../../../integrations/api';
-import goldfishBrain from '../../../images/GoldfishBrain.png';
+import fishAnimate from '../../../images/fishAnimate.gif';
 import { CreateListForm } from '../../../components/CreateListForm';
 import type { TaskListOut } from '@repo/api/task-list';
 
@@ -30,7 +30,7 @@ function TaskLists() {
     <div
       className="flex justify-center items-center pt-20 bg-cover bg-no-repeat bg-top"
       style={{
-        backgroundImage: `url(${goldfishBrain})`,
+        backgroundImage: `url(${fishAnimate})`,
       }}
     >
       <div
@@ -39,16 +39,16 @@ function TaskLists() {
           marginTop: '15vh',
           width: '90%',
           backgroundImage:
-            'linear-gradient(to bottom, #fddbcd 16%, #794531fb 16%)',
+            'linear-gradient(to bottom, #fddbcd 16%, #538f97 16%)',
         }}
-        className="p-10 rounded-lg text-white shadow-lg shadow-black"
+        className="p-10 rounded-lg text-white shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]"
       >
         <h1 className="text-5xl mb-5 text-center text-[#794531fb]">
           Your Task Lists
         </h1>
 
         <div
-          className="buttonStyling text-center center shadow-lg shadow-black/20"
+          className="buttonStyling text-center center shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]"
           style={{
             width: '30vh',
             padding: '2vh',
@@ -77,7 +77,7 @@ function TaskLists() {
           {taskLists.map((list) => (
             <div
               key={list.id}
-              className="rounded-md shadow-lg shadow-black/20"
+              className="rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]"
               style={{
                 width: '40vh',
                 backgroundColor: '#815656',
