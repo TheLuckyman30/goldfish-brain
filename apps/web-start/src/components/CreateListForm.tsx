@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './button.css';
 import { useApiMutation } from '../integrations/api';
-import type { CreateTask, TaskOut } from '@repo/api/task';
+import type { CreateTaskList, TaskListOut } from '@repo/api/task-list';
 
 interface CreateFormProps {
   setCreateForm: (isOpen: boolean) => void;
@@ -12,19 +12,19 @@ export function CreateListForm({
 }: CreateFormProps): React.JSX.Element {
   const [listName, setListName] = useState<string>('');
   const [listDescription, setListDescription] = useState<string>('');
-//   const mutation = useApiMutation<CreateList, TaskOut>({
-//     endpoint: () => ({ path: '/tasks', method: 'POST' }),
-//   });
+  const mutation = useApiMutation<CreateTaskList, TaskListOut>({
+    endpoint: () => ({ path: '/task-lists', method: 'POST' }),
+  });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // prevent page reload
-    // mutation.mutate({
-    //   taskListId: taskListId,
-    //   name: taskName,
-    //   description: taskDescription,
-    //   dueBy: null,
-    // });
-    console.log("created" + listName);
+    console.log("pre mutation");
+    mutation.mutate({
+      name: listName,
+      description: listDescription,
+      folderId: null,
+    });
+    console.log("created " + listName);
   };
 
   return (
