@@ -19,7 +19,11 @@ export function EditListForm({
     selectedTaskList?.description ?? '',
   );
   const mutation = useApiMutation<UpdateTaskList, TaskListOut>({
-    endpoint: () => ({ path: '/task-lists', method: 'PATCH' }),
+    endpoint: () => ({
+      path: '/task-lists',
+      method: 'PATCH',
+    }),
+    invalidateKeys: [['task-lists']],
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

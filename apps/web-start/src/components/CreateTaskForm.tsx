@@ -17,6 +17,7 @@ export function CreateTaskForm({
   const [taskDescription, setTaskDescription] = useState<string>('');
   const mutation = useApiMutation<CreateTask, TaskOut>({
     endpoint: () => ({ path: '/tasks', method: 'POST' }),
+    invalidateKeys: [['tasks', taskListId]],
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

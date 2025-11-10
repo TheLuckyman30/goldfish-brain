@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CreateTaskForm } from '../../../components/CreateTaskForm';
 import { useApiQuery } from '../../../integrations/api';
 import goldfishBrain from '../../../images/GoldfishBrain.png';
@@ -24,6 +24,12 @@ function TaskList() {
     ['tasks', taskListID],
     `/task-lists/${taskListID}/tasks`,
   );
+
+  useEffect(() => {
+    setEditForm(false);
+    setCreateForm(false);
+    setSelectedTask(null);
+  }, [data]);
 
   if (isFetching) {
     return (

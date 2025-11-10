@@ -19,12 +19,12 @@ export function EditTaskForm({
   );
   const mutation = useApiMutation<UpdateTask, TaskOut>({
     endpoint: () => ({ path: '/tasks', method: 'PATCH' }),
+    invalidateKeys: [['tasks', task?.taskListId]],
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // prevent page reload
     if (task) {
-      console.log(task);
       mutation.mutate({
         id: task.id,
         taskListId: task.taskListId,

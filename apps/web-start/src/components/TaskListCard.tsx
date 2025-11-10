@@ -16,6 +16,7 @@ function TaskListCard({
   // This is temporary
   const mutation = useApiMutation<DeleteTaskList, TaskListOut>({
     endpoint: () => ({ path: '/task-lists', method: 'DELETE' }),
+    invalidateKeys: [['task-lists']],
   });
 
   return (

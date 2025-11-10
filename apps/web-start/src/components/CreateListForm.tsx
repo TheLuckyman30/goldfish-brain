@@ -13,18 +13,20 @@ export function CreateListForm({
   const [listName, setListName] = useState<string>('');
   const [listDescription, setListDescription] = useState<string>('');
   const mutation = useApiMutation<CreateTaskList, TaskListOut>({
-    endpoint: () => ({ path: '/task-lists', method: 'POST' }),
+    endpoint: () => ({
+      path: '/task-lists',
+      method: 'POST',
+    }),
+    invalidateKeys: [['task-lists']],
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // prevent page reload
-    console.log('pre mutation');
     mutation.mutate({
       name: listName,
       description: listDescription,
       folderId: null,
     });
-    console.log('created ' + listName);
   };
 
   return (

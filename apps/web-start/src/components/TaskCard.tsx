@@ -11,6 +11,7 @@ function TaskCard({ task, setSelectedTask, setEditForm }: TaskCardProps) {
   // This is temporary
   const mutation = useApiMutation<DeleteTask, TaskOut>({
     endpoint: () => ({ path: '/tasks', method: 'DELETE' }),
+    invalidateKeys: [['tasks', task.taskListId]],
   });
 
   return (

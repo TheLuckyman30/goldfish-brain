@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useApiQuery } from '../../../integrations/api';
 import fishAnimate from '../../../images/fishAnimate.gif';
 import { CreateListForm } from '../../../components/CreateListForm';
@@ -23,6 +23,12 @@ function TaskLists() {
     isFetching,
     refetch,
   } = useApiQuery<Array<TaskListOut>>(['task-lists'], '/task-lists');
+
+  useEffect(() => {
+    setCreateForm(false);
+    setEditForm(false);
+    setSelectedTaskList(null);
+  }, [taskLists]);
 
   if (isFetching) {
     return (
