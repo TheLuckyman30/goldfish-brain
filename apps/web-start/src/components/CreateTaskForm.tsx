@@ -30,15 +30,16 @@ export function CreateTaskForm({
   };
 
   return (
-    <div className="fixed flex justify-center items-center inset-0 w-lvw h-lvh bg-white/10 backdrop-blur-sm">
+    <div className="fixed flex justify-center items-center inset-0 w-lvw h-lvh bg-white/10 backdrop-blur-sm"
+    style={{zIndex: 20}}>
       <div className="flex flex-col items-center bg-white shadow-md p-5 rounded-lg w-[25%]">
         <span
-          className="self-end text-red-500 cursor-pointer text-xl"
+          className="self-end text-orange-900 cursor-pointer text-2xl"
           onClick={() => setCreateForm(false)}
         >
-          X
+          x
         </span>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="text-orange-950">
           <label htmlFor="taskName">Task Name</label>
           <input
             type="text"
@@ -46,6 +47,7 @@ export function CreateTaskForm({
             onChange={(e) => setTaskName(e.target.value)}
             id="taskName"
           ></input>
+          <br></br>
           <label htmlFor="taskDescription">Task Description</label>
           <input
             type="text"
@@ -53,6 +55,7 @@ export function CreateTaskForm({
             onChange={(e) => setTaskDescription(e.target.value)}
             id="taskDescription"
           ></input>
+          <div style={{margin:"5vh"}}></div>
           <div>
             <button type="submit" className="button">
               Submit
