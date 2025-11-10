@@ -5,7 +5,9 @@ import { CreateTaskForm } from '../../../components/CreateTaskForm';
 import { useApiQuery } from '../../../integrations/api';
 import goldfishBrain from '../../../images/GoldfishBrain.png';
 import TaskCard from '../../../components/TaskCard';
+import { EditTaskForm } from '../../../components/EditTaskForm';
 import type { TaskListTasksOut } from '@repo/api/task-list';
+import type { TaskOut } from '@repo/api/task';
 
 export const Route = createFileRoute(
   '/_protected-routes/task-lists/$taskListID',
@@ -16,6 +18,8 @@ export const Route = createFileRoute(
 function TaskList() {
   const { taskListID } = Route.useParams();
   const [createForm, setCreateForm] = useState<boolean>(false);
+  const [editForm, setEditForm] = useState<boolean>(false);
+  const [selectedTask, setSelectedTask] = useState<TaskOut | null>(null);
   const { data, isFetching, refetch, error } = useApiQuery<TaskListTasksOut>(
     ['tasks', taskListID],
     `/task-lists/${taskListID}/tasks`,
@@ -73,7 +77,12 @@ function TaskList() {
             <div className="text-3xl text-[#f8d8d1]">Tasks</div>
             <div className="flex flex-wrap gap-5 justify-left">
               {data.tasks.map((task) => (
-                <TaskCard key={task.id} task={task} />
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  setSelectedTask={setSelectedTask}
+                  setEditForm={setEditForm}
+                />
               ))}
             </div>
           </div>
@@ -82,6 +91,9 @@ function TaskList() {
               taskListId={taskListID}
               setCreateForm={setCreateForm}
             />
+          )}
+          {editForm && (
+            <EditTaskForm task={selectedTask} setEditForm={setEditForm} />
           )}
         </div>
       </div>

@@ -10,9 +10,18 @@ export const TaskOut = z.object({
 export type TaskOut = z.infer<typeof TaskOut>;
 
 export const CreateTask = z.object({
-  taskListId: z.uuid().nullable(),
+  taskListId: z.uuid(),
   name: z.uuid(),
   description: z.string().nullable(),
   dueBy: z.iso.datetime().nullable(),
 });
 export type CreateTask = z.infer<typeof CreateTask>
+
+export const UpdateTask = z.object({
+  id: z.uuid(),
+  taskListId: z.uuid(),
+  name: z.uuid().nullable(),
+  description: z.string().nullable(),
+  dueBy: z.iso.datetime().nullable(),
+});
+export type UpdateTask = z.infer<typeof UpdateTask>;

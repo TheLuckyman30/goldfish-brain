@@ -35,8 +35,12 @@ export class TaskListsService {
       where,
     });
 
+    if (!taskList) {
+      throw new NotFoundException();
+    }
+
     if (taskList.userId !== userId) {
-      throw new ForbiddenException()
+      throw new ForbiddenException();
     }
 
     return taskList;
