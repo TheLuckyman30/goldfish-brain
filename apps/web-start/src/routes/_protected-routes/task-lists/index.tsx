@@ -1,7 +1,9 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
+import { useState } from 'react';
 import { useApiQuery } from '../../../integrations/api';
 import goldfishBrain from '../../../images/GoldfishBrain.png';
+import { CreateListForm } from '../../../components/CreateListForm';
 import type { TaskListOut } from '@repo/api/task-list';
 
 export const Route = createFileRoute('/_protected-routes/task-lists/')({
@@ -9,10 +11,12 @@ export const Route = createFileRoute('/_protected-routes/task-lists/')({
 });
 
 function TaskLists() {
-  const { data: taskLists = [], isFetching } = useApiQuery<Array<TaskListOut>>(
-    ['task-lists'],
-    '/task-lists',
-  );
+  const [createForm, setCreateForm] = useState<boolean>(false);
+  const {
+    data: taskLists = [],
+    isFetching,
+    refetch,
+  } = useApiQuery<Array<TaskListOut>>(['task-lists'], '/task-lists');
 
   if (isFetching) {
     return (
@@ -51,9 +55,13 @@ function TaskLists() {
             marginBottom: '2vh',
             marginTop: '8vh',
           }}
+          onClick={() => setCreateForm(true)}
         >
           {' '}
           Create Task List
+        </div>
+        <div className="buttonStyling" onClick={() => refetch()}>
+          Refresh
         </div>
         <hr
           style={{
@@ -187,6 +195,7 @@ function TaskLists() {
           ))}
         </div>
       </div>
+      {createForm && <CreateListForm setCreateForm={setCreateForm} />}
     </div>
   );
 }
