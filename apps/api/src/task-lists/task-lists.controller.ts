@@ -29,7 +29,7 @@ export class TaskListsController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@CurrentUser() user: JwtUser, @Body() newTaskList: CreateTaskList): Promise<TaskListOut> {
-    return this.taskListsService.createTaskList(user.userId, newTaskList);
+  create(@Body() createTaskListDto: CreateTaskList, @CurrentUser() user: JwtUser): Promise<TaskListOut> {
+    return this.taskListsService.createTaskList(createTaskListDto, user.userId);
   }
 }
