@@ -61,7 +61,7 @@ export function CreateListForm({
             </button>
             {mutation.isPending && <div>Loading...</div>}
             {mutation.isError && <div>{mutation.error.message}</div>}
-            {mutation.isSuccess && <div>Task Added</div>}
+            {mutation.isSuccess && <div>Task List Added</div>}
           </div>
         </form>
       </div>

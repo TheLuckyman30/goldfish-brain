@@ -12,8 +12,12 @@ export function EditListForm({
   selectedTaskList,
   setEditForm,
 }: CreateFormProps): React.JSX.Element {
-  const [listName, setListName] = useState<string>('');
-  const [listDescription, setListDescription] = useState<string>('');
+  const [listName, setListName] = useState<string>(
+    selectedTaskList?.name ?? '',
+  );
+  const [listDescription, setListDescription] = useState<string>(
+    selectedTaskList?.description ?? '',
+  );
   const mutation = useApiMutation<UpdateTaskList, TaskListOut>({
     endpoint: () => ({ path: '/task-lists', method: 'PATCH' }),
   });
@@ -64,7 +68,7 @@ export function EditListForm({
             </button>
             {mutation.isPending && <div>Loading...</div>}
             {mutation.isError && <div>{mutation.error.message}</div>}
-            {mutation.isSuccess && <div>Task Edited!</div>}
+            {mutation.isSuccess && <div>Task List Edited!</div>}
           </div>
         </form>
       </div>
