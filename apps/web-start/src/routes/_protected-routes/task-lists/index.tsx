@@ -173,11 +173,17 @@ function TaskLists() {
                   textAlign: 'center',
                   paddingTop: '5vh',
                   transition: 'background 0.2s ease',
-                  height: '20vh',
+                  minHeight: '20vh',
                 }}
                 className="hover:bg-yellow-950/10"
               >
-                {list.name}
+                <div className="text-3xl"> {list.name}</div>
+                <br></br>
+                <div className= " w-[40vh] h-[10vh] text-2xl bg-white p-2">
+                  {'>'} {list.description}
+                </div>
+                
+                
               </Link>
             </div>
           ))}
