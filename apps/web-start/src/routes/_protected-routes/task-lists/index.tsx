@@ -1,9 +1,8 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
 import { useApiQuery } from '../../../integrations/api';
-import type { TaskListOut } from '@repo/api/task-list';
 import goldfishBrain from '../../../images/GoldfishBrain.png';
-
+import type { TaskListOut } from '@repo/api/task-list';
 
 export const Route = createFileRoute('/_protected-routes/task-lists/')({
   component: TaskLists,
@@ -40,16 +39,18 @@ function TaskLists() {
         }}
         className="p-10 rounded-lg text-white shadow-lg shadow-black"
       >
-
-
-        <h1 className="text-5xl mb-5 text-center text-[#794531fb]" >
+        <h1 className="text-5xl mb-5 text-center text-[#794531fb]">
           Your Task Lists
         </h1>
-        
 
         <div
           className="buttonStyling text-center center shadow-lg shadow-black/20"
-          style={{ width: '30vh', padding: '2vh', marginBottom: '2vh', marginTop:"8vh" }}
+          style={{
+            width: '30vh',
+            padding: '2vh',
+            marginBottom: '2vh',
+            marginTop: '8vh',
+          }}
         >
           {' '}
           Create Task List
@@ -76,7 +77,7 @@ function TaskLists() {
                 display: 'flex',
                 flexDirection: 'column',
                 overflow: 'hidden',
-                flexWrap:"wrap"
+                flexWrap: 'wrap',
               }}
             >
               {/* Header Section */}
@@ -119,7 +120,7 @@ function TaskLists() {
                     style={{
                       position: 'absolute',
                       right: 0,
-                      
+
                       backgroundColor: '#f8d8d1',
                       color: '#815656',
                       border: '1px solid #815656',
@@ -128,7 +129,7 @@ function TaskLists() {
                       display: 'flex',
                       flexDirection: 'column',
                       gap: 8,
-                      minWidth: "20vh",
+                      minWidth: '20vh',
                       boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                     }}
                   >
@@ -161,7 +162,6 @@ function TaskLists() {
                 </details>
               </div>
 
-              
               <Link
                 to="/task-lists/$taskListID"
                 params={{ taskListID: list.id }}
@@ -179,11 +179,9 @@ function TaskLists() {
               >
                 <div className="text-3xl"> {list.name}</div>
                 <br></br>
-                <div className= " w-[40vh] h-[10vh] text-2xl bg-white p-2">
+                <div className=" w-[40vh] h-[10vh] text-2xl bg-white p-2">
                   {'>'} {list.description}
                 </div>
-                
-                
               </Link>
             </div>
           ))}
