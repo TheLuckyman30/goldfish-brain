@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
-import { TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
+import { CreateTaskList, TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
 
 @Injectable()
 export class TaskListsService {
@@ -66,5 +66,20 @@ export class TaskListsService {
     return taskList;
   }
   
-  
+  createTaskList(userId: string, dto: CreateTaskList) {
+    return this.prisma.taskList.create({
+      data: {
+        name: dto.name,
+        description: dto.description ?? null,
+        
+        user: { connect: { id: userId } },
+        ...(dto.folderId ? { folder: { connect: { id: dto.folderId } } } : {}),
+      },
+      select: {
+        id: true,
+        folderId: true,
+        name: true,
+        description: true },
+    });
+  }
 }
