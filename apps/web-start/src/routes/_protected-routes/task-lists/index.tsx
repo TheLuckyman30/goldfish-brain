@@ -3,8 +3,8 @@ import '../../../components/button.css';
 import { useState } from 'react';
 import { useApiQuery } from '../../../integrations/api';
 import { CreateListForm } from '../../../components/CreateListForm';
-import type { TaskListOut } from '@repo/api/task-list';
 import goldfishBrain from '../../../images/GoldfishBrain.png';
+import type { TaskListOut } from '@repo/api/task-list';
 
 
 export const Route = createFileRoute('/_protected-routes/task-lists/')({
@@ -53,7 +53,7 @@ function TaskLists() {
         <div
           className="buttonStyling text-center center shadow-lg shadow-black/20"
           style={{ width: '30vh', padding: '2vh', marginBottom: '2vh', marginTop:"8vh" }}
-          onClick={() => setCreateForm(true)
+          onClick={() => setCreateForm(true)}
         >
           {' '}
           Create Task List
