@@ -3,7 +3,6 @@ import { TaskOut } from './task';
 
 export const TaskListOut = z.object({
   id: z.uuid(),
-  userId: z.uuid(),
   folderId: z.uuid(),
   name: z.string(),
   description: z.string()
@@ -21,7 +20,6 @@ export const TaskListTasksOut = z.object({
 export type TaskListTasksOut = z.infer<typeof TaskListTasksOut>
 
 export const CreateTaskList = z.object({
-  userId: z.uuid(),
   name: z.string(),
   description: z.string().nullable(),
   folderId: z.uuid().nullable(),
