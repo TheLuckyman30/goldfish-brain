@@ -22,11 +22,11 @@ function Home() {
           backgroundImage: `url(${goldfishBrain})`,
         }}
       >
-        <div className="flex gap-[15vh]">
-          <div className="flex justify-center items-center bg-[#794531fb] text-white rounded-full w-[25vh] h-[25vh] cursor-pointer">
+        <div className="flex gap-[15vh]" >
+          <div className="flex justify-center items-center bg-[#794531fb] text-white rounded-[100px] w-[25vh] h-[25vh] cursor-pointer">
             Create List
           </div>
-          <div className="flex justify-center items-center bg-[#794531fb] text-white rounded-full w-[25vh] h-[25vh] cursor-pointer">
+          <div className="flex justify-center items-center bg-[#794531fb] text-white rounded-[100px] w-[25vh] h-[25vh] cursor-pointer">
             View Lists
           </div>
         </div>
