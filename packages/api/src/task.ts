@@ -25,3 +25,9 @@ export const UpdateTask = z.object({
   dueBy: z.iso.datetime().nullable(),
 });
 export type UpdateTask = z.infer<typeof UpdateTask>;
+
+export const DeleteTask = z.object({
+  id: z.uuid(),
+  taskListId: z.uuid(),
+});
+export type DeleteTask = z.infer<typeof DeleteTask>;
