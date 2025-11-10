@@ -1,30 +1,33 @@
 import React, { useState } from 'react';
 import './button.css';
 import { useApiMutation } from '../integrations/api';
-import type { CreateTaskList, TaskListOut } from '@repo/api/task-list';
+import type { TaskListOut, UpdateTaskList } from '@repo/api/task-list';
 
 interface CreateFormProps {
-  setCreateForm: (isOpen: boolean) => void;
+  selectedTaskList: TaskListOut | null;
+  setEditForm: (isOpen: boolean) => void;
 }
 
-export function CreateListForm({
-  setCreateForm,
+export function EditListForm({
+  selectedTaskList,
+  setEditForm,
 }: CreateFormProps): React.JSX.Element {
   const [listName, setListName] = useState<string>('');
   const [listDescription, setListDescription] = useState<string>('');
-  const mutation = useApiMutation<CreateTaskList, TaskListOut>({
-    endpoint: () => ({ path: '/task-lists', method: 'POST' }),
+  const mutation = useApiMutation<UpdateTaskList, TaskListOut>({
+    endpoint: () => ({ path: '/task-lists', method: 'PATCH' }),
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // prevent page reload
-    console.log('pre mutation');
-    mutation.mutate({
-      name: listName,
-      description: listDescription,
-      folderId: null,
-    });
-    console.log('created ' + listName);
+    if (selectedTaskList) {
+      mutation.mutate({
+        id: selectedTaskList.id,
+        userId: selectedTaskList.userId,
+        name: listName,
+        description: listDescription,
+      });
+    }
   };
 
   return (
@@ -35,7 +38,7 @@ export function CreateListForm({
       <div className="flex flex-col items-center bg-white shadow-md p-5 rounded-lg w-[25%]">
         <span
           className="self-end text-red-500 cursor-pointer text-xl"
-          onClick={() => setCreateForm(false)}
+          onClick={() => setEditForm(false)}
         >
           X
         </span>
@@ -61,7 +64,7 @@ export function CreateListForm({
             </button>
             {mutation.isPending && <div>Loading...</div>}
             {mutation.isError && <div>{mutation.error.message}</div>}
-            {mutation.isSuccess && <div>Task Added</div>}
+            {mutation.isSuccess && <div>Task Edited!</div>}
           </div>
         </form>
       </div>
