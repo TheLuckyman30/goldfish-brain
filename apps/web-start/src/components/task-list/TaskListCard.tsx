@@ -5,13 +5,13 @@ import type { DeleteTaskList, TaskListOut } from '@repo/api/task-list';
 interface TaskListCardProps {
   taskList: TaskListOut;
   setSelectedTaskList: (newList: TaskListOut) => void;
-  setEditForm: (show: boolean) => void;
+  setShowEditForm: (show: boolean) => void;
 }
 
 function TaskListCard({
   taskList,
   setSelectedTaskList,
-  setEditForm,
+  setShowEditForm,
 }: TaskListCardProps) {
   // This is temporary
   const mutation = useApiMutation<DeleteTaskList, TaskListOut>({
@@ -30,7 +30,7 @@ function TaskListCard({
             <button
               onClick={() => {
                 setSelectedTaskList(taskList);
-                setEditForm(true);
+                setShowEditForm(true);
               }}
               className="bg-transparent border-2 rounded-sm p-1.5 text-[#815656] cursor-pointer hover:bg-yellow-950/20"
             >

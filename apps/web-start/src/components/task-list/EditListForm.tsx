@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
 import { useApiMutation } from '../../integrations/api';
+import { Modal, ModalHeader } from '../shared-ui/Modal';
+import Form from '../shared-ui/Form';
+import InputLabel from '../shared-ui/InputLabel';
+import Input from '../shared-ui/Input';
+import Button from '../shared-ui/Button';
 import type { TaskListOut, UpdateTaskList } from '@repo/api/task-list';
 
 interface CreateFormProps {
   selectedTaskList: TaskListOut | null;
-  setEditForm: (isOpen: boolean) => void;
+  showEditForm: boolean;
+  setShowEditForm: (show: boolean) => void;
 }
 
 export function EditListForm({
   selectedTaskList,
-  setEditForm,
+  showEditForm,
+  setShowEditForm,
 }: CreateFormProps): React.JSX.Element {
-  const [listName, setListName] = useState<string>(
+  const [newListName, setNewListName] = useState<string>(
     selectedTaskList?.name ?? '',
   );
-  const [listDescription, setListDescription] = useState<string>(
+  const [newlistDescription, setNewListDescription] = useState<string>(
     selectedTaskList?.description ?? '',
   );
   const mutation = useApiMutation<UpdateTaskList, TaskListOut>({
@@ -31,50 +38,45 @@ export function EditListForm({
       mutation.mutate({
         id: selectedTaskList.id,
         userId: selectedTaskList.userId,
-        name: listName,
-        description: listDescription,
+        name: newListName,
+        description: newlistDescription,
       });
     }
   };
 
   return (
-    <div
-      className="fixed flex justify-center items-center inset-0 w-lvw h-lvh bg-white/10 backdrop-blur-sm"
-      style={{ zIndex: 20 }}
-    >
-      <div className="flex flex-col items-center bg-white shadow-md p-5 rounded-lg w-[25%]">
-        <span
-          className="self-end text-red-500 cursor-pointer text-xl"
-          onClick={() => setEditForm(false)}
-        >
-          X
-        </span>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="listName">Task List Name</label>
-          <input
-            type="text"
-            value={listName}
-            onChange={(e) => setListName(e.target.value)}
-            id="listName"
-          ></input>
-          <br></br>
-          <label htmlFor="taskDescription">Task List Description</label>
-          <input
-            type="text"
-            value={listDescription}
-            onChange={(e) => setListDescription(e.target.value)}
-            id="listDescription"
-          ></input>
+    <Modal show={showEditForm} setShow={setShowEditForm} backdrop>
+      <ModalHeader>Edit a Task</ModalHeader>
+      <Form onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-6">
           <div>
-            <button type="submit" className="button">
-              Submit
-            </button>
+            <InputLabel htmlFor="list-name">List Name</InputLabel>
+            <Input
+              id="list-name"
+              type="text"
+              placeholder="List Name"
+              value={newListName}
+              onChange={(e) => setNewListName(e.target.value)}
+            />
+          </div>
+          <div>
+            <InputLabel htmlFor="list-description">List Description</InputLabel>
+            <Input
+              id="list-description"
+              type="text"
+              placeholder="List Description"
+              value={newlistDescription}
+              onChange={(e) => setNewListDescription(e.target.value)}
+            />
+          </div>
+          <div>
+            <Button type="submit">Submit</Button>
             {mutation.isPending && <div>Loading...</div>}
             {mutation.isError && <div>{mutation.error.message}</div>}
             {mutation.isSuccess && <div>Task List Edited!</div>}
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      </Form>
+    </Modal>
   );
 }

@@ -14,7 +14,7 @@ export const Route = createFileRoute('/_protected-routes/task-lists/')({
 
 function TaskLists() {
   const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
-  const [editForm, setEditForm] = useState<boolean>(false);
+  const [showEditForm, setShowEditForm] = useState<boolean>(false);
   const [selectedTaskList, setSelectedTaskList] = useState<TaskListOut | null>(
     null,
   );
@@ -26,7 +26,7 @@ function TaskLists() {
 
   useEffect(() => {
     setShowCreateForm(false);
-    setEditForm(false);
+    setShowEditForm(false);
     setSelectedTaskList(null);
   }, [taskLists]);
 
@@ -62,7 +62,7 @@ function TaskLists() {
               <TaskListCard
                 taskList={list}
                 setSelectedTaskList={setSelectedTaskList}
-                setEditForm={setEditForm}
+                setShowEditForm={setShowEditForm}
               />
             ))}
           </div>
@@ -72,12 +72,11 @@ function TaskLists() {
         showCreateForm={showCreateForm}
         setShowCreateForm={setShowCreateForm}
       />
-      {editForm && (
-        <EditListForm
-          selectedTaskList={selectedTaskList}
-          setEditForm={setEditForm}
-        />
-      )}
+      <EditListForm
+        selectedTaskList={selectedTaskList}
+        showEditForm={showEditForm}
+        setShowEditForm={setShowEditForm}
+      />
     </div>
   );
 }
