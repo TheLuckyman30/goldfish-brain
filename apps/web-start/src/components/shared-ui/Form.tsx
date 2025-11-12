@@ -1,12 +1,12 @@
-interface FormProps {
-  children: React.ReactNode;
-  formParams: React.DetailedHTMLProps<
+interface FormProps
+  extends React.DetailedHTMLProps<
     React.FormHTMLAttributes<HTMLFormElement>,
     HTMLFormElement
-  >;
+  > {
+  children?: React.ReactNode;
 }
 
-function Form({ children, formParams }: FormProps) {
+function Form({ children, ...formParams }: FormProps) {
   return <form {...formParams}>{children}</form>;
 }
 

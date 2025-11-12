@@ -1,15 +1,24 @@
-interface InputLabelProps {
-  children: React.ReactNode;
-  labelParams: React.DetailedHTMLProps<
+interface InputLabelProps
+  extends React.DetailedHTMLProps<
     React.LabelHTMLAttributes<HTMLLabelElement>,
     HTMLLabelElement
-  >;
+  > {
+  children?: React.ReactNode;
+  color?: 'primary';
 }
 
-function InputLabel({ children, labelParams }: InputLabelProps) {
+function InputLabel({
+  color = 'primary',
+  children,
+  ...labelParams
+}: InputLabelProps) {
+  const labelClasses = {
+    primary: 'text-gray-900',
+  };
+
   return (
     <label
-      className="block mb-2 font-medium text-sm text-gray-900"
+      className={`block mb-2 font-medium text-sm ${labelClasses[color]}`}
       {...labelParams}
     >
       {children}

@@ -13,7 +13,7 @@ export const Route = createFileRoute('/_protected-routes/task-lists/')({
 });
 
 function TaskLists() {
-  const [createForm, setCreateForm] = useState<boolean>(false);
+  const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
   const [editForm, setEditForm] = useState<boolean>(false);
   const [selectedTaskList, setSelectedTaskList] = useState<TaskListOut | null>(
     null,
@@ -25,7 +25,7 @@ function TaskLists() {
   } = useApiQuery<Array<TaskListOut>>(['task-lists'], '/task-lists');
 
   useEffect(() => {
-    setCreateForm(false);
+    setShowCreateForm(false);
     setEditForm(false);
     setSelectedTaskList(null);
   }, [taskLists]);
@@ -66,7 +66,7 @@ function TaskLists() {
             marginBottom: '2vh',
             marginTop: '8vh',
           }}
-          onClick={() => setCreateForm(true)}
+          onClick={() => setShowCreateForm(true)}
         >
           Create Task List
         </div>
@@ -92,7 +92,10 @@ function TaskLists() {
           ))}
         </div>
       </div>
-      {createForm && <CreateListForm setCreateForm={setCreateForm} />}
+      <CreateListForm
+        showCreateForm={showCreateForm}
+        setShowCreateForm={setShowCreateForm}
+      />
       {editForm && (
         <EditListForm
           selectedTaskList={selectedTaskList}

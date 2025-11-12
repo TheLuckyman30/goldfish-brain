@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import './button.css';
 import { useApiMutation } from '../integrations/api';
+import Form from './shared-ui/Form';
+import InputLabel from './shared-ui/InputLabel';
+import Input from './shared-ui/Input';
+import { Modal, ModalHeader } from './shared-ui/Modal';
 import type { CreateTaskList, TaskListOut } from '@repo/api/task-list';
 
 interface CreateFormProps {
-  setCreateForm: (isOpen: boolean) => void;
+  showCreateForm: boolean;
+  setShowCreateForm: (isOpen: boolean) => void;
 }
 
 export function CreateListForm({
-  setCreateForm,
+  showCreateForm,
+  setShowCreateForm,
 }: CreateFormProps): React.JSX.Element {
   const [listName, setListName] = useState<string>('');
   const [listDescription, setListDescription] = useState<string>('');
@@ -20,43 +26,40 @@ export function CreateListForm({
     invalidateKeys: [['task-lists']],
   });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page reload
     mutation.mutate({
       name: listName,
       description: listDescription,
       folderId: null,
     });
-  };
+  }
 
   return (
-    <div
-      className="fixed flex justify-center items-center inset-0 w-lvw h-lvh bg-white/10 backdrop-blur-sm"
-      style={{ zIndex: 20 }}
-    >
-      <div className="flex flex-col items-center bg-white shadow-md p-5 rounded-lg w-[25%]">
-        <span
-          className="self-end text-red-500 cursor-pointer text-xl"
-          onClick={() => setCreateForm(false)}
-        >
-          X
-        </span>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="listName">Task List Name</label>
-          <input
-            type="text"
-            value={listName}
-            onChange={(e) => setListName(e.target.value)}
-            id="listName"
-          ></input>
-          <br></br>
-          <label htmlFor="taskDescription">Task List Description</label>
-          <input
-            type="text"
-            value={listDescription}
-            onChange={(e) => setListDescription(e.target.value)}
-            id="listDescription"
-          ></input>
+    <Modal show={showCreateForm} setShow={setShowCreateForm} backdrop>
+      <ModalHeader>Create a Task</ModalHeader>
+      <Form onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-6">
+          <div>
+            <InputLabel htmlFor="list-name">List Name</InputLabel>
+            <Input
+              id="list-name"
+              type="text"
+              placeholder="List Name"
+              value={listName}
+              onChange={(e) => setListName(e.target.value)}
+            />
+          </div>
+          <div>
+            <InputLabel htmlFor="list-description">List Description</InputLabel>
+            <Input
+              id="list-description"
+              type="text"
+              placeholder="List Description"
+              value={listDescription}
+              onChange={(e) => setListDescription(e.target.value)}
+            />
+          </div>
           <div>
             <button type="submit" className="button">
               Submit
@@ -65,8 +68,8 @@ export function CreateListForm({
             {mutation.isError && <div>{mutation.error.message}</div>}
             {mutation.isSuccess && <div>Task List Added</div>}
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      </Form>
+    </Modal>
   );
 }

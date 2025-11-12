@@ -1,19 +1,21 @@
-interface InputProps {
-  children: React.ReactNode;
-  inputParams: React.DetailedHTMLProps<
+interface InputProps
+  extends React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
-  >;
+  > {
+  color?: 'primary';
 }
 
-function Input({ children, inputParams }: InputProps) {
+function Input({ color = 'primary', ...inputParams }: InputProps) {
+  const colorClasses = {
+    primary: 'border-gray-300 bg-gray-50 focus:outline-blue-400',
+  };
+
   return (
     <input
-      className="block border border-gray-300 p-2.5 bg-gray-50 rounded-lg text-sm w-full focus:outline-blue-400"
+      className={`block border p-2.5 rounded-lg text-sm w-full ${colorClasses[color]}`}
       {...inputParams}
-    >
-      {children}
-    </input>
+    />
   );
 }
 
