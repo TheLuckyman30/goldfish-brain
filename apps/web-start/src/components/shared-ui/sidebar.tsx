@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import './sidebar.css';
+import '../sidebar.css';
 
 interface SidebarProps {
   setIsOpen: (isOpen: boolean) => void;

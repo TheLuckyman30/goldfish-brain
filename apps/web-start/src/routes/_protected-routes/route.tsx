@@ -1,7 +1,7 @@
 import { Outlet, createFileRoute, redirect } from '@tanstack/react-router';
-import { Navbar } from '../../components/navbar';
+import { Navbar } from '../../components/shared-ui/navbar';
 import { useSideBarStore } from '../../zustand/sidebar-store';
-import { Sidebar } from '../../components/sidebar';
+import { Sidebar } from '../../components/shared-ui/sidebar';
 import { useAuthStore } from '../../zustand/auth-store';
 
 export const Route = createFileRoute('/_protected-routes')({

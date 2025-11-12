@@ -1,4 +1,4 @@
-import { useApiMutation } from '../integrations/api';
+import { useApiMutation } from '../../integrations/api';
 import type { DeleteTask, TaskOut } from '@repo/api/task';
 
 interface TaskCardProps {

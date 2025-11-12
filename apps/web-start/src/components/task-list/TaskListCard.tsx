@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { useApiMutation } from '../integrations/api';
+import { useApiMutation } from '../../integrations/api';
 import type { DeleteTaskList, TaskListOut } from '@repo/api/task-list';
 
 interface TaskListCardProps {
