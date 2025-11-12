@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from 'react';
+import { X } from 'lucide-react';
 import Backdrop from './Backdrop';
 
 interface Context {
@@ -60,10 +61,17 @@ export function Modal({
 
 interface ModalHeaderProps {
   children?: React.ReactNode;
+  color?: 'primary';
 }
 
-export function ModalHeader({ children }: ModalHeaderProps) {
+export function ModalHeader({ color = 'primary', children }: ModalHeaderProps) {
   const context = useContext(ModalContext);
+  const textColorClasses = {
+    primary: 'text-black',
+  };
+  const closeColorClasses = {
+    primary: 'text-gray-400 hover:text-gray-500',
+  };
 
   if (!context) {
     return null;
@@ -71,9 +79,16 @@ export function ModalHeader({ children }: ModalHeaderProps) {
 
   return (
     <div className="flex gap-15">
-      <div className="flex flex-wrap text-2xl">{children}</div>
-      <button className="cursor-pointer" onClick={() => context.onShow(false)}>
-        X
+      <div
+        className={`flex flex-wrap text-3xl font-bold ${textColorClasses[color]}`}
+      >
+        {children}
+      </div>
+      <button
+        className={`cursor-pointer ${closeColorClasses[color]}`}
+        onClick={() => context.onShow(false)}
+      >
+        <X />
       </button>
     </div>
   );

@@ -5,6 +5,7 @@ import Form from './shared-ui/Form';
 import InputLabel from './shared-ui/InputLabel';
 import Input from './shared-ui/Input';
 import { Modal, ModalHeader } from './shared-ui/Modal';
+import Button from './shared-ui/Button';
 import type { CreateTaskList, TaskListOut } from '@repo/api/task-list';
 
 interface CreateFormProps {
@@ -61,9 +62,7 @@ export function CreateListForm({
             />
           </div>
           <div>
-            <button type="submit" className="button">
-              Submit
-            </button>
+            <Button type="submit">Submit</Button>
             {mutation.isPending && <div>Loading...</div>}
             {mutation.isError && <div>{mutation.error.message}</div>}
             {mutation.isSuccess && <div>Task List Added</div>}

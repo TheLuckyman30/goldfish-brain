@@ -6,6 +6,7 @@ import fishAnimate from '../../../images/fishAnimate.gif';
 import { CreateListForm } from '../../../components/CreateListForm';
 import TaskListCard from '../../../components/TaskListCard';
 import { EditListForm } from '../../../components/EditListForm';
+import Button from '../../../components/shared-ui/Button';
 import type { TaskListOut } from '@repo/api/task-list';
 
 export const Route = createFileRoute('/_protected-routes/task-lists/')({
@@ -53,23 +54,14 @@ function TaskLists() {
           backgroundImage:
             'linear-gradient(to bottom, #fddbcd 16%, #538f97 16%)',
         }}
-        className="p-10 rounded-lg text-white shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]"
+        className="p-10 rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]"
       >
         <h1 className="text-5xl mb-5 text-center text-[#794531fb]">
           Your Task Lists
         </h1>
-        <div
-          className="buttonStyling text-center center shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]"
-          style={{
-            width: '30vh',
-            padding: '2vh',
-            marginBottom: '2vh',
-            marginTop: '8vh',
-          }}
-          onClick={() => setShowCreateForm(true)}
-        >
+        <Button onClick={() => setShowCreateForm(true)}>
           Create Task List
-        </div>
+        </Button>
         <div className="buttonStyling" onClick={() => refetch()}>
           Refresh
         </div>
