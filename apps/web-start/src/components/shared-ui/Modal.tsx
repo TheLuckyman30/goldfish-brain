@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import Backdrop from './Backdrop';
 
 interface Context {
-  onShow: (show: boolean) => void;
+  setShow: (show: boolean) => void;
 }
 
 interface ModalProps
@@ -34,7 +34,7 @@ export function Modal({
 
   if (backdrop) {
     return (
-      <ModalContext.Provider value={{ onShow: setShow }}>
+      <ModalContext.Provider value={{ setShow: setShow }}>
         <Backdrop hidden={!show}>
           <div
             {...divParmas}
@@ -47,7 +47,7 @@ export function Modal({
     );
   }
   return (
-    <ModalContext.Provider value={{ onShow: setShow }}>
+    <ModalContext.Provider value={{ setShow: setShow }}>
       <div
         hidden={!show}
         {...divParmas}
@@ -86,7 +86,7 @@ export function ModalHeader({ color = 'primary', children }: ModalHeaderProps) {
       </div>
       <button
         className={`cursor-pointer ${closeColorClasses[color]}`}
-        onClick={() => context.onShow(false)}
+        onClick={() => context.setShow(false)}
       >
         <X />
       </button>
