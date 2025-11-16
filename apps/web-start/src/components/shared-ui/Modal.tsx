@@ -78,7 +78,7 @@ export function ModalHeader({ color = 'primary', children }: ModalHeaderProps) {
   }
 
   return (
-    <div className="flex gap-15">
+    <div className="flex gap-15 justify-between">
       <div
         className={`flex flex-wrap text-3xl font-bold ${textColorClasses[color]}`}
       >

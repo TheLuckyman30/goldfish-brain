@@ -6,6 +6,7 @@ import Form from '../../../components/shared-ui/Form';
 import { Select, SelectOption } from '../../../components/shared-ui/Select';
 import { useApiQuery } from '../../../integrations/api';
 import { TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
+import Button from '../../../components/shared-ui/Button';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
   component: Pond,
@@ -40,21 +41,26 @@ function Pond() {
         <Modal show={show} setShow={setShow} backdrop>
           <ModalHeader>Select a Task List</ModalHeader>
           <Form>
-            <Select
-              onChange={(e) =>
-                setSelectedTaskList(JSON.parse(e.target.value) as TaskListOut)
-              }
-            >
-              <SelectOption selected hidden disabled>
-                Choose Task List
-              </SelectOption>
-              {lists.map((list) => (
-                <SelectOption key={list.id} value={JSON.stringify(list)}>
-                  {list.name}
+            <div className="flex flex-col gap-6">
+              <Select
+                onChange={(e) =>
+                  setSelectedTaskList(JSON.parse(e.target.value) as TaskListOut)
+                }
+              >
+                <SelectOption selected hidden disabled>
+                  Choose Task List
                 </SelectOption>
-              ))}
-            </Select>
-            {taskList && <div>{JSON.stringify(taskList)}</div>}
+                {lists.map((list) => (
+                  <SelectOption key={list.id} value={JSON.stringify(list)}>
+                    {list.name}
+                  </SelectOption>
+                ))}
+              </Select>
+              <Button disabled={!taskList || taskListIsFetching}>
+                {taskListIsFetching && <span>Loading...</span>}
+                {!taskListIsFetching && <span>Play</span>}
+              </Button>
+            </div>
           </Form>
         </Modal>
       </div>
