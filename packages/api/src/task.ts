@@ -6,6 +6,7 @@ export const TaskOut = z.object({
   name: z.string(),
   description: z.string(),
   dueBy: z.date(),
+  hasFish: z.boolean(),
 });
 export type TaskOut = z.infer<typeof TaskOut>;
 
@@ -15,7 +16,7 @@ export const CreateTask = z.object({
   description: z.string().nullable(),
   dueBy: z.iso.datetime().nullable(),
 });
-export type CreateTask = z.infer<typeof CreateTask>
+export type CreateTask = z.infer<typeof CreateTask>;
 
 export const UpdateTask = z.object({
   id: z.uuid(),

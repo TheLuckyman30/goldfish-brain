@@ -20,6 +20,7 @@ export class TasksService {
         name: true,
         description: true,
         dueBy: true,
+        hasFish: true,
       },
       where,
     });
@@ -36,6 +37,7 @@ export class TasksService {
         name: true,
         description: true,
         dueBy: true,
+        hasFish: true,
         taskList: { select: { userId: true } },
       },
       where,
@@ -55,6 +57,7 @@ export class TasksService {
       name: task.name,
       description: task.description,
       dueBy: task.dueBy,
+      hasFish: task.hasFish,
     };
   }
 
@@ -79,6 +82,7 @@ export class TasksService {
         name: true,
         description: true,
         dueBy: true,
+        hasFish: true,
       },
     });
   }
@@ -108,6 +112,7 @@ export class TasksService {
         name: true,
         description: true,
         dueBy: true,
+        hasFish: true,
       },
     });
   }
@@ -136,6 +141,7 @@ export class TasksService {
         name: true,
         description: true,
         dueBy: true,
+        hasFish: true,
       },
     });
   }
