@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import './navbar.css';
 import { Link } from '@tanstack/react-router';
+import '../navbar.css';
 
 interface NavbarProps {
   setSideBarOpen: (sideBarOpen: boolean) => void;

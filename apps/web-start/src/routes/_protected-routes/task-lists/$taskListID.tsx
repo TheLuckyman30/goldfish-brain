@@ -1,11 +1,10 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
-import '../../../components/button.css';
 import { useEffect, useState } from 'react';
-import { CreateTaskForm } from '../../../components/CreateTaskForm';
+import { CreateTaskForm } from '../../../components/task/CreateTaskForm';
 import { useApiQuery } from '../../../integrations/api';
 import goldfishBrain from '../../../images/GoldfishBrain.png';
-import TaskCard from '../../../components/TaskCard';
-import { EditTaskForm } from '../../../components/EditTaskForm';
+import TaskCard from '../../../components/task/TaskCard';
+import { EditTaskForm } from '../../../components/task/EditTaskForm';
 import type { TaskListTasksOut } from '@repo/api/task-list';
 import type { TaskOut } from '@repo/api/task';
 
