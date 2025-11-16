@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type {UserOut} from '@repo/api/user'
+import type { UserOut } from '@repo/api/user';
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL as string;
 const AUDIENCE = import.meta.env.VITE_AUTH0_AUDIENCE as string;
@@ -66,9 +66,10 @@ export function useApiQuery<T>(
   queryKey: ReadonlyArray<unknown>,
   path: string,
   init: RequestInit & { scope?: string } = {},
+  enabled: boolean = true,
 ) {
   const { request, isAuthenticated, isAuthLoading } = useApiClient();
-  const isEnabled = isAuthenticated && !isAuthLoading;
+  const isEnabled = enabled && isAuthenticated && !isAuthLoading;
   const q = useQuery({
     queryKey,
     queryFn: () => request<T>(path, init),

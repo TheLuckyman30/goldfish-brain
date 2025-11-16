@@ -59,19 +59,19 @@ export function Sidebar({ setIsOpen }: SidebarProps) {
           />
           <br />
           <Link to="/pond" className="buttonStyle">
-            pond
+            Pond
           </Link>
           <br />
           <Link to="/task-lists" className="buttonStyle">
-            task lists
+            Task Lists
           </Link>
           <br />
           <Link to="/profile" className="buttonStyle">
-            profile
+            Profile
           </Link>
           <br />
           <Link to="/settings" className="buttonStyle">
-            settings
+            Settings
           </Link>
           <br />
         </div>
