@@ -3,27 +3,41 @@ import Form from '../shared-ui/Form';
 import { Modal, ModalHeader } from '../shared-ui/Modal';
 import { Select, SelectOption } from '../shared-ui/Select';
 import Button from '../shared-ui/Button';
+import { useApiQuery } from '../../integrations/api';
+import { useState } from 'react';
+import { FishOut } from '@repo/api/fish';
 
 interface TaskListFormProps {
-  lists: Array<TaskListOut>;
-  taskList: TaskListTasksOut | undefined;
-  taskListIsFetching: boolean;
   showForm: boolean;
   setShowForm: (showForm: boolean) => void;
-  setSelectedTaskList: (newTaskList: TaskListOut) => void;
+  setFish: (newFish: Array<FishOut>) => void;
 }
 
-function TaskListForm({
-  lists,
-  taskList,
-  taskListIsFetching,
-  showForm,
-  setShowForm,
-  setSelectedTaskList,
-}: TaskListFormProps) {
+function TaskListForm({ showForm, setShowForm }: TaskListFormProps) {
+  const [selectedTaskList, setSelectedTaskList] = useState<TaskListOut | null>(
+    null,
+  );
+
+  const { data: lists = [], isFetching: listsIsFetching } = useApiQuery<
+    Array<TaskListOut>
+  >(['task-lists'], '/task-lists');
+  const { data: taskList, isFetching: taskListIsFetching } =
+    useApiQuery<TaskListTasksOut>(
+      ['task-list', selectedTaskList?.id],
+      `/task-lists/${selectedTaskList?.id}/tasks`,
+      {},
+      !!selectedTaskList,
+    );
+
   function handleSubmitt(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setShowForm(false);
+  }
+
+  if (listsIsFetching || taskListIsFetching) {
+    <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
+      Loading...
+    </div>;
   }
 
   return (
