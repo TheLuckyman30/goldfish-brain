@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
 import TaskListForm from '../../../components/pond/TaskListForm';
-import { FishOut } from '@repo/api/fish';
+import { FishOutWithTask } from '@repo/api/fish';
 import { useState } from 'react';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
@@ -10,7 +10,7 @@ export const Route = createFileRoute('/_protected-routes/pond/')({
 
 function Pond() {
   const [showForm, setShowForm] = useState<boolean>(true);
-  const [fish, setFish] = useState<Array<FishOut>>([]);
+  const [fish, setFish] = useState<Array<FishOutWithTask>>([]);
 
   return (
     <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
