@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
 import { CreateTask, DeleteTask, TaskOut, UpdateTask } from '@repo/api/task';
@@ -21,7 +25,10 @@ export class TasksService {
     });
   }
 
-  async findTask(where: Prisma.TaskWhereUniqueInput, userId: string): Promise<TaskOut> {
+  async findTask(
+    where: Prisma.TaskWhereUniqueInput,
+    userId: string,
+  ): Promise<TaskOut> {
     const task = await this.prisma.task.findUnique({
       select: {
         id: true,
@@ -29,7 +36,7 @@ export class TasksService {
         name: true,
         description: true,
         dueBy: true,
-        taskList: {select: {userId: true}}
+        taskList: { select: { userId: true } },
       },
       where,
     });
@@ -38,16 +45,24 @@ export class TasksService {
       throw new NotFoundException();
     }
 
-    if (task.taskListId && (task.taskList.userId !== userId)) {
+    if (task.taskListId && task.taskList.userId !== userId) {
       throw new ForbiddenException();
     }
 
-    return {id: task.id, taskListId: task.taskListId, name: task.name, description: task.description, dueBy: task.dueBy}
+    return {
+      id: task.id,
+      taskListId: task.taskListId,
+      name: task.name,
+      description: task.description,
+      dueBy: task.dueBy,
+    };
   }
 
   async createTask(newTaskDto: CreateTask, userId: string): Promise<TaskOut> {
-    const taskList = await this.prisma.taskList.findUnique({where: {id: newTaskDto.taskListId}});
-    
+    const taskList = await this.prisma.taskList.findUnique({
+      where: { id: newTaskDto.taskListId },
+    });
+
     if (!taskList) {
       throw new NotFoundException();
     }
@@ -55,17 +70,27 @@ export class TasksService {
     if (taskList.userId !== userId) {
       throw new ForbiddenException();
     }
-    
-    return this.prisma.task.create({data: newTaskDto, select: {id: true,
+
+    return this.prisma.task.create({
+      data: newTaskDto,
+      select: {
+        id: true,
         taskListId: true,
         name: true,
         description: true,
-        dueBy: true,}})
+        dueBy: true,
+      },
+    });
   }
 
-  async updateTask(updateTaskDto: UpdateTask, userId: string): Promise<TaskOut> {
-    const taskList = await this.prisma.taskList.findUnique({where: {id: updateTaskDto.taskListId}});
-    
+  async updateTask(
+    updateTaskDto: UpdateTask,
+    userId: string,
+  ): Promise<TaskOut> {
+    const taskList = await this.prisma.taskList.findUnique({
+      where: { id: updateTaskDto.taskListId },
+    });
+
     if (!taskList) {
       throw new NotFoundException();
     }
@@ -73,17 +98,28 @@ export class TasksService {
     if (taskList.userId !== userId) {
       throw new ForbiddenException();
     }
-    
-    return this.prisma.task.update({data: updateTaskDto, where: {id: updateTaskDto.id}, select: {id: true,
+
+    return this.prisma.task.update({
+      data: updateTaskDto,
+      where: { id: updateTaskDto.id },
+      select: {
+        id: true,
         taskListId: true,
         name: true,
         description: true,
-        dueBy: true,}})
+        dueBy: true,
+      },
+    });
   }
 
-  async deleteTask(deleteTaskDto: DeleteTask, userId: string): Promise<TaskOut> {
-    const taskList = await this.prisma.taskList.findUnique({where: {id: deleteTaskDto.taskListId}});
-    
+  async deleteTask(
+    deleteTaskDto: DeleteTask,
+    userId: string,
+  ): Promise<TaskOut> {
+    const taskList = await this.prisma.taskList.findUnique({
+      where: { id: deleteTaskDto.taskListId },
+    });
+
     if (!taskList) {
       throw new NotFoundException();
     }
@@ -91,11 +127,16 @@ export class TasksService {
     if (taskList.userId !== userId) {
       throw new ForbiddenException();
     }
-    
-    return this.prisma.task.delete({where: {id: deleteTaskDto.id}, select: {id: true,
+
+    return this.prisma.task.delete({
+      where: { id: deleteTaskDto.id },
+      select: {
+        id: true,
         taskListId: true,
         name: true,
         description: true,
-        dueBy: true,}}) 
+        dueBy: true,
+      },
+    });
   }
 }
