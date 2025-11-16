@@ -17,7 +17,7 @@ function Pond() {
 
   const { data: lists = [], isFetching: listsIsFetching } = useApiQuery<
     Array<TaskListOut>
-  >(['task-lists'], './task-lists');
+  >(['task-lists'], '/task-lists');
   const { data: taskList, isFetching: taskListIsFetching } =
     useApiQuery<TaskListTasksOut>(
       ['task-list', selectedTaskList?.id],
@@ -32,18 +32,16 @@ function Pond() {
     </div>;
   }
 
-  if (lists) {
-    return (
-      <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
-        <TaskListForm
-          lists={lists}
-          taskList={taskList}
-          taskListIsFetching={taskListIsFetching}
-          showForm={showForm}
-          setShowForm={setShowForm}
-          setSelectedTaskList={setSelectedTaskList}
-        />
-      </div>
-    );
-  }
+  return (
+    <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
+      <TaskListForm
+        lists={lists}
+        taskList={taskList}
+        taskListIsFetching={taskListIsFetching}
+        showForm={showForm}
+        setShowForm={setShowForm}
+        setSelectedTaskList={setSelectedTaskList}
+      />
+    </div>
+  );
 }

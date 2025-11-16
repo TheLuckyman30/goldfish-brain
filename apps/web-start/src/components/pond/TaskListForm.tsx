@@ -21,10 +21,15 @@ function TaskListForm({
   setShowForm,
   setSelectedTaskList,
 }: TaskListFormProps) {
+  function handleSubmitt(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setShowForm(false);
+  }
+
   return (
     <Modal show={showForm} setShow={setShowForm} backdrop>
       <ModalHeader>Select a Task List</ModalHeader>
-      <Form>
+      <Form onSubmit={handleSubmitt}>
         <div className="flex flex-col gap-6">
           <Select
             onChange={(e) =>
@@ -40,7 +45,7 @@ function TaskListForm({
               </SelectOption>
             ))}
           </Select>
-          <Button disabled={!taskList || taskListIsFetching}>
+          <Button type="submit" disabled={!taskList || taskListIsFetching}>
             {taskListIsFetching && <span>Loading...</span>}
             {!taskListIsFetching && <span>Play</span>}
           </Button>
