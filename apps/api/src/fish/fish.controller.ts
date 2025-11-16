@@ -11,7 +11,7 @@ export class FishController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Body() newFishDto: CreateFish, @CurrentUser() user: JwtUser) {
-    return this.fishService.createFish(newFishDto, user.userId);
+  create(@Body() newFishDto: CreateFish[], @CurrentUser() user: JwtUser) {
+    return this.fishService.createManyFish(newFishDto, user.userId);
   }
 }

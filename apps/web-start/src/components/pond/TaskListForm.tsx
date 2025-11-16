@@ -3,25 +3,33 @@ import Form from '../shared-ui/Form';
 import { Modal, ModalHeader } from '../shared-ui/Modal';
 import { Select, SelectOption } from '../shared-ui/Select';
 import Button from '../shared-ui/Button';
-import { useApiMutation, useApiQuery } from '../../integrations/api';
+import { useApiQuery } from '../../integrations/api';
 import { useState } from 'react';
-import { CreateFish, FishOutWithTask } from '@repo/api/fish';
+import { UseMutateFunction } from '@tanstack/react-query';
 import { fishGenerator } from '../../utils/fish-generator';
 
 interface TaskListFormProps {
   showForm: boolean;
   setShowForm: (showForm: boolean) => void;
-  setFish: (newFish: Array<FishOutWithTask>) => void;
+  mutate: UseMutateFunction<
+    {
+      count: number;
+    },
+    Error,
+    {
+      taskId: string;
+      size: number;
+      rarity: number;
+    }[],
+    unknown
+  >;
 }
 
-function TaskListForm({ showForm, setShowForm, setFish }: TaskListFormProps) {
+function TaskListForm({ showForm, setShowForm, mutate }: TaskListFormProps) {
   const [selectedTaskList, setSelectedTaskList] = useState<TaskListOut | null>(
     null,
   );
 
-  const mutation = useApiMutation<CreateFish, FishOutWithTask>({
-    endpoint: () => ({ path: '/fish', method: 'POST' }),
-  });
   const { data: lists = [], isFetching: listsIsFetching } = useApiQuery<
     Array<TaskListOut>
   >(['task-lists'], '/task-lists');
@@ -33,19 +41,14 @@ function TaskListForm({ showForm, setShowForm, setFish }: TaskListFormProps) {
       !!selectedTaskList,
     );
 
-  async function createFish() {
+  function createFish() {
     const fish = fishGenerator(taskList?.tasks ?? []);
-    const createdFish: Array<FishOutWithTask> = [];
-    for (const f of fish) {
-      const test = await mutation.mutateAsync(f);
-      createdFish.push(test);
-    }
-    setFish(createdFish);
+    mutate(fish);
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    await createFish();
+    createFish();
     setShowForm(false);
   }
 

@@ -6,7 +6,6 @@ export const TaskOut = z.object({
   name: z.string(),
   description: z.string(),
   dueBy: z.date(),
-  hasFish: z.boolean(),
 });
 export type TaskOut = z.infer<typeof TaskOut>;
 
