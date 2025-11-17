@@ -17,3 +17,9 @@ export const CreateFish = z.object({
   rarity: z.int(),
 });
 export type CreateFish = z.infer<typeof CreateFish>;
+
+export const CompletedFishOut = z.object({
+  id: z.uuid(),
+  completed: z.boolean(),
+})
+export type CompletedFishOut = z.infer<typeof CompletedFishOut>;
