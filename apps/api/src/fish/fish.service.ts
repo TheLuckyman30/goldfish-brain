@@ -50,4 +50,17 @@ export class FishService {
       data: {completed: true},
     })
   }
+
+  async markAllIncomplete(taskListId: string) {
+    return this.prisma.fish.updateMany({
+      where: {
+        task: {
+          taskListId,
+        },
+      },
+      data: {
+        completed: false,
+      },
+    });
+  }
 }

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { FishService } from './fish.service';
 import { AuthGuard } from '@nestjs/passport';
-import { CreateFish } from '@repo/api/fish';
+import { CreateFish, MarkAllIncompleteDto } from '@repo/api/fish';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
 
@@ -25,5 +25,11 @@ export class FishController {
   @Patch(':id/complete')
   markComplete(@Param('id') id: string) {
     return this.fishService.markComplete(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch()
+  markAllIncomplete(@Body() body: MarkAllIncompleteDto) {
+    return this.fishService.markAllIncomplete(body.taskListId)
   }
 }
