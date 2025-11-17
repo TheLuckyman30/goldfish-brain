@@ -47,6 +47,13 @@ function Pond() {
       ['fish', selectedTaskList?.id]
     ],
   });
+  const resetCompletion = useApiMutation<{taskListId: string}>({
+    endpoint: () => ({
+      path: '/fish/reset',
+      method: 'PATCH',
+    }),
+    invalidateKeys: [['fish', selectedTaskList?.id]],
+  });
 
   function catchRandomFish() {
     const random = Math.floor(Math.random() * fish.length);
@@ -60,6 +67,12 @@ function Pond() {
     setCaughtFish({...caughtFish, completed: true});
   }
 
+  function markAllIncomplete() {
+    if (!selectedTaskList) return;
+    resetCompletion.mutate({taskListId: selectedTaskList.id});
+    setCaughtFish(null);
+  }
+
   return (
     <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
       {!showForm && !fishIsFetching && (
@@ -67,6 +80,7 @@ function Pond() {
           <Button onClick={catchRandomFish}>Reel</Button>
           <Button onClick={markComplete}>Send to Cooler</Button>
           {caughtFish && <CaughtFish caughtFish={caughtFish} />}
+          <Button onClick={markAllIncomplete}>Reset Pond</Button>
         </div>
       )}
       <TaskListForm
