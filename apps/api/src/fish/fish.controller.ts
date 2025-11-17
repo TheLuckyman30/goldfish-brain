@@ -28,7 +28,7 @@ export class FishController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Patch()
+  @Patch('reset')
   markAllIncomplete(@Body() body: MarkAllIncompleteDto) {
     return this.fishService.markAllIncomplete(body.taskListId)
   }
