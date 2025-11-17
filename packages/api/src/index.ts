@@ -16,3 +16,5 @@ export {
   CompletedFishOut,
   MarkAllIncompleteDto,
 } from './fish';
+
+export { GameOut, GameOutWithFish, CreateGame } from './game';
