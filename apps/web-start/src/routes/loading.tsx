@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { useAuthStore } from '../zustand/auth-store';
 import { useCurrentUser } from '../integrations/api';
+import { Loading } from '../components/loading/loadingScreen';
 
 export const Route = createFileRoute('/loading')({
   component: RouteComponent,
@@ -25,5 +26,5 @@ function RouteComponent() {
     }
   }, [isLoading, isAuthenticated, isUserLoading, data]);
 
-  return <div>Loading...</div>;
+  return <Loading></Loading>;
 }
