@@ -25,47 +25,50 @@ function Pond() {
       method: 'PATCH',
     }),
     // refetch
-    invalidateKeys: [['fish', game?.id]],
+    invalidateKeys: [['game']],
   });
   const resetCompletion = useApiMutation<{ taskListId: string }>({
     endpoint: () => ({
       path: '/fish/reset',
       method: 'PATCH',
     }),
-    invalidateKeys: [['fish', game?.id]],
+    invalidateKeys: [['game']],
   });
 
   function catchRandomFish() {
-    if (!game) return;
-    const uncompletedFish = game.fish.filter((f) => !f.completed);
-    const random = Math.floor(Math.random() * uncompletedFish.length);
-    const caught = uncompletedFish[random];
-    setCaughtFish(caught ?? null);
+    if (game) {
+      const uncompletedFish = game.fish.filter((f) => !f.completed);
+      const random = Math.floor(Math.random() * uncompletedFish.length);
+      const caught = uncompletedFish[random];
+      setCaughtFish(caught ?? null);
+    }
   }
 
   function markComplete() {
-    if (!caughtFish) return;
-    completeFish.mutate({ id: caughtFish.id });
-    setCaughtFish({ ...caughtFish, completed: true });
+    if (caughtFish) {
+      completeFish.mutate({ id: caughtFish.id });
+      setCaughtFish(null);
+    }
   }
 
   function markAllIncomplete() {
-    if (!game) return;
-    resetCompletion.mutate({ taskListId: game.id });
-    setCaughtFish(null);
+    if (game) {
+      resetCompletion.mutate({ taskListId: game.id });
+      setCaughtFish(null);
+    }
   }
 
   function releaseFish() {
     setCaughtFish(null);
   }
 
-  if (gameIsFetching) {
+  if (gameIsFetching && !game) {
     return <Loading />;
   }
 
   return (
     <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
-      {!showForm && (
+      {game && (
         <div>
           <Button
             onClick={catchRandomFish}
@@ -81,7 +84,7 @@ function Pond() {
           <Button onClick={markAllIncomplete}>Reset Pond</Button>
         </div>
       )}
-      <TaskListForm showForm={showForm} setShowForm={setShowForm} />
+      <TaskListForm showForm={showForm && !game} setShowForm={setShowForm} />
     </div>
   );
 }
