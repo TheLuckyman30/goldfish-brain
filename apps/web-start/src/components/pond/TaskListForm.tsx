@@ -3,53 +3,48 @@ import Form from '../shared-ui/Form';
 import { Modal, ModalHeader } from '../shared-ui/Modal';
 import { Select, SelectOption } from '../shared-ui/Select';
 import Button from '../shared-ui/Button';
-import { UseMutateFunction } from '@tanstack/react-query';
 import { fishGenerator } from '../../utils/fish-generator';
-import { useApiQuery } from '../../integrations/api';
+import { useApiMutation, useApiQuery } from '../../integrations/api';
+import { Loading } from '../loading/loadingScreen';
+import { useState } from 'react';
+import { CreateGame, GameOut } from '@repo/api/game';
 
 interface TaskListFormProps {
-  taskList: TaskListTasksOut | undefined;
-  taskListIsFetching: boolean;
   showForm: boolean;
   setShowForm: (showForm: boolean) => void;
-  setSelectedTaskList: (newTaskList: TaskListOut) => void;
-  mutate: UseMutateFunction<
-    {
-      count: number;
-    },
-    Error,
-    {
-      taskId: string;
-      size: number;
-      rarity: number;
-    }[],
-    unknown
-  >;
 }
 
-function TaskListForm({
-  taskList,
-  taskListIsFetching,
-  showForm,
-  setShowForm,
-  setSelectedTaskList,
-  mutate,
-}: TaskListFormProps) {
+function TaskListForm({ showForm, setShowForm }: TaskListFormProps) {
+  const [selectedTaskList, setSelectedTaskList] = useState<TaskListOut | null>(
+    null,
+  );
   const { data: lists = [], isFetching: listsIsFetching } = useApiQuery<
     Array<TaskListOut>
   >(['task-lists'], '/task-lists');
+  const { data: taskList, isFetching: taskListIsFetching } =
+    useApiQuery<TaskListTasksOut>(
+      ['task-list', selectedTaskList?.id],
+      `/task-lists/${selectedTaskList?.id}/tasks`,
+      {},
+      !!selectedTaskList,
+    );
+  const mutation = useApiMutation<CreateGame, GameOut>({
+    endpoint: () => ({ path: '/game', method: 'POST' }),
+    invalidateKeys: [['game']],
+  });
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const fish = fishGenerator(taskList?.tasks ?? []);
-    mutate(fish);
+    console.log(fish);
+    mutation.mutate({ fish });
     setShowForm(false);
   }
 
   if (listsIsFetching) {
     return (
       <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
-        Loading...
+        <Loading />
       </div>
     );
   }
