@@ -29,6 +29,7 @@ export class FishService {
             dueBy: true,
           },
         },
+        completed: true,
       },
     });
   }
