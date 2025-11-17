@@ -5,7 +5,6 @@ import { Select, SelectOption } from '../shared-ui/Select';
 import Button from '../shared-ui/Button';
 import { fishGenerator } from '../../utils/fish-generator';
 import { useApiMutation, useApiQuery } from '../../integrations/api';
-import { Loading } from '../loading/loadingScreen';
 import { useState } from 'react';
 import { CreateGame, GameOut } from '@repo/api/game';
 
@@ -42,11 +41,7 @@ function TaskListForm({ showForm, setShowForm }: TaskListFormProps) {
   }
 
   if (listsIsFetching) {
-    return (
-      <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
-        <Loading />
-      </div>
-    );
+    return <div></div>;
   }
 
   return (
