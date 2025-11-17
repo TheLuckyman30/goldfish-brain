@@ -15,7 +15,7 @@ export const CreateTask = z.object({
   description: z.string().nullable(),
   dueBy: z.iso.datetime().nullable(),
 });
-export type CreateTask = z.infer<typeof CreateTask>
+export type CreateTask = z.infer<typeof CreateTask>;
 
 export const UpdateTask = z.object({
   id: z.uuid(),

@@ -6,9 +6,19 @@ import { TasksModule } from './tasks/tasks.module';
 import { TaskListsModule } from './task-lists/task-lists.module';
 import { FoldersModule } from './folders/folders.module';
 import { AuthModule } from './auth/auth.module';
+import { FishModule } from './fish/fish.module';
+import { GameModule } from './game/game.module';
 
 @Module({
-  imports: [UsersModule, TasksModule, TaskListsModule, FoldersModule, AuthModule],
+  imports: [
+    UsersModule,
+    TasksModule,
+    TaskListsModule,
+    FoldersModule,
+    FishModule,
+    GameModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

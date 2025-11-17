@@ -1,13 +1,13 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
-import '../../../components/button.css';
 import { useEffect, useState } from 'react';
-import { CreateTaskForm } from '../../../components/CreateTaskForm';
+import { CreateTaskForm } from '../../../components/task/CreateTaskForm';
 import { useApiQuery } from '../../../integrations/api';
-import goldfishBrain from '../../../images/GoldfishBrain.png';
-import TaskCard from '../../../components/TaskCard';
-import { EditTaskForm } from '../../../components/EditTaskForm';
+import fishAnimate from '../../../images/fishAnimate.gif';
+import TaskCard from '../../../components/task/TaskCard';
+import { EditTaskForm } from '../../../components/task/EditTaskForm';
 import type { TaskListTasksOut } from '@repo/api/task-list';
 import type { TaskOut } from '@repo/api/task';
+import { Loading } from '../../../components/loading/loadingScreen';
 
 export const Route = createFileRoute(
   '/_protected-routes/task-lists/$taskListID',
@@ -33,32 +33,26 @@ function TaskList() {
 
   if (isFetching) {
     return (
-      <div className="bg-[#815656] flex justify-center items-center min-h-lvh w-lvw pt-20">
-        Loading...
-      </div>
-    );
+      <Loading></Loading>);
   }
 
   if (data) {
     return (
       <div
-        className="flex justify-center items-center min-h-lvh w-lvw pt-20 bg-no-repeat bg-cover bg-top"
-        style={{
-          backgroundImage: `url(${goldfishBrain})`,
-        }}
+        className="flex justify-center min-h-screen  w-lvw pt-45 bg-no-repeat bg-cover bg-top"
+      style={{
+        backgroundImage: `url(${fishAnimate})`,
+      }}
       >
         <div
-          className="p-10 rounded-lg text-white shadow-lg shadow-black w-[90%] mt-[15vh] h-[90vh]"
-          style={{
-            backgroundImage:
-              'linear-gradient(to bottom, #fddbcd 16%, #794531fb 16%)',
-          }}
+          className="flex flex-col w-[75%] bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]"
         >
-          <div className="flex flex-col gap-10 ">
-            <h1 className="text-5xl text-[#6c3b27ee] text-center">
+          <h1 className="text-5xl text-center rounded-md bg-[#fddbcd] p-10 text-[#794531fb]">
               Task List: {data.name}
             </h1>
-            <div className="flex gap-15 mt-15">
+          <div className="flex flex-col gap-8 ml-5">
+            
+            <div className="flex gap-15 mt-15 ">
               <Link
                 to="/task-lists"
                 className="buttonStyling shadow-lg shadow-black/20"
@@ -112,3 +106,10 @@ function TaskList() {
     );
   }
 }
+
+
+
+
+
+
+

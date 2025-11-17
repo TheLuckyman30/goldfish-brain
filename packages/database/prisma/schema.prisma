@@ -24,6 +24,7 @@ model User {
   folders        Folder[]
   taskLists      TaskList[]
   authentication Authentication?
+  game           Game?
 }
 
 model Profile {
@@ -64,9 +65,34 @@ model Task {
   name        String
   description String?
   dueBy       DateTime?
+  hasFish     Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   taskList    TaskList? @relation(fields: [taskListId], references: [id], onDelete: Cascade)
+  fish        Fish?
+}
+
+model Game {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fish      Fish[]
+}
+
+model Fish {
+  id        String   @id @default(uuid())
+  taskId    String   @unique
+  gameId    String
+  size      Int
+  rarity    Int
+  isActive  Boolean  @default(false)
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
 }
 
 model Authentication {
