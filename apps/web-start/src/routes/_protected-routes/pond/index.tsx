@@ -7,6 +7,8 @@ import { useApiMutation, useApiQuery } from '../../../integrations/api';
 import { TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
 import Button from '../../../components/shared-ui/Button';
 import CaughtFish from '../../../components/pond/CaughtFish';
+import pondBackground from '../../../images/pondBackground.png';
+import { Loading } from '../../../components/loading/loadingScreen';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
   component: Pond,
@@ -45,7 +47,11 @@ function Pond() {
   }
 
   return (
-    <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
+    <div className="flex justify-center min-h-screen  w-lvw pt-45 bg-no-repeat bg-cover bg-top"
+      style={{
+        backgroundImage: `url(${pondBackground})`,
+      }}>
+      
       {!showForm && !fishIsFetching && (
         <div>
           <Button onClick={catchRandomFish}>Reel</Button>
