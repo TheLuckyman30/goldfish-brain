@@ -13,7 +13,6 @@ import type {
 } from '@repo/api/fish';
 import type { GameOutWithFish } from '@repo/api/game';
 import { Loading } from '../../../components/loading/loadingScreen';
-import type { TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
 import pondBackground from '../../../images/pondBackground.png';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
@@ -21,7 +20,6 @@ export const Route = createFileRoute('/_protected-routes/pond/')({
 });
 
 function Pond() {
-  const [showForm, setShowForm] = useState<boolean>(true);
   const [caughtFish, setCaughtFish] = useState<FishOutWithTask | null>(null);
 
   const { data: game, isFetching: gameIsFetching } =
@@ -33,6 +31,7 @@ function Pond() {
     }),
     invalidateKeys: [['game']],
   });
+  const [showForm, setShowForm] = useState<boolean>(!game);
   const updateAllFish = useApiMutation<UpdateAllFish, { count: number }>({
     endpoint: () => ({
       path: '/fish/all',
@@ -82,17 +81,19 @@ function Pond() {
     setCaughtFish(null);
   }
 
-  if (gameIsFetching && !game) {
+  if (gameIsFetching) {
     return <Loading />;
   }
 
   return (
-    <div className="flex justify-center min-h-screen  w-lvw pt-45 bg-no-repeat bg-cover bg-top"
+    <div
+      className="flex justify-center min-h-screen w-lvw pt-45 bg-no-repeat bg-cover bg-top"
       style={{
         backgroundImage: `url(${pondBackground})`,
-      }}>
-      {game && (
-        <div className="flex flex-col w-[75%] bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] p-10 items-center gap-8">
+      }}
+    >
+      {game && !gameIsFetching && (
+        <div className="flex flex-col w-fit h-fit bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] p-10 items-center gap-8">
           <Button
             onClick={catchRandomFish}
             disabled={caughtFish !== null || game.fish.length === 0}
@@ -112,7 +113,9 @@ function Pond() {
           <Button onClick={markAllIncomplete}>Reset Pond</Button>
         </div>
       )}
-      <TaskListForm showForm={showForm && !game} setShowForm={setShowForm} />
+      {!gameIsFetching && (
+        <TaskListForm showForm={showForm && !game} setShowForm={setShowForm} />
+      )}
     </div>
   );
 }
