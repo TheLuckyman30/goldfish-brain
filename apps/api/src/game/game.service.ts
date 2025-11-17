@@ -16,6 +16,7 @@ export class GameService {
         id: true,
         userId: true,
         fish: {
+          where: { completed: false },
           select: {
             id: true,
             taskId: true,
