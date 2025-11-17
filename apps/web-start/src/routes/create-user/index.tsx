@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import goldfishBrain from '../../images/GoldfishBrain.png';
 import { useApiMutation, useCurrentUser } from '../../integrations/api';
 import type { UpdateUser, UserOut } from '@repo/api/user';
+import { Loading } from '../../components/loading/loadingScreen';
 
 export const Route = createFileRoute('/create-user/')({
   component: CreateUser,
@@ -102,7 +103,7 @@ function CreateUser() {
                 >
                   Submit
                 </button>
-                {mutation.isPending && <div>Loading...</div>}
+                {mutation.isPending && <Loading></Loading>}
                 {mutation.isError && <div>{mutation.error.message}</div>}
                 {mutation.isSuccess && <div>Updated</div>}
               </div>

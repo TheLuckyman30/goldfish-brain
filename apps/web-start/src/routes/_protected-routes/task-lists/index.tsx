@@ -7,6 +7,7 @@ import TaskListCard from '../../../components/task-list/TaskListCard';
 import { EditListForm } from '../../../components/task-list/EditListForm';
 import Button from '../../../components/shared-ui/Button';
 import type { TaskListOut } from '@repo/api/task-list';
+import { Loading } from '../../../components/loading/loadingScreen';
 
 export const Route = createFileRoute('/_protected-routes/task-lists/')({
   component: TaskLists,
@@ -32,9 +33,7 @@ function TaskLists() {
 
   if (isFetching) {
     return (
-      <div className="bg-[#815656] flex justify-center items-center min-h-lvh w-lvw pt-20">
-        Loading...
-      </div>
+      <Loading></Loading>
     );
   }
 
