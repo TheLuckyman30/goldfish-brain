@@ -1,12 +1,12 @@
 import { createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
-import TaskListForm from '../../../components/pond/TaskListForm';
-import { CreateFish, FishOutWithTask } from '@repo/api/fish';
 import { useState } from 'react';
 import { useApiMutation, useApiQuery } from '../../../integrations/api';
-import { TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
+import TaskListForm from '../../../components/pond/TaskListForm';
 import Button from '../../../components/shared-ui/Button';
 import CaughtFish from '../../../components/pond/CaughtFish';
+import type { CreateFish, FishOutWithTask } from '@repo/api/fish';
+import type { TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
   component: Pond,
@@ -43,9 +43,9 @@ function Pond() {
       method: 'PATCH'
     }),
     // refetch
-    // invalidateKeys: [
-    //   ['fish', selectedTaskList?.id]
-    // ],
+    invalidateKeys: [
+      ['fish', selectedTaskList?.id]
+    ],
   });
   const resetCompletion = useApiMutation<{taskListId: string}>({
     endpoint: () => ({
@@ -56,8 +56,9 @@ function Pond() {
   });
 
   function catchRandomFish() {
-    const random = Math.floor(Math.random() * fish.length);
-    const caught = fish[random];
+    const uncompletedFish = fish.filter((f) => !f.completed)
+    const random = Math.floor(Math.random() * uncompletedFish.length);
+    const caught = uncompletedFish[random];
     setCaughtFish(caught ?? null);
   }
 
@@ -77,7 +78,7 @@ function Pond() {
     <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
       {!showForm && !fishIsFetching && (
         <div>
-          <Button onClick={catchRandomFish} disabled={caughtFish ? !caughtFish.completed : true}>Reel</Button>
+          <Button onClick={catchRandomFish} disabled={caughtFish ? !caughtFish.completed : false}>Reel</Button>
           <Button onClick={markComplete}>Send to Cooler</Button>
           {caughtFish && <CaughtFish caughtFish={caughtFish} />}
           <Button onClick={markAllIncomplete}>Reset Pond</Button>
