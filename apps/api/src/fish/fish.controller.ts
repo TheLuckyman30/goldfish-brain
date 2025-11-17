@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { FishService } from './fish.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateFish } from '@repo/api/fish';
@@ -19,5 +19,11 @@ export class FishController {
   @Post()
   createMany(@Body() newFishDto: CreateFish[], @CurrentUser() user: JwtUser) {
     return this.fishService.createManyFish(newFishDto, user.userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch(':id/complete')
+  markComplete(@Param('id') id: string) {
+    return this.fishService.markComplete(id);
   }
 }
