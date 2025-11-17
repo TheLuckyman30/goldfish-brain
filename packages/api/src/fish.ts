@@ -23,3 +23,8 @@ export const CompletedFishOut = z.object({
   completed: z.boolean(),
 })
 export type CompletedFishOut = z.infer<typeof CompletedFishOut>;
+
+export const MarkAllIncompleteDto = z.object({
+  taskListId: z.uuid(),
+})
+export type MarkAllIncompleteDto = z.infer<typeof MarkAllIncompleteDto>;
