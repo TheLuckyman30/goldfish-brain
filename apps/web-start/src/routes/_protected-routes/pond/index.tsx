@@ -5,6 +5,8 @@ import { CreateFish, FishOutWithTask } from '@repo/api/fish';
 import { useState } from 'react';
 import { useApiMutation, useApiQuery } from '../../../integrations/api';
 import { TaskListOut, TaskListTasksOut } from '@repo/api/task-list';
+import Button from '../../../components/shared-ui/Button';
+import CaughtFish from '../../../components/pond/CaughtFish';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
   component: Pond,
@@ -15,6 +17,7 @@ function Pond() {
   const [selectedTaskList, setSelectedTaskList] = useState<TaskListOut | null>(
     null,
   );
+  const [caughtFish, setCaughtFish] = useState<FishOutWithTask | null>(null);
 
   const { data: taskList, isFetching: taskListIsFetching } =
     useApiQuery<TaskListTasksOut>(
@@ -35,9 +38,20 @@ function Pond() {
     !!taskList && taskList.tasks.length > 0 && !mutation.isPending,
   );
 
+  function catchRandomFish() {
+    const random = Math.floor(Math.random() * fish.length);
+    const caught = fish[random];
+    setCaughtFish(caught ?? null);
+  }
+
   return (
     <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
-      {!showForm && !fishIsFetching && <div>{JSON.stringify(fish)}</div>}
+      {!showForm && !fishIsFetching && (
+        <div>
+          <Button onClick={catchRandomFish}>Reel</Button>
+          {caughtFish && <CaughtFish caughtFish={caughtFish} />}
+        </div>
+      )}
       <TaskListForm
         taskList={taskList}
         taskListIsFetching={taskListIsFetching}
