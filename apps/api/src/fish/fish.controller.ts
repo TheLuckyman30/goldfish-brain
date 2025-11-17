@@ -1,21 +1,24 @@
 import { Body, Controller, Param, Patch, UseGuards } from '@nestjs/common';
 import { FishService } from './fish.service';
 import { AuthGuard } from '@nestjs/passport';
-import { MarkAllIncompleteDto } from '@repo/api/fish';
+import { FishOut, UpdateAllFish, UpdateFish } from '@repo/api/fish';
+import { Prisma } from '@repo/database';
 
 @Controller('/fish')
 export class FishController {
   constructor(private fishService: FishService) {}
 
   @UseGuards(AuthGuard('jwt'))
-  @Patch(':id/complete')
-  markComplete(@Param('id') id: string) {
-    return this.fishService.markComplete(id);
+  @Patch('one')
+  update(@Body() updateFishDto: UpdateFish): Promise<FishOut> {
+    return this.fishService.updateFish(updateFishDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Patch('reset')
-  markAllIncomplete(@Body() body: MarkAllIncompleteDto) {
-    return this.fishService.markAllIncomplete(body.gameId);
+  @Patch('all')
+  updateAll(
+    @Body() updateAllFishDto: UpdateAllFish,
+  ): Promise<Prisma.BatchPayload> {
+    return this.fishService.updateAllFish(updateAllFishDto);
   }
 }

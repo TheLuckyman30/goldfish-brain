@@ -11,10 +11,11 @@ export {
 } from './task-list';
 
 export {
+  FishOut,
   FishOutWithTask,
   CreateFish,
-  CompletedFishOut,
-  MarkAllIncompleteDto,
+  UpdateFish,
+  UpdateAllFish,
 } from './fish';
 
 export { GameOut, GameOutWithFish, CreateGame } from './game';

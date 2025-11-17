@@ -5,7 +5,12 @@ import { useApiMutation, useApiQuery } from '../../../integrations/api';
 import TaskListForm from '../../../components/pond/TaskListForm';
 import Button from '../../../components/shared-ui/Button';
 import CaughtFish from '../../../components/pond/CaughtFish';
-import type { FishOutWithTask } from '@repo/api/fish';
+import type {
+  FishOut,
+  FishOutWithTask,
+  UpdateAllFish,
+  UpdateFish,
+} from '@repo/api/fish';
 import type { GameOutWithFish } from '@repo/api/game';
 import { Loading } from '../../../components/loading/loadingScreen';
 
@@ -19,17 +24,16 @@ function Pond() {
 
   const { data: game, isFetching: gameIsFetching } =
     useApiQuery<GameOutWithFish>(['game'], `/game`);
-  const completeFish = useApiMutation<{ id: string }>({
-    endpoint: ({ id }) => ({
-      path: `/fish/${id}/complete`,
+  const updateFish = useApiMutation<UpdateFish, FishOut>({
+    endpoint: () => ({
+      path: `/fish/one`,
       method: 'PATCH',
     }),
-    // refetch
     invalidateKeys: [['game']],
   });
-  const resetCompletion = useApiMutation<{ taskListId: string }>({
+  const updateAllFish = useApiMutation<UpdateAllFish, { count: number }>({
     endpoint: () => ({
-      path: '/fish/reset',
+      path: '/fish/all',
       method: 'PATCH',
     }),
     invalidateKeys: [['game']],
@@ -40,25 +44,39 @@ function Pond() {
       const uncompletedFish = game.fish.filter((f) => !f.completed);
       const random = Math.floor(Math.random() * uncompletedFish.length);
       const caught = uncompletedFish[random];
-      setCaughtFish(caught ?? null);
+      if (caught) {
+        updateFish.mutate({ id: caught.id, isActive: true });
+        setCaughtFish(caught);
+      }
     }
   }
 
   function markComplete() {
     if (caughtFish) {
-      completeFish.mutate({ id: caughtFish.id });
+      updateFish.mutate({
+        id: caughtFish.id,
+        completed: true,
+        isActive: false,
+      });
       setCaughtFish(null);
     }
   }
 
   function markAllIncomplete() {
     if (game) {
-      resetCompletion.mutate({ taskListId: game.id });
+      updateAllFish.mutate({
+        gameId: game.id,
+        completed: false,
+        isActive: false,
+      });
       setCaughtFish(null);
     }
   }
 
   function releaseFish() {
+    if (caughtFish) {
+      updateFish.mutate({ id: caughtFish.id, isActive: false });
+    }
     setCaughtFish(null);
   }
 
@@ -72,12 +90,17 @@ function Pond() {
         <div>
           <Button
             onClick={catchRandomFish}
-            disabled={caughtFish?.completed ?? false}
+            disabled={caughtFish !== null || game.fish.length === 0}
           >
             Reel
           </Button>
-          <Button onClick={markComplete}>Send to Cooler</Button>
-          <Button onClick={releaseFish} disabled={!caughtFish}>
+          <Button onClick={markComplete} disabled={game.fish.length === 0}>
+            Send to Cooler
+          </Button>
+          <Button
+            onClick={releaseFish}
+            disabled={!caughtFish || game.fish.length === 0}
+          >
             Release
           </Button>
           {caughtFish && <CaughtFish caughtFish={caughtFish} />}
