@@ -37,6 +37,16 @@ function Pond() {
     {},
     !!taskList && taskList.tasks.length > 0 && !mutation.isPending,
   );
+  const completeFish = useApiMutation<{id: string}>({
+    endpoint: ({id}) => ({
+      path: `/fish/${id}/complete`,
+      method: 'PATCH'
+    }),
+    // we may want to change how this works later, for now its just refetching after marking complete
+    invalidateKeys: [
+      ['fish', selectedTaskList?.id]
+    ],
+  });
 
   function catchRandomFish() {
     const random = Math.floor(Math.random() * fish.length);
@@ -44,11 +54,18 @@ function Pond() {
     setCaughtFish(caught ?? null);
   }
 
+  function markComplete() {
+    if (!caughtFish) return;
+    completeFish.mutate({id: caughtFish.id});
+    setCaughtFish({...caughtFish, completed: true});
+  }
+
   return (
     <div className="flex justify-center min-h-screen w-lvw pt-45 bg-gray-50">
       {!showForm && !fishIsFetching && (
         <div>
           <Button onClick={catchRandomFish}>Reel</Button>
+          <Button onClick={markComplete}>Send to Cooler</Button>
           {caughtFish && <CaughtFish caughtFish={caughtFish} />}
         </div>
       )}
