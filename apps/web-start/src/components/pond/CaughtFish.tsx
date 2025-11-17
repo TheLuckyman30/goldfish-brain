@@ -7,7 +7,7 @@ interface CaughtFishProps {
 function CaughtFish({ caughtFish }: CaughtFishProps) {
   return (
     <div>
-      <div>Rairty: {caughtFish.rarity}</div>
+      <div>Rarity: {caughtFish.rarity}</div>
       <div>Size: {caughtFish.size}</div>
       <div>Task Name: {caughtFish.task.name}</div>
       <div>Task Description: {caughtFish.task.description}</div>
