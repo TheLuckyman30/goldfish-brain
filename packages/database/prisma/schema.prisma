@@ -71,15 +71,25 @@ model Task {
   fish        Fish?
 }
 
+model Game {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  fish      Fish[]
+}
+
 model Fish {
   id        String   @id @default(uuid())
   taskId    String   @unique
+  gameId    String
   size      Int
   rarity    Int
+  completed Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  completed Boolean  @default(false)
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
 }
 
 model Authentication {
