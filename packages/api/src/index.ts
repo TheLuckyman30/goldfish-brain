@@ -10,4 +10,9 @@ export {
   DeleteTaskList,
 } from './task-list';
 
-export { FishOutWithTask, CreateFish } from './fish';
+export {
+  FishOutWithTask,
+  CreateFish,
+  CompletedFishOut,
+  MarkAllIncompleteDto,
+} from './fish';

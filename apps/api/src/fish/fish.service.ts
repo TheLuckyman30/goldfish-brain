@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateFish, FishOutWithTask } from '@repo/api/fish';
+import { CreateFish, CompletedFishOut, FishOutWithTask } from '@repo/api/fish';
 import { Prisma } from '@repo/database';
 
 @Injectable()
@@ -29,6 +29,7 @@ export class FishService {
             dueBy: true,
           },
         },
+        completed: true,
       },
     });
   }
@@ -40,6 +41,26 @@ export class FishService {
     return this.prisma.fish.createMany({
       data: newFishDto,
       skipDuplicates: true,
+    });
+  }
+
+  async markComplete(id: string): Promise<CompletedFishOut> {
+    return this.prisma.fish.update({
+      where: {id},
+      data: {completed: true},
+    })
+  }
+
+  async markAllIncomplete(taskListId: string) {
+    return this.prisma.fish.updateMany({
+      where: {
+        task: {
+          taskListId,
+        },
+      },
+      data: {
+        completed: false,
+      },
     });
   }
 }
