@@ -7,6 +7,7 @@ export const FishOutWithTask = z.object({
   size: z.int(),
   rarity: z.int(),
   task: TaskOut,
+  completed: z.boolean(),
 });
 export type FishOutWithTask = z.infer<typeof FishOutWithTask>;
 
