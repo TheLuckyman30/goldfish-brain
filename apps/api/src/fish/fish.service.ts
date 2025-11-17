@@ -11,6 +11,28 @@ import { Prisma } from '@repo/database';
 export class FishService {
   constructor(private prisma: PrismaService) {}
 
+  findManyFish(taskIds: string): Promise<FishOutWithTask[]> {
+    const tasks = taskIds.split(',');
+    return this.prisma.fish.findMany({
+      where: { taskId: { in: tasks } },
+      select: {
+        id: true,
+        taskId: true,
+        size: true,
+        rarity: true,
+        task: {
+          select: {
+            id: true,
+            taskListId: true,
+            name: true,
+            description: true,
+            dueBy: true,
+          },
+        },
+      },
+    });
+  }
+
   async createManyFish(
     newFishDto: CreateFish[],
     userId: string,

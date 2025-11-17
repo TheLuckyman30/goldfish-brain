@@ -3,14 +3,16 @@ import Form from '../shared-ui/Form';
 import { Modal, ModalHeader } from '../shared-ui/Modal';
 import { Select, SelectOption } from '../shared-ui/Select';
 import Button from '../shared-ui/Button';
-import { useApiQuery } from '../../integrations/api';
-import { useState } from 'react';
 import { UseMutateFunction } from '@tanstack/react-query';
 import { fishGenerator } from '../../utils/fish-generator';
+import { useApiQuery } from '../../integrations/api';
 
 interface TaskListFormProps {
+  taskList: TaskListTasksOut | undefined;
+  taskListIsFetching: boolean;
   showForm: boolean;
   setShowForm: (showForm: boolean) => void;
+  setSelectedTaskList: (newTaskList: TaskListOut) => void;
   mutate: UseMutateFunction<
     {
       count: number;
@@ -25,30 +27,22 @@ interface TaskListFormProps {
   >;
 }
 
-function TaskListForm({ showForm, setShowForm, mutate }: TaskListFormProps) {
-  const [selectedTaskList, setSelectedTaskList] = useState<TaskListOut | null>(
-    null,
-  );
-
+function TaskListForm({
+  taskList,
+  taskListIsFetching,
+  showForm,
+  setShowForm,
+  setSelectedTaskList,
+  mutate,
+}: TaskListFormProps) {
   const { data: lists = [], isFetching: listsIsFetching } = useApiQuery<
     Array<TaskListOut>
   >(['task-lists'], '/task-lists');
-  const { data: taskList, isFetching: taskListIsFetching } =
-    useApiQuery<TaskListTasksOut>(
-      ['task-list', selectedTaskList?.id],
-      `/task-lists/${selectedTaskList?.id}/tasks`,
-      {},
-      !!selectedTaskList,
-    );
-
-  function createFish() {
-    const fish = fishGenerator(taskList?.tasks ?? []);
-    mutate(fish);
-  }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    createFish();
+    const fish = fishGenerator(taskList?.tasks ?? []);
+    mutate(fish);
     setShowForm(false);
   }
 

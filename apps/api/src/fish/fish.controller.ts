@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { FishService } from './fish.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateFish } from '@repo/api/fish';
@@ -10,8 +10,14 @@ export class FishController {
   constructor(private fishService: FishService) {}
 
   @UseGuards(AuthGuard('jwt'))
+  @Get()
+  findMany(@Query('taskIds') taskIds: string) {
+    return this.fishService.findManyFish(taskIds);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Body() newFishDto: CreateFish[], @CurrentUser() user: JwtUser) {
+  createMany(@Body() newFishDto: CreateFish[], @CurrentUser() user: JwtUser) {
     return this.fishService.createManyFish(newFishDto, user.userId);
   }
 }
