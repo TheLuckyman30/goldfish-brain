@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { FishOutWithTask } from './fish';
+import { CreateFish, FishOutWithTask } from './fish';
 
 export const GameOut = z.object({
   id: z.uuid(),
@@ -12,9 +12,9 @@ export const GameOutWithFish = z.object({
   userId: z.uuid(),
   fish: z.array(FishOutWithTask),
 });
-export type GameOutWithFish = z.infer<typeof GameOut>;
+export type GameOutWithFish = z.infer<typeof GameOutWithFish>;
 
 export const CreateGame = z.object({
-  userId: z.uuid(),
+  fish: z.array(CreateFish),
 });
 export type CreateGame = z.infer<typeof CreateGame>;
