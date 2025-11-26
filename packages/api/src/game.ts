@@ -18,3 +18,8 @@ export const CreateGame = z.object({
   fish: z.array(CreateFish),
 });
 export type CreateGame = z.infer<typeof CreateGame>;
+
+export const DeleteGame = z.object({
+  id: z.uuid(),
+});
+export type DeleteGame = z.infer<typeof DeleteGame>;

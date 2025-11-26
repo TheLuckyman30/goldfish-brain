@@ -11,7 +11,7 @@ import type {
   UpdateAllFish,
   UpdateFish,
 } from '@repo/api/fish';
-import type { GameOutWithFish } from '@repo/api/game';
+import { DeleteGame, GameOut, type GameOutWithFish } from '@repo/api/game';
 import { Loading } from '../../../components/loading/loadingScreen';
 import pondBackground from '../../../images/pondBackground.png';
 
@@ -37,6 +37,10 @@ function Pond() {
       path: '/fish/all',
       method: 'PATCH',
     }),
+    invalidateKeys: [['game']],
+  });
+  const deleteGame = useApiMutation<DeleteGame, GameOut>({
+    endpoint: () => ({ path: '/game', method: 'DELETE' }),
     invalidateKeys: [['game']],
   });
 
@@ -81,6 +85,12 @@ function Pond() {
     setCaughtFish(null);
   }
 
+  function endGame() {
+    if (game) {
+      deleteGame.mutate({ id: game.id });
+    }
+  }
+
   if (gameIsFetching) {
     return <Loading />;
   }
@@ -111,6 +121,7 @@ function Pond() {
           </Button>
           {caughtFish && <CaughtFish caughtFish={caughtFish} />}
           <Button onClick={markAllIncomplete}>Reset Pond</Button>
+          <Button onClick={endGame}>End Game</Button>
         </div>
       )}
       {!gameIsFetching && (

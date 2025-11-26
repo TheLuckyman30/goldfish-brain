@@ -18,4 +18,4 @@ export {
   UpdateAllFish,
 } from './fish';
 
-export { GameOut, GameOutWithFish, CreateGame } from './game';
+export { GameOut, GameOutWithFish, CreateGame, DeleteGame } from './game';
