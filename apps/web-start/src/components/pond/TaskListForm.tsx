@@ -35,7 +35,6 @@ function TaskListForm({ showForm, setShowForm }: TaskListFormProps) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const fish = fishGenerator(taskList?.tasks ?? []);
-    console.log(fish);
     mutation.mutate({ fish });
     setShowForm(false);
   }

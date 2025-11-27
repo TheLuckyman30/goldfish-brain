@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
 import { Loading } from '../../../components/loading/loadingScreen';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useApiMutation, useApiQuery } from '../../../integrations/api';
 import type { FishOut, UpdateAllFish, UpdateFish } from '@repo/api/fish';
 import TaskListForm from '../../../components/pond/TaskListForm';
@@ -17,15 +17,20 @@ export const Route = createFileRoute('/_protected-routes/pond/')({
 });
 
 function Pond() {
-  const { game, allFish, caughtFish, setGame, setAllFish, setCaughtFish } =
-    useGameStore();
+  const {
+    game,
+    completed,
+    numCompleted,
+    caughtFish,
+    setGame,
+    setCompleted,
+    setNumCompleted,
+    setCaughtFish,
+  } = useGameStore();
   const queryClient = useQueryClient();
 
-  const {
-    data: fetchedGame,
-    isFetching: gameIsFetching,
-    isSuccess: gameFetcehd,
-  } = useApiQuery<GameOutWithFish>(['game'], `/game`);
+  const { data: fetchedGame, isFetching: gameIsFetching } =
+    useApiQuery<GameOutWithFish>(['game'], `/game`);
 
   const updateFish = useApiMutation<UpdateFish, FishOut>({
     endpoint: () => ({
@@ -48,10 +53,9 @@ function Pond() {
     },
   });
 
-  if (gameFetcehd) {
+  useEffect(() => {
     setGame(fetchedGame);
-    setAllFish(fetchedGame.fish);
-  }
+  }, [fetchedGame]);
 
   function catchRandomFish() {
     if (game) {
@@ -59,39 +63,40 @@ function Pond() {
       const random = Math.floor(Math.random() * uncompletedFish.length);
       const caught = uncompletedFish[random];
       if (caught) {
-        updateFish.mutate({ id: caught.id, isActive: true });
         setCaughtFish(caught);
       }
     }
   }
 
   function markComplete() {
-    if (caughtFish) {
-      updateFish.mutate({
-        id: caughtFish.id,
-        completed: true,
-        isActive: false,
-      });
+    if (caughtFish && game) {
+      caughtFish.completed = true;
+      caughtFish.isActive = false;
+      const newNumCompleted = numCompleted + 1;
+      setCompleted(newNumCompleted === game.fish.length);
+      setNumCompleted(newNumCompleted);
       setCaughtFish(null);
     }
   }
 
   function markAllIncomplete() {
     if (game) {
-      updateAllFish.mutate({
-        gameId: game.id,
-        completed: false,
-        isActive: false,
+      game.fish.forEach((f) => {
+        f.completed = false;
+        f.isActive = false;
       });
+      setGame(game);
+      setCompleted(false);
+      setNumCompleted(0);
       setCaughtFish(null);
     }
   }
 
   function releaseFish() {
     if (caughtFish) {
-      updateFish.mutate({ id: caughtFish.id, isActive: false });
+      caughtFish.isActive = false;
+      setCaughtFish(null);
     }
-    setCaughtFish(null);
   }
 
   function endGame() {
@@ -115,17 +120,14 @@ function Pond() {
         <div className="flex flex-col w-fit h-fit bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] p-10 items-center gap-8">
           <Button
             onClick={catchRandomFish}
-            disabled={caughtFish !== null || game.fish.length === 0}
+            disabled={caughtFish !== null || completed}
           >
             Reel
           </Button>
-          <Button onClick={markComplete} disabled={game.fish.length === 0}>
+          <Button onClick={markComplete} disabled={completed}>
             Send to Cooler
           </Button>
-          <Button
-            onClick={releaseFish}
-            disabled={!caughtFish || game.fish.length === 0}
-          >
+          <Button onClick={releaseFish} disabled={!caughtFish || completed}>
             Release
           </Button>
           {caughtFish && <CaughtFish caughtFish={caughtFish} />}
