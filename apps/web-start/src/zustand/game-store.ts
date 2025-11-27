@@ -5,23 +5,23 @@ import { create } from 'zustand';
 type GameStore = {
   game: GameOutWithFish | null | undefined;
   allFish: FishOutWithTask[];
-  selectedFish: FishOutWithTask | null;
+  caughtFish: FishOutWithTask | null;
   setGame: (newGame: GameOutWithFish | null) => void;
   setAllFish: (newFish: FishOutWithTask[]) => void;
-  setSelectedFish: (newSelectedFish: FishOutWithTask | null) => void;
+  setCaughtFish: (newCaughtFish: FishOutWithTask | null) => void;
 };
 
 export const useGameStore = create<GameStore>((set) => ({
   game: null,
   allFish: [],
-  selectedFish: null,
+  caughtFish: null,
   setGame: (newGame: GameOutWithFish | null | undefined) => {
     set({ game: newGame });
   },
   setAllFish: (newFish: FishOutWithTask[]) => {
     set({ allFish: newFish });
   },
-  setSelectedFish: (newSelectedFish: FishOutWithTask | null) => {
-    set({ selectedFish: newSelectedFish });
+  setCaughtFish: (newCaughtFish: FishOutWithTask | null) => {
+    set({ caughtFish: newCaughtFish });
   },
 }));

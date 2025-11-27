@@ -3,36 +3,35 @@ import '../../../components/button.css';
 import { Loading } from '../../../components/loading/loadingScreen';
 import { useState } from 'react';
 import { useApiMutation, useApiQuery } from '../../../integrations/api';
-import type {
-  FishOut,
-  FishOutWithTask,
-  UpdateAllFish,
-  UpdateFish,
-} from '@repo/api/fish';
+import type { FishOut, UpdateAllFish, UpdateFish } from '@repo/api/fish';
 import TaskListForm from '../../../components/pond/TaskListForm';
 import Button from '../../../components/shared-ui/Button';
 import CaughtFish from '../../../components/pond/CaughtFish';
 import type { DeleteGame, GameOut, GameOutWithFish } from '@repo/api/game';
-
 import pondBackground from '../../../images/pondBackground.png';
 import { useQueryClient } from '@tanstack/react-query';
+import { useGameStore } from '../../../zustand/game-store';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
   component: Pond,
 });
 
 function Pond() {
-  const [caughtFish, setCaughtFish] = useState<FishOutWithTask | null>(null);
+  const { game, allFish, caughtFish, setGame, setAllFish, setCaughtFish } =
+    useGameStore();
   const queryClient = useQueryClient();
 
-  const { data: game, isFetching: gameIsFetching } =
-    useApiQuery<GameOutWithFish>(['game'], `/game`);
+  const {
+    data: fetchedGame,
+    isFetching: gameIsFetching,
+    isSuccess: gameFetcehd,
+  } = useApiQuery<GameOutWithFish>(['game'], `/game`);
+
   const updateFish = useApiMutation<UpdateFish, FishOut>({
     endpoint: () => ({
       path: `/fish/one`,
       method: 'PATCH',
     }),
-    invalidateKeys: [['game']],
   });
   const [showForm, setShowForm] = useState<boolean>(!game);
   const updateAllFish = useApiMutation<UpdateAllFish, { count: number }>({
@@ -40,16 +39,19 @@ function Pond() {
       path: '/fish/all',
       method: 'PATCH',
     }),
-    invalidateKeys: [['game']],
   });
   const deleteGame = useApiMutation<DeleteGame, GameOut>({
     endpoint: () => ({ path: '/game', method: 'DELETE' }),
-    invalidateKeys: [['game']],
     onSuccessFunc: () => {
       queryClient.setQueryData(['game'], null);
       setShowForm(true);
     },
   });
+
+  if (gameFetcehd) {
+    setGame(fetchedGame);
+    setAllFish(fetchedGame.fish);
+  }
 
   function catchRandomFish() {
     if (game) {
