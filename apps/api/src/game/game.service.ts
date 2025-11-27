@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateGame, GameOut, GameOutWithFish } from '@repo/api/game';
+import {
+  CreateGame,
+  DeleteGame,
+  GameOut,
+  GameOutWithFish,
+} from '@repo/api/game';
 import { Prisma } from '@repo/database';
 
 @Injectable()
@@ -51,6 +56,12 @@ export class GameService {
         id: true,
         userId: true,
       },
+    });
+  }
+
+  deleteGame(deleteGameDto: DeleteGame, userId: string): Promise<GameOut> {
+    return this.prisma.game.delete({
+      where: { id: deleteGameDto.id, userId: userId },
     });
   }
 }

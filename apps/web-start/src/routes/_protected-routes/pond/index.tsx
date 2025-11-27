@@ -11,9 +11,10 @@ import type {
   UpdateAllFish,
   UpdateFish,
 } from '@repo/api/fish';
-import type { GameOutWithFish } from '@repo/api/game';
+import { DeleteGame, GameOut, type GameOutWithFish } from '@repo/api/game';
 import { Loading } from '../../../components/loading/loadingScreen';
 import pondBackground from '../../../images/pondBackground.png';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
   component: Pond,
@@ -21,6 +22,7 @@ export const Route = createFileRoute('/_protected-routes/pond/')({
 
 function Pond() {
   const [caughtFish, setCaughtFish] = useState<FishOutWithTask | null>(null);
+  const queryClient = useQueryClient();
 
   const { data: game, isFetching: gameIsFetching } =
     useApiQuery<GameOutWithFish>(['game'], `/game`);
@@ -38,6 +40,14 @@ function Pond() {
       method: 'PATCH',
     }),
     invalidateKeys: [['game']],
+  });
+  const deleteGame = useApiMutation<DeleteGame, GameOut>({
+    endpoint: () => ({ path: '/game', method: 'DELETE' }),
+    invalidateKeys: [['game']],
+    onSuccessFunc: () => {
+      queryClient.setQueryData(['game'], null);
+      setShowForm(true);
+    },
   });
 
   function catchRandomFish() {
@@ -81,6 +91,12 @@ function Pond() {
     setCaughtFish(null);
   }
 
+  function endGame() {
+    if (game) {
+      deleteGame.mutate({ id: game.id });
+    }
+  }
+
   if (gameIsFetching) {
     return <Loading />;
   }
@@ -111,6 +127,7 @@ function Pond() {
           </Button>
           {caughtFish && <CaughtFish caughtFish={caughtFish} />}
           <Button onClick={markAllIncomplete}>Reset Pond</Button>
+          <Button onClick={endGame}>End Game</Button>
         </div>
       )}
       {!gameIsFetching && (

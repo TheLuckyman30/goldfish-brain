@@ -104,6 +104,7 @@ export function useApiMutation<Input extends Json, Output = unknown>(opts?: {
   method?: 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   /** Query keys to invalidate after success */
   invalidateKeys?: ReadonlyArray<Array<unknown>>;
+  onSuccessFunc?: () => unknown;
 }) {
   const { request } = useApiClient();
   const qc = useQueryClient();
@@ -126,6 +127,9 @@ export function useApiMutation<Input extends Json, Output = unknown>(opts?: {
       return failureCount < 3;
     },
     onSuccess: async () => {
+      if (opts?.onSuccessFunc) {
+        opts.onSuccessFunc();
+      }
       if (opts?.invalidateKeys) {
         await Promise.all(
           opts.invalidateKeys.map((k) => qc.invalidateQueries({ queryKey: k })),
