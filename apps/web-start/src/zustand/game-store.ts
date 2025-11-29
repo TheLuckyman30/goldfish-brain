@@ -1,25 +1,24 @@
 import { FishOutWithTask } from '@repo/api/fish';
-import { GameOutWithFish } from '@repo/api/game';
 import { create } from 'zustand';
 
 type GameStore = {
-  game: GameOutWithFish | null | undefined;
+  allFish: FishOutWithTask[];
   completed: boolean;
   numCompleted: number;
-  caughtFish: FishOutWithTask | null;
-  setGame: (newGame: GameOutWithFish | null | undefined) => void;
+  activeFish: FishOutWithTask | null;
+  setFish: (newFish: FishOutWithTask[]) => void;
   setCompleted: (isCompleted: boolean) => void;
   setNumCompleted: (newNumCompleted: number) => void;
-  setCaughtFish: (newCaughtFish: FishOutWithTask | null) => void;
+  setActiveFish: (newActive: FishOutWithTask | null) => void;
 };
 
 export const useGameStore = create<GameStore>((set) => ({
-  game: null,
+  allFish: [],
   completed: false,
   numCompleted: 0,
-  caughtFish: null,
-  setGame: (newGame: GameOutWithFish | null | undefined) => {
-    set({ game: newGame });
+  activeFish: null,
+  setFish: (newFish: FishOutWithTask[]) => {
+    set({ allFish: newFish });
   },
   setCompleted: (isCompleted: boolean) => {
     set({ completed: isCompleted });
@@ -27,7 +26,7 @@ export const useGameStore = create<GameStore>((set) => ({
   setNumCompleted: (newNumCompleted: number) => {
     set({ numCompleted: newNumCompleted });
   },
-  setCaughtFish: (newCaughtFish: FishOutWithTask | null) => {
-    set({ caughtFish: newCaughtFish });
+  setActiveFish: (newActive: FishOutWithTask | null) => {
+    set({ activeFish: newActive });
   },
 }));

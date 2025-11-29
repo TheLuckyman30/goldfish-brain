@@ -18,14 +18,14 @@ export const Route = createFileRoute('/_protected-routes/pond/')({
 
 function Pond() {
   const {
-    game,
+    allFish,
     completed,
     numCompleted,
-    caughtFish,
-    setGame,
+    activeFish,
+    setFish,
     setCompleted,
     setNumCompleted,
-    setCaughtFish,
+    setActiveFish,
   } = useGameStore();
   const queryClient = useQueryClient();
 
@@ -38,7 +38,7 @@ function Pond() {
       method: 'PATCH',
     }),
   });
-  const [showForm, setShowForm] = useState<boolean>(!game);
+  const [showForm, setShowForm] = useState<boolean>(!allFish.length);
   const updateAllFish = useApiMutation<UpdateAllFish, { count: number }>({
     endpoint: () => ({
       path: '/fish/all',
@@ -49,59 +49,58 @@ function Pond() {
     endpoint: () => ({ path: '/game', method: 'DELETE' }),
     onSuccessFunc: () => {
       queryClient.setQueryData(['game'], null);
+      setFish([]);
       setShowForm(true);
     },
   });
 
   useEffect(() => {
-    setGame(fetchedGame);
+    if (fetchedGame) {
+      setFish(fetchedGame.fish);
+    }
   }, [fetchedGame]);
 
   function catchRandomFish() {
-    if (game) {
-      const uncompletedFish = game.fish.filter((f) => !f.completed);
-      const random = Math.floor(Math.random() * uncompletedFish.length);
-      const caught = uncompletedFish[random];
-      if (caught) {
-        setCaughtFish(caught);
-      }
+    const uncompletedFish = allFish.filter((f) => !f.completed);
+    const random = Math.floor(Math.random() * uncompletedFish.length);
+    const caught = uncompletedFish[random];
+    if (caught) {
+      setActiveFish(caught);
     }
   }
 
   function markComplete() {
-    if (caughtFish && game) {
-      caughtFish.completed = true;
-      caughtFish.isActive = false;
+    if (activeFish) {
+      activeFish.completed = true;
+      activeFish.isActive = false;
       const newNumCompleted = numCompleted + 1;
-      setCompleted(newNumCompleted === game.fish.length);
+      setCompleted(newNumCompleted === allFish.length);
       setNumCompleted(newNumCompleted);
-      setCaughtFish(null);
+      setActiveFish(null);
     }
   }
 
   function markAllIncomplete() {
-    if (game) {
-      game.fish.forEach((f) => {
-        f.completed = false;
-        f.isActive = false;
-      });
-      setGame(game);
-      setCompleted(false);
-      setNumCompleted(0);
-      setCaughtFish(null);
-    }
+    allFish.forEach((fish) => {
+      fish.completed = false;
+      fish.isActive = false;
+    });
+    setFish(allFish);
+    setCompleted(false);
+    setNumCompleted(0);
+    setActiveFish(null);
   }
 
   function releaseFish() {
-    if (caughtFish) {
-      caughtFish.isActive = false;
-      setCaughtFish(null);
+    if (activeFish) {
+      activeFish.isActive = false;
+      setActiveFish(null);
     }
   }
 
   function endGame() {
-    if (game) {
-      deleteGame.mutate({ id: game.id });
+    if (fetchedGame) {
+      deleteGame.mutate({ id: fetchedGame.id });
     }
   }
 
@@ -116,27 +115,30 @@ function Pond() {
         backgroundImage: `url(${pondBackground})`,
       }}
     >
-      {game && !gameIsFetching && (
+      {allFish.length && !gameIsFetching && (
         <div className="flex flex-col w-fit h-fit bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] p-10 items-center gap-8">
           <Button
             onClick={catchRandomFish}
-            disabled={caughtFish !== null || completed}
+            disabled={activeFish !== null || completed}
           >
             Reel
           </Button>
           <Button onClick={markComplete} disabled={completed}>
             Send to Cooler
           </Button>
-          <Button onClick={releaseFish} disabled={!caughtFish || completed}>
+          <Button onClick={releaseFish} disabled={!activeFish || completed}>
             Release
           </Button>
-          {caughtFish && <CaughtFish caughtFish={caughtFish} />}
+          {activeFish && <CaughtFish caughtFish={activeFish} />}
           <Button onClick={markAllIncomplete}>Reset Pond</Button>
           <Button onClick={endGame}>End Game</Button>
         </div>
       )}
       {!gameIsFetching && (
-        <TaskListForm showForm={showForm && !game} setShowForm={setShowForm} />
+        <TaskListForm
+          showForm={showForm && !allFish.length}
+          setShowForm={setShowForm}
+        />
       )}
     </div>
   );
