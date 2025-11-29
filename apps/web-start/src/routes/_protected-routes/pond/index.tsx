@@ -3,7 +3,7 @@ import '../../../components/button.css';
 import { Loading } from '../../../components/loading/loadingScreen';
 import { useEffect, useState } from 'react';
 import { useApiMutation, useApiQuery } from '../../../integrations/api';
-import type { FishOut, UpdateAllFish, UpdateFish } from '@repo/api/fish';
+import type { UpdateAllFish } from '@repo/api/fish';
 import TaskListForm from '../../../components/pond/TaskListForm';
 import Button from '../../../components/shared-ui/Button';
 import CaughtFish from '../../../components/pond/CaughtFish';
@@ -32,12 +32,6 @@ function Pond() {
   const { data: fetchedGame, isFetching: gameIsFetching } =
     useApiQuery<GameOutWithFish>(['game'], `/game`);
 
-  const updateFish = useApiMutation<UpdateFish, FishOut>({
-    endpoint: () => ({
-      path: `/fish/one`,
-      method: 'PATCH',
-    }),
-  });
   const [showForm, setShowForm] = useState<boolean>(!allFish.length);
   const updateAllFish = useApiMutation<UpdateAllFish, { count: number }>({
     endpoint: () => ({
@@ -103,6 +97,8 @@ function Pond() {
       deleteGame.mutate({ id: fetchedGame.id });
     }
   }
+
+  function saveGame() {}
 
   if (gameIsFetching) {
     return <Loading />;

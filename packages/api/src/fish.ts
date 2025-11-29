@@ -29,16 +29,8 @@ export const CreateFish = z.object({
 });
 export type CreateFish = z.infer<typeof CreateFish>;
 
-export const UpdateFish = z.object({
-  id: z.uuid(),
-  isActive: z.boolean().optional(),
-  completed: z.boolean().optional(),
-});
-export type UpdateFish = z.infer<typeof UpdateFish>;
-
 export const UpdateAllFish = z.object({
   gameId: z.uuid(),
-  isActive: z.boolean().optional(),
-  completed: z.boolean().optional(),
+  fish: z.array(FishOutWithTask),
 });
 export type UpdateAllFish = z.infer<typeof UpdateAllFish>;

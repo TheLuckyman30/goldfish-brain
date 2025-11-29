@@ -1,27 +1,28 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { UpdateFish, FishOut, UpdateAllFish } from '@repo/api/fish';
+import { FishOut, UpdateAllFish } from '@repo/api/fish';
 import { Prisma } from '@repo/database';
 
 @Injectable()
 export class FishService {
   constructor(private prisma: PrismaService) {}
 
-  updateFish(updateFishDto: UpdateFish): Promise<FishOut> {
-    return this.prisma.fish.update({
-      where: { id: updateFishDto.id },
-      data: updateFishDto,
-    });
-  }
-
-  updateAllFish(updateAllFishDto: UpdateAllFish): Promise<Prisma.BatchPayload> {
-    return this.prisma.fish.updateMany({
-      where: { gameId: updateAllFishDto.gameId },
-      data: updateAllFishDto,
-    });
+  updateAllFish(updateAllFishDto: UpdateAllFish): Promise<FishOut[]> {
+    return this.prisma.$transaction(
+      updateAllFishDto.fish.map((fish) => {
+        return this.prisma.fish.update({
+          where: { id: fish.id },
+          data: { isActive: fish.isActive, completed: fish.completed },
+          select: {
+            id: true,
+            taskId: true,
+            size: true,
+            rarity: true,
+            isActive: true,
+            completed: true,
+          },
+        });
+      }),
+    );
   }
 }
