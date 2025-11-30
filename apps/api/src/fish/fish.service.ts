@@ -29,7 +29,7 @@ export class FishService {
     return this.prisma.$transaction(
       updateAllFishDto.fish.map((fish) => {
         return this.prisma.fish.update({
-          where: { gameId: updateAllFishDto.gameId },
+          where: { id: fish.id, gameId: updateAllFishDto.gameId },
           data: { isActive: fish.isActive, completed: fish.completed },
           select: {
             id: true,

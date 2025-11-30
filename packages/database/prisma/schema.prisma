@@ -84,7 +84,7 @@ model Game {
 model Fish {
   id        String   @id @default(uuid())
   taskId    String   @unique
-  gameId    String   @unique
+  gameId    String
   size      Int
   rarity    Int
   isActive  Boolean  @default(false)

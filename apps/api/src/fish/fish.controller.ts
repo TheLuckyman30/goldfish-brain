@@ -2,7 +2,6 @@ import { Body, Controller, Param, Patch, UseGuards } from '@nestjs/common';
 import { FishService } from './fish.service';
 import { AuthGuard } from '@nestjs/passport';
 import { FishOut, UpdateAllFish } from '@repo/api/fish';
-import { Prisma } from '@repo/database';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
 

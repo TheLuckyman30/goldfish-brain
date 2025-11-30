@@ -3,28 +3,22 @@ import { create } from 'zustand';
 
 type GameStore = {
   allFish: FishOutWithTask[];
-  completed: boolean;
-  numCompleted: number;
+  uncompletedFish: FishOutWithTask[];
   activeFish: FishOutWithTask | null;
   setFish: (newFish: FishOutWithTask[]) => void;
-  setCompleted: (isCompleted: boolean) => void;
-  setNumCompleted: (newNumCompleted: number) => void;
+  setUncompletedFish: (newUncompleted: FishOutWithTask[]) => void;
   setActiveFish: (newActive: FishOutWithTask | null) => void;
 };
 
 export const useGameStore = create<GameStore>((set) => ({
   allFish: [],
-  completed: false,
-  numCompleted: 0,
+  uncompletedFish: [],
   activeFish: null,
   setFish: (newFish: FishOutWithTask[]) => {
     set({ allFish: newFish });
   },
-  setCompleted: (isCompleted: boolean) => {
-    set({ completed: isCompleted });
-  },
-  setNumCompleted: (newNumCompleted: number) => {
-    set({ numCompleted: newNumCompleted });
+  setUncompletedFish: (newUncompleted: FishOutWithTask[]) => {
+    set({ uncompletedFish: newUncompleted });
   },
   setActiveFish: (newActive: FishOutWithTask | null) => {
     set({ activeFish: newActive });

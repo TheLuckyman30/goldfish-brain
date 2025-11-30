@@ -19,12 +19,10 @@ export const Route = createFileRoute('/_protected-routes/pond/')({
 function Pond() {
   const {
     allFish,
-    completed,
-    numCompleted,
+    uncompletedFish,
     activeFish,
     setFish,
-    setCompleted,
-    setNumCompleted,
+    setUncompletedFish,
     setActiveFish,
   } = useGameStore();
   const queryClient = useQueryClient();
@@ -50,16 +48,18 @@ function Pond() {
 
   useEffect(() => {
     if (fetchedGame) {
-      setFish(fetchedGame.fish);
-      const activeFish = fetchedGame.fish.find((f) => f.isActive === true);
-      if (activeFish) {
-        setActiveFish(activeFish);
+      const newFish = fetchedGame.fish;
+      const newActive = newFish.find((fish) => fish.isActive === true);
+      const newUncompleted = newFish.filter((fish) => !fish.completed);
+      setFish(newFish);
+      setUncompletedFish(newUncompleted);
+      if (newActive) {
+        setActiveFish(newActive);
       }
     }
   }, [fetchedGame]);
 
   function catchRandomFish() {
-    const uncompletedFish = allFish.filter((f) => !f.completed);
     const random = Math.floor(Math.random() * uncompletedFish.length);
     const caught = uncompletedFish[random];
     if (caught) {
@@ -72,9 +72,8 @@ function Pond() {
     if (activeFish) {
       activeFish.completed = true;
       activeFish.isActive = false;
-      const newNumCompleted = numCompleted + 1;
-      setCompleted(newNumCompleted === allFish.length);
-      setNumCompleted(newNumCompleted);
+      const newUncompleted = allFish.filter((fish) => !fish.completed);
+      setUncompletedFish(newUncompleted);
       setActiveFish(null);
     }
   }
@@ -85,8 +84,7 @@ function Pond() {
       fish.isActive = false;
     });
     setFish(allFish);
-    setCompleted(false);
-    setNumCompleted(0);
+    setUncompletedFish(allFish);
     setActiveFish(null);
   }
 
@@ -127,14 +125,17 @@ function Pond() {
         <div className="flex flex-col w-fit h-fit bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] p-10 items-center gap-8">
           <Button
             onClick={catchRandomFish}
-            disabled={activeFish !== null || completed}
+            disabled={activeFish !== null || !uncompletedFish.length}
           >
             Reel
           </Button>
-          <Button onClick={markComplete} disabled={completed}>
+          <Button onClick={markComplete} disabled={!uncompletedFish.length}>
             Send to Cooler
           </Button>
-          <Button onClick={releaseFish} disabled={!activeFish || completed}>
+          <Button
+            onClick={releaseFish}
+            disabled={!activeFish || !uncompletedFish.length}
+          >
             Release
           </Button>
           {activeFish && <CaughtFish caughtFish={activeFish} />}
