@@ -3,7 +3,7 @@ import '../../../components/button.css';
 import { Loading } from '../../../components/loading/loadingScreen';
 import { useEffect, useState } from 'react';
 import { useApiMutation, useApiQuery } from '../../../integrations/api';
-import type { UpdateAllFish } from '@repo/api/fish';
+import type { FishOut, UpdateAllFish } from '@repo/api/fish';
 import TaskListForm from '../../../components/pond/TaskListForm';
 import Button from '../../../components/shared-ui/Button';
 import CaughtFish from '../../../components/pond/CaughtFish';
@@ -33,7 +33,7 @@ function Pond() {
     useApiQuery<GameOutWithFish>(['game'], `/game`);
 
   const [showForm, setShowForm] = useState<boolean>(!allFish.length);
-  const updateAllFish = useApiMutation<UpdateAllFish, { count: number }>({
+  const updateAllFish = useApiMutation<UpdateAllFish, FishOut>({
     endpoint: () => ({
       path: '/fish/all',
       method: 'PATCH',
@@ -51,6 +51,10 @@ function Pond() {
   useEffect(() => {
     if (fetchedGame) {
       setFish(fetchedGame.fish);
+      const activeFish = fetchedGame.fish.find((f) => f.isActive === true);
+      if (activeFish) {
+        setActiveFish(activeFish);
+      }
     }
   }, [fetchedGame]);
 
@@ -59,6 +63,7 @@ function Pond() {
     const random = Math.floor(Math.random() * uncompletedFish.length);
     const caught = uncompletedFish[random];
     if (caught) {
+      caught.isActive = true;
       setActiveFish(caught);
     }
   }
@@ -98,7 +103,14 @@ function Pond() {
     }
   }
 
-  function saveGame() {}
+  function saveGame() {
+    if (fetchedGame) {
+      updateAllFish.mutate({
+        gameId: fetchedGame.id,
+        fish: allFish,
+      });
+    }
+  }
 
   if (gameIsFetching) {
     return <Loading />;
@@ -127,6 +139,7 @@ function Pond() {
           </Button>
           {activeFish && <CaughtFish caughtFish={activeFish} />}
           <Button onClick={markAllIncomplete}>Reset Pond</Button>
+          <Button onClick={saveGame}>Save Game </Button>
           <Button onClick={endGame}>End Game</Button>
         </div>
       )}

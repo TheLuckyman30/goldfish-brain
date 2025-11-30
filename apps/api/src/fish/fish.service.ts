@@ -1,17 +1,35 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { FishOut, UpdateAllFish } from '@repo/api/fish';
-import { Prisma } from '@repo/database';
 
 @Injectable()
 export class FishService {
   constructor(private prisma: PrismaService) {}
 
-  updateAllFish(updateAllFishDto: UpdateAllFish): Promise<FishOut[]> {
+  async updateAllFish(
+    updateAllFishDto: UpdateAllFish,
+    userId: string,
+  ): Promise<FishOut[]> {
+    const game = await this.prisma.game.findUnique({
+      where: { id: updateAllFishDto.gameId },
+    });
+
+    if (!game) {
+      throw new NotFoundException();
+    }
+
+    if (game.userId !== userId) {
+      throw new ForbiddenException();
+    }
+
     return this.prisma.$transaction(
       updateAllFishDto.fish.map((fish) => {
         return this.prisma.fish.update({
-          where: { id: fish.id },
+          where: { gameId: updateAllFishDto.gameId },
           data: { isActive: fish.isActive, completed: fish.completed },
           select: {
             id: true,
