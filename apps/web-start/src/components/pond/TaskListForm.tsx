@@ -3,7 +3,6 @@ import Form from '../shared-ui/Form';
 import { Modal, ModalHeader } from '../shared-ui/Modal';
 import { Select, SelectOption } from '../shared-ui/Select';
 import Button from '../shared-ui/Button';
-import { fishGenerator } from '../../utils/fish-generator';
 import { useApiMutation, useApiQuery } from '../../integrations/api';
 import { useState } from 'react';
 import { CreateGame, GameOut } from '@repo/api/game';
@@ -29,8 +28,9 @@ function TaskListForm() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const fish = fishGenerator(taskList?.tasks ?? []);
-    mutation.mutate({ fish });
+    if (selectedTaskList) {
+      mutation.mutate({ taskListId: selectedTaskList.id });
+    }
   }
 
   if (listsIsFetching) {

@@ -4,30 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateFishCurrentGame, FishOut, UpdateAllFish } from '@repo/api/fish';
+import { CreateFish, FishOut, UpdateAllFish } from '@repo/api/fish';
 
 @Injectable()
 export class FishService {
   constructor(private prisma: PrismaService) {}
-
-  async addFishToGame(
-    addFishToGameDto: CreateFishCurrentGame,
-    userId: string,
-  ): Promise<FishOut> {
-    const game = await this.prisma.game.findUnique({
-      where: { id: addFishToGameDto.gameId },
-    });
-
-    if (!game) {
-      throw new NotFoundException();
-    }
-
-    if (game.userId !== userId) {
-      throw new ForbiddenException();
-    }
-
-    return this.prisma.fish.create({ data: addFishToGameDto });
-  }
 
   async updateAllFish(
     updateAllFishDto: UpdateAllFish,

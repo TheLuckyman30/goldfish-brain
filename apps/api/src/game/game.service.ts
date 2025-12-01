@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import {
   CreateGame,
@@ -7,6 +11,7 @@ import {
   GameOutWithFish,
 } from '@repo/api/game';
 import { Prisma } from '@repo/database';
+import { fishGenerator } from 'src/utils/fish-generator';
 
 @Injectable()
 export class GameService {
@@ -43,12 +48,34 @@ export class GameService {
     });
   }
 
-  createGame(createGameDto: CreateGame, userId: string): Promise<GameOut> {
+  async createGame(
+    createGameDto: CreateGame,
+    userId: string,
+  ): Promise<GameOut> {
+    const taskList = await this.prisma.taskList.findUnique({
+      where: { id: createGameDto.taskListId },
+      select: { id: true, userId: true },
+    });
+
+    if (!taskList) {
+      throw new NotFoundException();
+    }
+
+    if (taskList.userId !== userId) {
+      throw new ForbiddenException();
+    }
+
+    const tasks = await this.prisma.task.findMany({
+      where: { taskListId: taskList.id },
+      select: { id: true },
+    });
+    const fish = fishGenerator(tasks);
+
     return this.prisma.game.create({
       data: {
         userId: userId,
         fish: {
-          createMany: { data: createGameDto.fish, skipDuplicates: true },
+          createMany: { data: fish, skipDuplicates: true },
         },
       },
       select: {

@@ -29,14 +29,6 @@ export const CreateFish = z.object({
 });
 export type CreateFish = z.infer<typeof CreateFish>;
 
-export const CreateFishCurrentGame = z.object({
-  gameId: z.uuid(),
-  taskId: z.uuid(),
-  size: z.int(),
-  rarity: z.int(),
-});
-export type CreateFishCurrentGame = z.infer<typeof CreateFishCurrentGame>;
-
 export const UpdateAllFish = z.object({
   gameId: z.uuid(),
   fish: z.array(FishOutWithTask),
