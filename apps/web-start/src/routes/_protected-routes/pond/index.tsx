@@ -63,13 +63,17 @@ function Pond() {
   }, [fetchedGame]);
 
   useEffect(() => {
+    const handle = () => {
+      saveRef.current();
+    };
+    window.addEventListener('beforeunload', handle);
     return () => {
       saveRef.current();
+      window.removeEventListener('beforeunload', handle);
     };
   }, []);
 
   useEffect(() => {
-    console.log('test');
     saveRef.current = saveGame;
   });
 

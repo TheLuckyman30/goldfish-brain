@@ -54,6 +54,7 @@ export function useApiClient() {
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       credentials: 'include',
+      keepalive: true,
     });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     return (await res.json()) as T;
