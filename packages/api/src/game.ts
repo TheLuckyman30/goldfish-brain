@@ -15,7 +15,7 @@ export const GameOutWithFish = z.object({
 export type GameOutWithFish = z.infer<typeof GameOutWithFish>;
 
 export const CreateGame = z.object({
-  fish: z.array(CreateFish),
+  taskListId: z.uuid(),
 });
 export type CreateGame = z.infer<typeof CreateGame>;
 
