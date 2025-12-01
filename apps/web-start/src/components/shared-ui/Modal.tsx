@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import Backdrop from './Backdrop';
 
 interface Context {
-  setShow: (show: boolean) => void;
+  setShow?: (show: boolean) => void;
 }
 
 interface ModalProps
@@ -14,8 +14,8 @@ interface ModalProps
   children?: React.ReactNode;
   color?: 'primary';
   backdrop?: boolean;
-  show: boolean;
-  setShow: (show: boolean) => void;
+  show?: boolean;
+  setShow?: (show: boolean) => void;
 }
 
 const ModalContext = createContext<Context | null>(null);
@@ -24,7 +24,7 @@ export function Modal({
   children,
   color = 'primary',
   backdrop = false,
-  show,
+  show = true,
   setShow,
   ...divParmas
 }: ModalProps) {
@@ -73,8 +73,16 @@ export function ModalHeader({ color = 'primary', children }: ModalHeaderProps) {
     primary: 'text-gray-400 hover:text-gray-500',
   };
 
-  if (!context) {
-    return null;
+  if (!context || context.setShow === undefined) {
+    return (
+      <div className="flex gap-15 justify-between">
+        <div
+          className={`flex flex-wrap text-3xl font-bold ${textColorClasses[color]}`}
+        >
+          {children}
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -86,7 +94,7 @@ export function ModalHeader({ color = 'primary', children }: ModalHeaderProps) {
       </div>
       <button
         className={`cursor-pointer ${closeColorClasses[color]}`}
-        onClick={() => context.setShow(false)}
+        onClick={() => context.setShow?.(false)}
       >
         <X />
       </button>

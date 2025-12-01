@@ -1,87 +1,31 @@
 import { createFileRoute } from '@tanstack/react-router';
-import '../../../components/button.css';
-import { useState } from 'react';
-import { useApiMutation, useApiQuery } from '../../../integrations/api';
+import { Loading } from '../../../components/loading/loadingScreen';
+import { useGameLogic } from '../../../utils/game-logic';
 import TaskListForm from '../../../components/pond/TaskListForm';
 import Button from '../../../components/shared-ui/Button';
 import CaughtFish from '../../../components/pond/CaughtFish';
-import type {
-  FishOut,
-  FishOutWithTask,
-  UpdateAllFish,
-  UpdateFish,
-} from '@repo/api/fish';
-import type { GameOutWithFish } from '@repo/api/game';
-import { Loading } from '../../../components/loading/loadingScreen';
 import pondBackground from '../../../images/pondBackground.png';
+import '../../../components/button.css';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
   component: Pond,
 });
 
 function Pond() {
-  const [caughtFish, setCaughtFish] = useState<FishOutWithTask | null>(null);
+  const {
+    allFish,
+    uncompletedFish,
+    activeFish,
+    isFetching,
+    catchRandomFish,
+    markComplete,
+    resetGame,
+    releaseFish,
+    saveGame,
+    endGame,
+  } = useGameLogic();
 
-  const { data: game, isFetching: gameIsFetching } =
-    useApiQuery<GameOutWithFish>(['game'], `/game`);
-  const updateFish = useApiMutation<UpdateFish, FishOut>({
-    endpoint: () => ({
-      path: `/fish/one`,
-      method: 'PATCH',
-    }),
-    invalidateKeys: [['game']],
-  });
-  const [showForm, setShowForm] = useState<boolean>(!game);
-  const updateAllFish = useApiMutation<UpdateAllFish, { count: number }>({
-    endpoint: () => ({
-      path: '/fish/all',
-      method: 'PATCH',
-    }),
-    invalidateKeys: [['game']],
-  });
-
-  function catchRandomFish() {
-    if (game) {
-      const uncompletedFish = game.fish.filter((f) => !f.completed);
-      const random = Math.floor(Math.random() * uncompletedFish.length);
-      const caught = uncompletedFish[random];
-      if (caught) {
-        updateFish.mutate({ id: caught.id, isActive: true });
-        setCaughtFish(caught);
-      }
-    }
-  }
-
-  function markComplete() {
-    if (caughtFish) {
-      updateFish.mutate({
-        id: caughtFish.id,
-        completed: true,
-        isActive: false,
-      });
-      setCaughtFish(null);
-    }
-  }
-
-  function markAllIncomplete() {
-    if (game) {
-      updateAllFish.mutate({
-        gameId: game.id,
-        completed: false,
-        isActive: false,
-      });
-      setCaughtFish(null);
-    }
-  }
-
-  function releaseFish() {
-    if (caughtFish) {
-      updateFish.mutate({ id: caughtFish.id, isActive: false });
-    }
-    setCaughtFish(null);
-  }
-
-  if (gameIsFetching) {
+  if (isFetching) {
     return <Loading />;
   }
 
@@ -92,30 +36,30 @@ function Pond() {
         backgroundImage: `url(${pondBackground})`,
       }}
     >
-      {game && !gameIsFetching && (
+      {allFish.length > 0 && (
         <div className="flex flex-col w-fit h-fit bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] p-10 items-center gap-8">
           <Button
             onClick={catchRandomFish}
-            disabled={caughtFish !== null || game.fish.length === 0}
+            disabled={activeFish !== null || !uncompletedFish.length}
           >
             Reel
           </Button>
-          <Button onClick={markComplete} disabled={game.fish.length === 0}>
+          <Button onClick={markComplete} disabled={!uncompletedFish.length}>
             Send to Cooler
           </Button>
           <Button
             onClick={releaseFish}
-            disabled={!caughtFish || game.fish.length === 0}
+            disabled={!activeFish || !uncompletedFish.length}
           >
             Release
           </Button>
-          {caughtFish && <CaughtFish caughtFish={caughtFish} />}
-          <Button onClick={markAllIncomplete}>Reset Pond</Button>
+          {activeFish && <CaughtFish caughtFish={activeFish} />}
+          <Button onClick={resetGame}>Reset Pond</Button>
+          <Button onClick={saveGame}>Save Game </Button>
+          <Button onClick={endGame}>End Game</Button>
         </div>
       )}
-      {!gameIsFetching && (
-        <TaskListForm showForm={showForm && !game} setShowForm={setShowForm} />
-      )}
+      {allFish.length === 0 && <TaskListForm />}
     </div>
   );
 }

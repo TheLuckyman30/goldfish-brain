@@ -54,6 +54,7 @@ export function useApiClient() {
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       credentials: 'include',
+      keepalive: true,
     });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     return (await res.json()) as T;
@@ -80,7 +81,7 @@ export function useApiQuery<T>(
     },
     // Some potential optimizations you can experiment with
     // staleTime: 60_000, // avoid immediate refetches
-    // refetchOnWindowFocus: false, // avoid focus-triggered flicker
+    refetchOnWindowFocus: false, // avoid focus-triggered flicker
     // placeholderData: (prev) => prev, // keep old data during refetch
   });
   const isAuthPending = isAuthLoading || !isAuthenticated;
@@ -104,6 +105,7 @@ export function useApiMutation<Input extends Json, Output = unknown>(opts?: {
   method?: 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   /** Query keys to invalidate after success */
   invalidateKeys?: ReadonlyArray<Array<unknown>>;
+  onSuccessFunc?: () => unknown;
 }) {
   const { request } = useApiClient();
   const qc = useQueryClient();
@@ -126,6 +128,9 @@ export function useApiMutation<Input extends Json, Output = unknown>(opts?: {
       return failureCount < 3;
     },
     onSuccess: async () => {
+      if (opts?.onSuccessFunc) {
+        opts.onSuccessFunc();
+      }
       if (opts?.invalidateKeys) {
         await Promise.all(
           opts.invalidateKeys.map((k) => qc.invalidateQueries({ queryKey: k })),
