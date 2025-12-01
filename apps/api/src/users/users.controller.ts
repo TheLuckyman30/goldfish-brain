@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUser, UserOut } from '@repo/api/user';
 import { AuthGuard } from '@nestjs/passport';
@@ -34,5 +34,14 @@ export class UsersController {
   @Patch()
   update(@Body() updateUserDto: UpdateUser): Promise<UserOut> {
     return this.usersService.updateUser(updateUserDto)
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/me/auth-type')
+  async getMeAuthType(@CurrentUser() auth: JwtUser) {
+    if (!auth || !auth.userId) {
+      throw new UnauthorizedException();
+    }
+    return this.usersService.getProvider(auth.userId);
   }
 }
