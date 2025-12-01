@@ -19,6 +19,10 @@ function resetPassword() {
   // update password api call
 }
 
+function toggleNight() {
+
+}
+
 function Settings() {
   const {data, isFetching, error} = useApiQuery<{provider: string}>(['auth-type'], '/users/me/auth-type');
   const provider = data?.provider ?? 'external';
@@ -51,7 +55,11 @@ function Settings() {
           <Button onClick={() => updateUsername()} disabled={isExternalAccount}>Update Username</Button>
           <Button onClick={() => resetPassword()} disabled={isExternalAccount}>Send Password Reset Email</Button>
         </div>
-
+        <br></br>
+        <div className="text-2xl text-center items-center ml-35 rounded-md bg-[#fddbcd] p-10 text-[#794531fb] max-w-5xl justify-center">
+          Themes
+          <Button onClick={() => toggleNight()}>Toggle Night Mode</Button>
+        </div>
       </div>
     </div>
   );
