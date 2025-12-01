@@ -1,16 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router';
-import '../../../components/button.css';
+
 import { Loading } from '../../../components/loading/loadingScreen';
-import { useEffect, useRef, useState } from 'react';
-import { useApiMutation, useApiQuery } from '../../../integrations/api';
-import type { FishOut, UpdateAllFish } from '@repo/api/fish';
+import { useEffect, useRef } from 'react';
 import TaskListForm from '../../../components/pond/TaskListForm';
 import Button from '../../../components/shared-ui/Button';
 import CaughtFish from '../../../components/pond/CaughtFish';
-import type { DeleteGame, GameOut, GameOutWithFish } from '@repo/api/game';
 import pondBackground from '../../../images/pondBackground.png';
-import { useQueryClient } from '@tanstack/react-query';
-import { useGameStore } from '../../../zustand/game-store';
+import { useGameLogic } from '../../../utils/game-logic';
+import '../../../components/button.css';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
   component: Pond,
@@ -18,38 +15,28 @@ export const Route = createFileRoute('/_protected-routes/pond/')({
 
 function Pond() {
   const {
+    data,
     allFish,
     uncompletedFish,
     activeFish,
+    isFetching,
+    showForm,
     setFish,
     setUncompletedFish,
     setActiveFish,
-  } = useGameStore();
-  const queryClient = useQueryClient();
+    setShowForm,
+    catchRandomFish,
+    markComplete,
+    markAllIncomplete,
+    releaseFish,
+    endGame,
+    saveGame,
+  } = useGameLogic();
   const saveRef = useRef(saveGame);
 
-  const { data: fetchedGame, isFetching: gameIsFetching } =
-    useApiQuery<GameOutWithFish>(['game'], `/game`);
-
-  const [showForm, setShowForm] = useState<boolean>(!allFish.length);
-  const updateAllFish = useApiMutation<UpdateAllFish, FishOut>({
-    endpoint: () => ({
-      path: '/fish/all',
-      method: 'PATCH',
-    }),
-  });
-  const deleteGame = useApiMutation<DeleteGame, GameOut>({
-    endpoint: () => ({ path: '/game', method: 'DELETE' }),
-    onSuccessFunc: () => {
-      queryClient.setQueryData(['game'], null);
-      setFish([]);
-      setShowForm(true);
-    },
-  });
-
   useEffect(() => {
-    if (fetchedGame) {
-      const newFish = fetchedGame.fish;
+    if (data) {
+      const newFish = data.fish;
       const newActive = newFish.find((fish) => fish.isActive === true);
       const newUncompleted = newFish.filter((fish) => !fish.completed);
       setFish(newFish);
@@ -60,7 +47,7 @@ function Pond() {
         setActiveFish(null);
       }
     }
-  }, [fetchedGame]);
+  }, [data]);
 
   useEffect(() => {
     const handle = () => {
@@ -77,75 +64,7 @@ function Pond() {
     saveRef.current = saveGame;
   });
 
-  function catchRandomFish() {
-    const random = Math.floor(Math.random() * uncompletedFish.length);
-    const caught = uncompletedFish[random];
-    if (caught) {
-      const updatedFish = allFish.map((fish) => {
-        if (fish.id === caught.id) {
-          return { ...fish, isActive: true };
-        }
-        return fish;
-      });
-      setFish(updatedFish);
-      setActiveFish(caught);
-    }
-  }
-
-  function markComplete() {
-    if (activeFish) {
-      const updatedFish = allFish.map((fish) => {
-        if (fish.id === activeFish.id) {
-          return { ...fish, completed: true, isActive: false };
-        }
-        return fish;
-      });
-      setFish(updatedFish);
-      setUncompletedFish(updatedFish.filter((fish) => !fish.completed));
-      setActiveFish(null);
-    }
-  }
-
-  function markAllIncomplete() {
-    const updatedFish = allFish.map((fish) => ({
-      ...fish,
-      completed: false,
-      isActive: false,
-    }));
-    setFish(updatedFish);
-    setUncompletedFish(updatedFish);
-    setActiveFish(null);
-  }
-
-  function releaseFish() {
-    if (activeFish) {
-      const updatedFish = allFish.map((fish) => {
-        if (fish.id === activeFish.id) {
-          return { ...fish, isActive: false };
-        }
-        return fish;
-      });
-      setFish(updatedFish);
-      setActiveFish(null);
-    }
-  }
-
-  function endGame() {
-    if (fetchedGame) {
-      deleteGame.mutate({ id: fetchedGame.id });
-    }
-  }
-
-  function saveGame() {
-    if (fetchedGame) {
-      updateAllFish.mutate({
-        gameId: fetchedGame.id,
-        fish: allFish,
-      });
-    }
-  }
-
-  if (gameIsFetching) {
+  if (isFetching) {
     return <Loading />;
   }
 
@@ -156,7 +75,7 @@ function Pond() {
         backgroundImage: `url(${pondBackground})`,
       }}
     >
-      {allFish.length && !gameIsFetching && (
+      {allFish.length && !isFetching && (
         <div className="flex flex-col w-fit h-fit bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] p-10 items-center gap-8">
           <Button
             onClick={catchRandomFish}
@@ -179,7 +98,7 @@ function Pond() {
           <Button onClick={endGame}>End Game</Button>
         </div>
       )}
-      {!gameIsFetching && (
+      {!isFetching && (
         <TaskListForm
           showForm={showForm && !allFish.length}
           setShowForm={setShowForm}
