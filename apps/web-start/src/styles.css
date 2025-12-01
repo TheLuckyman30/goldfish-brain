@@ -18,3 +18,25 @@ code {
         monospace;
 }
 
+.buttonJump{
+cursor: pointer;
+}
+
+
+.buttonJump:hover {
+  background-color: #471b0ad7;
+  animation-duration: 400ms;
+  animation: bounce 2s infinite;
+  -webkit-animation: bounce 1s infinite
+
+
+}
+
+@-webkit-keyframes bounce {
+  0%, 100% {
+    -webkit-transform: translateY(-1px);
+  }
+  50% {
+    -webkit-transform: translateY(-1px);
+  }
+}

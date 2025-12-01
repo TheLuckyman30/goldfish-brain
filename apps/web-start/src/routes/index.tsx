@@ -6,6 +6,8 @@ import { useSideBarStore } from '../zustand/sidebar-store';
 import { Navbar } from '../components/shared-ui/navbar';
 import { Sidebar } from '../components/shared-ui/sidebar';
 
+
+
 export const Route = createFileRoute('/')({
   component: Home,
 });
@@ -59,7 +61,7 @@ function Home() {
           <Link
             to='/task-lists'
             style={{ position: 'relative' }}
-            className=" items-center relative inline-flex text-4xl rounded-[60px] w-[50vh] h-[50vh] cursor-pointer mt-[40vh] 
+            className=" items-center relative inline-flex text-4xl rounded-[60px] w-[50vh] h-[50vh] cursor-pointer mt-[20vh] buttonJump
             group justify-center border-b-4 border-l-2 active:border-[#397078] active:shadow-none shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] bg-gradient-to-tr from-[#397078] to-[#538f97]  border-[#397078] text-white"
           >
             <span className="items-center text-center absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-[60px] group-hover:w-[50vh] group-hover:h-[50vh] opacity-10"></span>
@@ -70,7 +72,7 @@ function Home() {
           <Link
           to= '/pond'
             style={{ position: 'relative' }}
-            className=" items-center relative inline-flex text-4xl rounded-[60px] w-[50vh] h-[50vh] cursor-pointer mt-[40vh] 
+            className=" items-center buttonJump relative inline-flex text-4xl rounded-[60px] w-[50vh] h-[50vh] cursor-pointer mt-[20vh] 
             group justify-center border-b-4 border-l-2 active:border-[#397078] active:shadow-none shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] bg-gradient-to-tr from-[#397078] to-[#538f97]  border-[#397078] text-white"
           >
             <span className="items-center text-center absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-[60px] group-hover:w-[50vh] group-hover:h-[50vh] opacity-10"></span>

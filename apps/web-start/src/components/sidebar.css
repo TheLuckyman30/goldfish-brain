@@ -24,12 +24,30 @@
   min-width: 200px;
   flex-shrink: 0;
   cursor: pointer;
+  box-shadow: 5px 5px 0px 0px rgba(239, 140, 95, 0.749);
   
 }
 
 .buttonStyle:hover {
   background-color: #471b0ad7;
-  animation-duration: 100ms;
+  animation-duration: 400ms;
+  animation: bounce 2s infinite;
+  -webkit-animation: bounce 1s infinite
 
 
+}
+
+@-webkit-keyframes bounce {
+  0%, 100% {
+    -webkit-transform: translateY(0);
+  }
+  50% {
+    -webkit-transform: translateY(-5px);
+  }
+}
+
+.buttonStyle:active{
+
+  box-shadow: none;
+  
 }
