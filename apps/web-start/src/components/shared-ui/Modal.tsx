@@ -59,12 +59,19 @@ export function Modal({
   );
 }
 
-interface ModalHeaderProps {
+interface ModalHeaderProps 
+
+extends React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >{
+  
   children?: React.ReactNode;
   color?: 'primary';
+
 }
 
-export function ModalHeader({ color = 'primary', children }: ModalHeaderProps) {
+export function ModalHeader({ color = 'primary', children, ...divParams }: ModalHeaderProps) {
   const context = useContext(ModalContext);
   const textColorClasses = {
     primary: 'text-black',
@@ -75,7 +82,8 @@ export function ModalHeader({ color = 'primary', children }: ModalHeaderProps) {
 
   if (!context || context.setShow === undefined) {
     return (
-      <div className="flex gap-15 justify-between">
+      <div className="flex gap-15 justify-between " {...divParams}>
+        
         <div
           className={`flex flex-wrap text-3xl font-bold ${textColorClasses[color]}`}
         >
@@ -86,7 +94,7 @@ export function ModalHeader({ color = 'primary', children }: ModalHeaderProps) {
   }
 
   return (
-    <div className="flex gap-15 justify-between">
+    <div className="flex gap-15 justify-between" {...divParams}>
       <div
         className={`flex flex-wrap text-3xl font-bold ${textColorClasses[color]}`}
       >

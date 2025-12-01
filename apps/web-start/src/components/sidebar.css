@@ -1,7 +1,7 @@
 .sidebar {
   background-color:#815656;
   min-width:100px;
-  z-index:2;
+  z-index:20;
   font-size:1.5em;
   line-height:1.5em;
   color:#f8d8d1;
@@ -24,4 +24,12 @@
   min-width: 200px;
   flex-shrink: 0;
   cursor: pointer;
+  
+}
+
+.buttonStyle:hover {
+  background-color: #471b0ad7;
+  animation-duration: 100ms;
+
+
 }
