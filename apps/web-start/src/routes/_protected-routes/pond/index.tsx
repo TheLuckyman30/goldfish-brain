@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
 import { Loading } from '../../../components/loading/loadingScreen';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useApiMutation, useApiQuery } from '../../../integrations/api';
 import type { FishOut, UpdateAllFish } from '@repo/api/fish';
 import TaskListForm from '../../../components/pond/TaskListForm';
@@ -26,6 +26,7 @@ function Pond() {
     setActiveFish,
   } = useGameStore();
   const queryClient = useQueryClient();
+  const saveRef = useRef(saveGame);
 
   const { data: fetchedGame, isFetching: gameIsFetching } =
     useApiQuery<GameOutWithFish>(['game'], `/game`);
@@ -55,42 +56,72 @@ function Pond() {
       setUncompletedFish(newUncompleted);
       if (newActive) {
         setActiveFish(newActive);
+      } else {
+        setActiveFish(null);
       }
     }
   }, [fetchedGame]);
+
+  useEffect(() => {
+    return () => {
+      saveRef.current();
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log('test');
+    saveRef.current = saveGame;
+  });
 
   function catchRandomFish() {
     const random = Math.floor(Math.random() * uncompletedFish.length);
     const caught = uncompletedFish[random];
     if (caught) {
-      caught.isActive = true;
+      const updatedFish = allFish.map((fish) => {
+        if (fish.id === caught.id) {
+          return { ...fish, isActive: true };
+        }
+        return fish;
+      });
+      setFish(updatedFish);
       setActiveFish(caught);
     }
   }
 
   function markComplete() {
     if (activeFish) {
-      activeFish.completed = true;
-      activeFish.isActive = false;
-      const newUncompleted = allFish.filter((fish) => !fish.completed);
-      setUncompletedFish(newUncompleted);
+      const updatedFish = allFish.map((fish) => {
+        if (fish.id === activeFish.id) {
+          return { ...fish, completed: true, isActive: false };
+        }
+        return fish;
+      });
+      setFish(updatedFish);
+      setUncompletedFish(updatedFish.filter((fish) => !fish.completed));
       setActiveFish(null);
     }
   }
 
   function markAllIncomplete() {
-    allFish.forEach((fish) => {
-      fish.completed = false;
-      fish.isActive = false;
-    });
-    setFish(allFish);
-    setUncompletedFish(allFish);
+    const updatedFish = allFish.map((fish) => ({
+      ...fish,
+      completed: false,
+      isActive: false,
+    }));
+    setFish(updatedFish);
+    setUncompletedFish(updatedFish);
     setActiveFish(null);
   }
 
   function releaseFish() {
     if (activeFish) {
-      activeFish.isActive = false;
+      const updatedFish = allFish.map((fish) => {
+        if (fish.id === activeFish.id) {
+          return { ...fish, isActive: false };
+        }
+        return fish;
+      });
+      setFish(updatedFish);
       setActiveFish(null);
     }
   }
