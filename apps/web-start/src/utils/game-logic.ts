@@ -3,7 +3,7 @@ import { useApiMutation, useApiQuery } from '../integrations/api';
 import { FishOut, UpdateAllFish } from '@repo/api/fish';
 import { useQueryClient } from '@tanstack/react-query';
 import { useGameStore } from '../zustand/game-store';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export function useGameLogic() {
   /////////////////////////////////////////////////////////////////////////////////////////////
@@ -19,6 +19,7 @@ export function useGameLogic() {
   } = useGameStore();
   const queryClient = useQueryClient();
   const saveRef = useRef(saveGame);
+  const [changed, setChanged] = useState<boolean>(false);
 
   const { data, isFetching } = useApiQuery<GameOutWithFish>(['game'], `/game`);
   const updateAllFish = useApiMutation<UpdateAllFish, FishOut>({
@@ -69,6 +70,9 @@ export function useGameLogic() {
     saveRef.current = saveGame;
   });
 
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  // Helper Functions
+
   function catchRandomFish() {
     const random = Math.floor(Math.random() * uncompletedFish.length);
     const caught = uncompletedFish[random];
@@ -81,11 +85,9 @@ export function useGameLogic() {
       });
       setFish(updatedFish);
       setActiveFish(caught);
+      setChanged(true);
     }
   }
-
-  /////////////////////////////////////////////////////////////////////////////////////////////
-  // Helper Functions
 
   function markComplete() {
     if (activeFish) {
@@ -98,6 +100,7 @@ export function useGameLogic() {
       setFish(updatedFish);
       setUncompletedFish(updatedFish.filter((fish) => !fish.completed));
       setActiveFish(null);
+      setChanged(true);
     }
   }
 
@@ -110,6 +113,7 @@ export function useGameLogic() {
     setFish(updatedFish);
     setUncompletedFish(updatedFish);
     setActiveFish(null);
+    setChanged(true);
   }
 
   function releaseFish() {
@@ -122,15 +126,17 @@ export function useGameLogic() {
       });
       setFish(updatedFish);
       setActiveFish(null);
+      setChanged(true);
     }
   }
 
   function saveGame() {
-    if (data) {
+    if (data && changed) {
       updateAllFish.mutate({
         gameId: data.id,
         fish: allFish,
       });
+      setChanged(false);
     }
   }
 
