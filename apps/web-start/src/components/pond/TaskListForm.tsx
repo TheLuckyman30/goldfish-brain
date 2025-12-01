@@ -56,7 +56,8 @@ function TaskListForm() {
             <Link to='/task-lists' className= " justify-center text-center flex min-w-[15vw] w-[18vw] min-h-[6vh] p-2 mb-3 bg-[#83c0c8] hover:bg-[#538f97] duration-100 rounded-[60px] text-2xl text-white ">
               Create Task List
             </Link>
-                        <hr className= "border-[1px]  text-[#8d4f36ef] flex mb-5"></hr>
+              
+            <hr className= "border-[1px]  text-[#8d4f36ef] flex mb-5"></hr>
 
 
 
