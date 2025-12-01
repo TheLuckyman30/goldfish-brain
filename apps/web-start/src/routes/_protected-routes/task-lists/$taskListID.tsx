@@ -32,26 +32,22 @@ function TaskList() {
   }, [data]);
 
   if (isFetching) {
-    return (
-      <Loading></Loading>);
+    return <Loading />;
   }
 
   if (data) {
     return (
       <div
         className="flex justify-center min-h-screen  w-lvw pt-45 bg-no-repeat bg-cover bg-top"
-      style={{
-        backgroundImage: `url(${fishAnimate})`,
-      }}
+        style={{
+          backgroundImage: `url(${fishAnimate})`,
+        }}
       >
-        <div
-          className="flex flex-col w-[75%] bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]"
-        >
+        <div className="flex flex-col w-[75%] bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]">
           <h1 className="text-5xl text-center rounded-md bg-[#fddbcd] p-10 text-[#794531fb]">
-              Task List: {data.name}
-            </h1>
+            Task List: {data.name}
+          </h1>
           <div className="flex flex-col gap-8 ml-5">
-            
             <div className="flex gap-15 mt-15 ">
               <Link
                 to="/task-lists"
@@ -106,10 +102,3 @@ function TaskList() {
     );
   }
 }
-
-
-
-
-
-
-

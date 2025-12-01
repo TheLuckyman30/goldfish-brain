@@ -11,12 +11,12 @@ export const Route = createFileRoute('/')({
 });
 
 function Home() {
-  const { sideBarOpen, setSidebarOpen } = useSideBarStore();
+  const sideBarOpen = useSideBarStore((state) => state.sideBarOpen);
 
   return (
     <>
-      <Navbar setSideBarOpen={setSidebarOpen} />
-      {sideBarOpen && <Sidebar setIsOpen={setSidebarOpen} />}
+      <Navbar />
+      {sideBarOpen && <Sidebar />}
       <div
         className="flex justify-center items-center min-h-lvh w-lvw pt-20 bg-cover bg-no-repeat bg-top"
         style={{
@@ -54,28 +54,24 @@ function Home() {
             }}
           />
 
-         
-
           <Link
-            to='/task-lists'
+            to="/task-lists"
             style={{ position: 'relative' }}
             className=" items-center relative inline-flex text-4xl rounded-[60px] w-[50vh] h-[50vh] cursor-pointer mt-[40vh] 
-            group justify-center border-b-4 border-l-2 active:border-[#397078] active:shadow-none shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] bg-gradient-to-tr from-[#397078] to-[#538f97]  border-[#397078] text-white"
+            group justify-center border-b-4 border-l-2 active:border-[#397078] active:shadow-none shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] bg-linear-to-tr from-[#397078] to-[#538f97]  border-[#397078] text-white"
           >
             <span className="items-center text-center absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-[60px] group-hover:w-[50vh] group-hover:h-[50vh] opacity-10"></span>
             <span className="items-center text-center">Create List</span>
-
           </Link>
-          
+
           <Link
-          to= '/pond'
+            to="/pond"
             style={{ position: 'relative' }}
             className=" items-center relative inline-flex text-4xl rounded-[60px] w-[50vh] h-[50vh] cursor-pointer mt-[40vh] 
-            group justify-center border-b-4 border-l-2 active:border-[#397078] active:shadow-none shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] bg-gradient-to-tr from-[#397078] to-[#538f97]  border-[#397078] text-white"
+            group justify-center border-b-4 border-l-2 active:border-[#397078] active:shadow-none shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] bg-linear-to-tr from-[#397078] to-[#538f97]  border-[#397078] text-white"
           >
             <span className="items-center text-center absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-[60px] group-hover:w-[50vh] group-hover:h-[50vh] opacity-10"></span>
             <span className="items-center text-center">Go to Pond</span>
-
           </Link>
         </div>
       </div>

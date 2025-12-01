@@ -6,6 +6,7 @@ import {
 import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
 import { CreateTask, DeleteTask, TaskOut, UpdateTask } from '@repo/api/task';
+import { generateFishAttributes } from 'src/utils/fish-generator';
 
 @Injectable()
 export class TasksService {
@@ -71,7 +72,7 @@ export class TasksService {
       throw new ForbiddenException();
     }
 
-    return this.prisma.task.create({
+    const task = await this.prisma.task.create({
       data: newTaskDto,
       select: {
         id: true,
@@ -81,6 +82,20 @@ export class TasksService {
         dueBy: true,
       },
     });
+
+    const game = await this.prisma.game.findUnique({
+      where: { userId: userId },
+      select: { id: true, linkedTaskListId: true },
+    });
+
+    if (game && game.linkedTaskListId === taskList.id) {
+      const { size, rarity } = generateFishAttributes();
+      await this.prisma.fish.create({
+        data: { gameId: game.id, taskId: task.id, size, rarity },
+      });
+    }
+
+    return task;
   }
 
   async updateTask(
