@@ -8,12 +8,7 @@ import { useApiMutation, useApiQuery } from '../../integrations/api';
 import { useState } from 'react';
 import { CreateGame, GameOut } from '@repo/api/game';
 
-interface TaskListFormProps {
-  showForm: boolean;
-  setShowForm: (showForm: boolean) => void;
-}
-
-function TaskListForm({ showForm, setShowForm }: TaskListFormProps) {
+function TaskListForm() {
   const [selectedTaskList, setSelectedTaskList] = useState<TaskListOut | null>(
     null,
   );
@@ -35,9 +30,7 @@ function TaskListForm({ showForm, setShowForm }: TaskListFormProps) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const fish = fishGenerator(taskList?.tasks ?? []);
-    console.log(fish);
     mutation.mutate({ fish });
-    setShowForm(false);
   }
 
   if (listsIsFetching) {
@@ -45,7 +38,7 @@ function TaskListForm({ showForm, setShowForm }: TaskListFormProps) {
   }
 
   return (
-    <Modal show={showForm} setShow={setShowForm} backdrop>
+    <Modal backdrop>
       <ModalHeader>Select a Task List</ModalHeader>
       <Form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6">

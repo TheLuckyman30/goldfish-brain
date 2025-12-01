@@ -4,24 +4,43 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { UpdateFish, FishOut, UpdateAllFish } from '@repo/api/fish';
-import { Prisma } from '@repo/database';
+import { FishOut, UpdateAllFish } from '@repo/api/fish';
 
 @Injectable()
 export class FishService {
   constructor(private prisma: PrismaService) {}
 
-  updateFish(updateFishDto: UpdateFish): Promise<FishOut> {
-    return this.prisma.fish.update({
-      where: { id: updateFishDto.id },
-      data: updateFishDto,
+  async updateAllFish(
+    updateAllFishDto: UpdateAllFish,
+    userId: string,
+  ): Promise<FishOut[]> {
+    const game = await this.prisma.game.findUnique({
+      where: { id: updateAllFishDto.gameId },
     });
-  }
 
-  updateAllFish(updateAllFishDto: UpdateAllFish): Promise<Prisma.BatchPayload> {
-    return this.prisma.fish.updateMany({
-      where: { gameId: updateAllFishDto.gameId },
-      data: updateAllFishDto,
-    });
+    if (!game) {
+      throw new NotFoundException();
+    }
+
+    if (game.userId !== userId) {
+      throw new ForbiddenException();
+    }
+
+    return this.prisma.$transaction(
+      updateAllFishDto.fish.map((fish) => {
+        return this.prisma.fish.update({
+          where: { id: fish.id, gameId: updateAllFishDto.gameId },
+          data: { isActive: fish.isActive, completed: fish.completed },
+          select: {
+            id: true,
+            taskId: true,
+            size: true,
+            rarity: true,
+            isActive: true,
+            completed: true,
+          },
+        });
+      }),
+    );
   }
 }
