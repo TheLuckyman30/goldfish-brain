@@ -10,6 +10,12 @@ export {
   DeleteTaskList,
 } from './task-list';
 
-export { FishOut, FishOutWithTask, CreateFish, UpdateAllFish } from './fish';
+export {
+  FishOut,
+  FishOutWithTask,
+  CreateFish,
+  CreateFishCurrentGame,
+  UpdateAllFish,
+} from './fish';
 
 export { GameOut, GameOutWithFish, CreateGame, DeleteGame } from './game';

@@ -1,11 +1,10 @@
 import { Link } from '@tanstack/react-router';
 import '../sidebar.css';
+import { useSideBarStore } from '../../zustand/sidebar-store';
 
-interface SidebarProps {
-  setIsOpen: (isOpen: boolean) => void;
-}
+export function Sidebar() {
+  const setSidebarOpen = useSideBarStore((state) => state.setSidebarOpen);
 
-export function Sidebar({ setIsOpen }: SidebarProps) {
   return (
     <div className="sidebar absolute">
       <div
@@ -27,7 +26,7 @@ export function Sidebar({ setIsOpen }: SidebarProps) {
         }}
       >
         <button
-          onClick={() => setIsOpen(false)}
+          onClick={() => setSidebarOpen(false)}
           style={{
             position: 'absolute',
             top: '1rem',

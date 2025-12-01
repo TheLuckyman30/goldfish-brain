@@ -11,12 +11,12 @@ export const Route = createFileRoute('/')({
 });
 
 function Home() {
-  const { sideBarOpen, setSidebarOpen } = useSideBarStore();
+  const sideBarOpen = useSideBarStore((state) => state.sideBarOpen);
 
   return (
     <>
-      <Navbar setSideBarOpen={setSidebarOpen} />
-      {sideBarOpen && <Sidebar setIsOpen={setSidebarOpen} />}
+      <Navbar />
+      {sideBarOpen && <Sidebar />}
       <div
         className="flex justify-center items-center min-h-lvh w-lvw pt-20 bg-cover bg-no-repeat bg-top"
         style={{

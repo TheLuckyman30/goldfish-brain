@@ -15,11 +15,11 @@ export const Route = createFileRoute('/_protected-routes')({
 });
 
 function RouteComponent() {
-  const { sideBarOpen, setSidebarOpen } = useSideBarStore();
+  const sideBarOpen = useSideBarStore((state) => state.sideBarOpen);
   return (
     <>
-      <Navbar setSideBarOpen={setSidebarOpen} />
-      {sideBarOpen && <Sidebar setIsOpen={setSidebarOpen} />}
+      <Navbar />
+      {sideBarOpen && <Sidebar />}
       <Outlet />
     </>
   );
