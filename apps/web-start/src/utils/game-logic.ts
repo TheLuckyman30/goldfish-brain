@@ -3,9 +3,12 @@ import { useApiMutation, useApiQuery } from '../integrations/api';
 import { FishOut, UpdateAllFish } from '@repo/api/fish';
 import { useQueryClient } from '@tanstack/react-query';
 import { useGameStore } from '../zustand/game-store';
-import { useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function useGameLogic() {
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  // React state
+
   const {
     allFish,
     uncompletedFish,
@@ -15,7 +18,7 @@ export function useGameLogic() {
     setActiveFish,
   } = useGameStore();
   const queryClient = useQueryClient();
-  const [showForm, setShowForm] = useState<boolean>(!allFish.length);
+  const saveRef = useRef(saveGame);
 
   const { data, isFetching } = useApiQuery<GameOutWithFish>(['game'], `/game`);
   const updateAllFish = useApiMutation<UpdateAllFish, FishOut>({
@@ -29,8 +32,41 @@ export function useGameLogic() {
     onSuccessFunc: () => {
       queryClient.setQueryData(['game'], null);
       setFish([]);
-      setShowForm(true);
     },
+  });
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  // useEffects to handle fetching and saving
+
+  useEffect(() => {
+    if (data) {
+      const newFish = data.fish;
+      const newActive = newFish.find((fish) => fish.isActive === true);
+      const newUncompleted = newFish.filter((fish) => !fish.completed);
+      setFish(newFish);
+      setUncompletedFish(newUncompleted);
+      if (newActive) {
+        setActiveFish(newActive);
+      } else {
+        setActiveFish(null);
+      }
+    }
+  }, [data]);
+
+  useEffect(() => {
+    const autoSave = () => {
+      saveRef.current();
+    };
+
+    window.addEventListener('beforeunload', autoSave);
+    return () => {
+      saveRef.current();
+      window.removeEventListener('beforeunload', autoSave);
+    };
+  }, []);
+
+  useEffect(() => {
+    saveRef.current = saveGame;
   });
 
   function catchRandomFish() {
@@ -48,6 +84,9 @@ export function useGameLogic() {
     }
   }
 
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  // Helper Functions
+
   function markComplete() {
     if (activeFish) {
       const updatedFish = allFish.map((fish) => {
@@ -62,7 +101,7 @@ export function useGameLogic() {
     }
   }
 
-  function markAllIncomplete() {
+  function resetGame() {
     const updatedFish = allFish.map((fish) => ({
       ...fish,
       completed: false,
@@ -86,12 +125,6 @@ export function useGameLogic() {
     }
   }
 
-  function endGame() {
-    if (data) {
-      deleteGame.mutate({ id: data.id });
-    }
-  }
-
   function saveGame() {
     if (data) {
       updateAllFish.mutate({
@@ -101,22 +134,28 @@ export function useGameLogic() {
     }
   }
 
+  function endGame() {
+    if (data) {
+      deleteGame.mutate({ id: data.id });
+    }
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+
   return {
     data,
     allFish,
     uncompletedFish,
     activeFish,
     isFetching,
-    showForm,
     setFish,
     setUncompletedFish,
     setActiveFish,
-    setShowForm,
     catchRandomFish,
     markComplete,
-    markAllIncomplete,
+    resetGame,
     releaseFish,
-    endGame,
     saveGame,
+    endGame,
   };
 }

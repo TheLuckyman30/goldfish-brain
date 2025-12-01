@@ -1,12 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
-
 import { Loading } from '../../../components/loading/loadingScreen';
-import { useEffect, useRef } from 'react';
+import { useGameLogic } from '../../../utils/game-logic';
 import TaskListForm from '../../../components/pond/TaskListForm';
 import Button from '../../../components/shared-ui/Button';
 import CaughtFish from '../../../components/pond/CaughtFish';
 import pondBackground from '../../../images/pondBackground.png';
-import { useGameLogic } from '../../../utils/game-logic';
 import '../../../components/button.css';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
@@ -15,54 +13,17 @@ export const Route = createFileRoute('/_protected-routes/pond/')({
 
 function Pond() {
   const {
-    data,
     allFish,
     uncompletedFish,
     activeFish,
     isFetching,
-    showForm,
-    setFish,
-    setUncompletedFish,
-    setActiveFish,
-    setShowForm,
     catchRandomFish,
     markComplete,
-    markAllIncomplete,
+    resetGame,
     releaseFish,
-    endGame,
     saveGame,
+    endGame,
   } = useGameLogic();
-  const saveRef = useRef(saveGame);
-
-  useEffect(() => {
-    if (data) {
-      const newFish = data.fish;
-      const newActive = newFish.find((fish) => fish.isActive === true);
-      const newUncompleted = newFish.filter((fish) => !fish.completed);
-      setFish(newFish);
-      setUncompletedFish(newUncompleted);
-      if (newActive) {
-        setActiveFish(newActive);
-      } else {
-        setActiveFish(null);
-      }
-    }
-  }, [data]);
-
-  useEffect(() => {
-    const handle = () => {
-      saveRef.current();
-    };
-    window.addEventListener('beforeunload', handle);
-    return () => {
-      saveRef.current();
-      window.removeEventListener('beforeunload', handle);
-    };
-  }, []);
-
-  useEffect(() => {
-    saveRef.current = saveGame;
-  });
 
   if (isFetching) {
     return <Loading />;
@@ -75,7 +36,7 @@ function Pond() {
         backgroundImage: `url(${pondBackground})`,
       }}
     >
-      {allFish.length && !isFetching && (
+      {allFish.length > 0 && (
         <div className="flex flex-col w-fit h-fit bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] p-10 items-center gap-8">
           <Button
             onClick={catchRandomFish}
@@ -93,17 +54,12 @@ function Pond() {
             Release
           </Button>
           {activeFish && <CaughtFish caughtFish={activeFish} />}
-          <Button onClick={markAllIncomplete}>Reset Pond</Button>
+          <Button onClick={resetGame}>Reset Pond</Button>
           <Button onClick={saveGame}>Save Game </Button>
           <Button onClick={endGame}>End Game</Button>
         </div>
       )}
-      {!isFetching && (
-        <TaskListForm
-          showForm={showForm && !allFish.length}
-          setShowForm={setShowForm}
-        />
-      )}
+      {allFish.length === 0 && <TaskListForm />}
     </div>
   );
 }
