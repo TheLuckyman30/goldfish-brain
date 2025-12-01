@@ -25,4 +25,13 @@ export class UsersService {
   updateUser(updateUserDto: UpdateUser): Promise<UserOut> {
     return this.prisma.user.update({select: { id: true, name: true, username: true, email: true }, where: {id: updateUserDto.id}, data: updateUserDto})
   }
+
+  async getProvider(userId: string): Promise<{ provider: string }> {
+    const auth = await this.prisma.authentication.findUnique({
+      where: { userId },
+    });
+    return {
+      provider: auth.provider,
+    };
+  }
 }
