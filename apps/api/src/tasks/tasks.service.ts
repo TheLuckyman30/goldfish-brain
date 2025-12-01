@@ -85,9 +85,10 @@ export class TasksService {
 
     const game = await this.prisma.game.findUnique({
       where: { userId: userId },
+      select: { id: true, linkedTaskListId: true },
     });
 
-    if (game) {
+    if (game && game.linkedTaskListId === taskList.id) {
       const { size, rarity } = generateFishAttributes();
       await this.prisma.fish.create({
         data: { gameId: game.id, taskId: task.id, size, rarity },

@@ -74,6 +74,7 @@ export class GameService {
     return this.prisma.game.create({
       data: {
         userId: userId,
+        linkedTaskListId: createGameDto.taskListId,
         fish: {
           createMany: { data: fish, skipDuplicates: true },
         },
