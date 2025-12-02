@@ -120,31 +120,29 @@ export class TasksService {
       throw new ForbiddenException();
     }
 
-    return this.prisma.$transaction(async () => {
-      if (updateTaskDto.completed) {
-        const updateTaskListDto: UpdateTaskList = {
-          id: taskList.id,
-          userId: taskList.userId,
-          numTasksCompleted: taskList.numTasksCompleted + 1,
-        };
-        this.prisma.taskList.update({
-          data: updateTaskListDto,
-          where: { id: updateTaskListDto.id },
-        });
-      }
-
-      return this.prisma.task.update({
-        data: updateTaskDto,
-        where: { id: updateTaskDto.id },
-        select: {
-          id: true,
-          taskListId: true,
-          name: true,
-          description: true,
-          completed: true,
-          dueBy: true,
-        },
+    if (updateTaskDto.completed) {
+      await this.prisma.taskList.update({
+        data: { numTasksCompleted: { increment: 1 } },
+        where: { id: taskList.id },
       });
+    } else if (updateTaskDto.completed === false) {
+      await this.prisma.taskList.update({
+        data: { numTasksCompleted: { decrement: 1 } },
+        where: { id: taskList.id },
+      });
+    }
+
+    return this.prisma.task.update({
+      data: updateTaskDto,
+      where: { id: updateTaskDto.id },
+      select: {
+        id: true,
+        taskListId: true,
+        name: true,
+        description: true,
+        completed: true,
+        dueBy: true,
+      },
     });
   }
 
