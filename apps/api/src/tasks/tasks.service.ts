@@ -7,6 +7,8 @@ import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
 import { CreateTask, DeleteTask, TaskOut, UpdateTask } from '@repo/api/task';
 import { generateFishAttributes } from 'src/utils/fish-generator';
+import { UpdateTaskList } from '@repo/api/task-list';
+import { TaskListsService } from 'src/task-lists/task-lists.service';
 
 @Injectable()
 export class TasksService {
@@ -20,6 +22,7 @@ export class TasksService {
         taskListId: true,
         name: true,
         description: true,
+        completed: true,
         dueBy: true,
       },
       where,
@@ -36,6 +39,7 @@ export class TasksService {
         taskListId: true,
         name: true,
         description: true,
+        completed: true,
         dueBy: true,
         taskList: { select: { userId: true } },
       },
@@ -55,6 +59,7 @@ export class TasksService {
       taskListId: task.taskListId,
       name: task.name,
       description: task.description,
+      completed: task.completed,
       dueBy: task.dueBy,
     };
   }
@@ -79,6 +84,7 @@ export class TasksService {
         taskListId: true,
         name: true,
         description: true,
+        completed: true,
         dueBy: true,
       },
     });
@@ -114,16 +120,31 @@ export class TasksService {
       throw new ForbiddenException();
     }
 
-    return this.prisma.task.update({
-      data: updateTaskDto,
-      where: { id: updateTaskDto.id },
-      select: {
-        id: true,
-        taskListId: true,
-        name: true,
-        description: true,
-        dueBy: true,
-      },
+    return this.prisma.$transaction(async () => {
+      if (updateTaskDto.completed) {
+        const updateTaskListDto: UpdateTaskList = {
+          id: taskList.id,
+          userId: taskList.userId,
+          numTasksCompleted: taskList.numTasksCompleted + 1,
+        };
+        this.prisma.taskList.update({
+          data: updateTaskListDto,
+          where: { id: updateTaskListDto.id },
+        });
+      }
+
+      return this.prisma.task.update({
+        data: updateTaskDto,
+        where: { id: updateTaskDto.id },
+        select: {
+          id: true,
+          taskListId: true,
+          name: true,
+          description: true,
+          completed: true,
+          dueBy: true,
+        },
+      });
     });
   }
 
@@ -150,6 +171,7 @@ export class TasksService {
         taskListId: true,
         name: true,
         description: true,
+        completed: true,
         dueBy: true,
       },
     });
