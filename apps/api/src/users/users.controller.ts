@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdateUser, UserOut } from '@repo/api/user';
+import { UpdateUser, UpdateUsername, UserOut } from '@repo/api/user';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
@@ -44,4 +44,13 @@ export class UsersController {
     }
     return this.usersService.getProvider(auth.userId);
   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('/me/username')
+  async updateMyUsername(
+    @CurrentUser() auth: JwtUser,
+    @Body() body: UpdateUsername,
+   ) {
+    return this.usersService.updateUsernameForMe(auth.userId, body.username);
+   }
 }

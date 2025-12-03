@@ -5,15 +5,12 @@ import fishAnimate from '../../../images/fishAnimate.gif';
 import { Loading } from '../../../components/loading/loadingScreen';
 import Button from '../../../components/shared-ui/Button';
 import { useApiQuery } from '../../../integrations/api';
+import { EditUsernameForm } from '../../../components/settings/EditUsernameForm'
 
 
 export const Route = createFileRoute('/_protected-routes/settings/')({
   component: Settings,
 });
-
-function updateUsername() {
-  // update username api call
-}
 
 function resetPassword() {
   // update password api call
@@ -24,9 +21,14 @@ function toggleNight() {
 }
 
 function Settings() {
-  const {data, isFetching, error} = useApiQuery<{provider: string}>(['auth-type'], '/users/me/auth-type');
+  const [showForm, setShowForm] = useState<boolean>(false);
+  const {data, isFetching} = useApiQuery<{provider: string}>(['auth-type'], '/users/me/auth-type');
   const provider = data?.provider ?? 'external';
   const isExternalAccount = provider !== 'auth0';
+
+  function updateUsername() {
+   setShowForm(true); 
+  }
 
   if (isFetching) {
     return (
@@ -61,6 +63,10 @@ function Settings() {
           <Button onClick={() => toggleNight()}>Toggle Night Mode</Button>
         </div>
       </div>
+      <EditUsernameForm
+        showForm={showForm}
+        setShowForm={setShowForm}
+      />
     </div>
   );
 }
