@@ -167,10 +167,20 @@ export class TasksService {
       throw new ForbiddenException();
     }
 
-    await this.prisma.taskList.update({
-      where: { id: deleteTaskDto.taskListId },
-      data: { numTasks: { decrement: 1 } },
-    });
+    if (deleteTaskDto.completed) {
+      await this.prisma.taskList.update({
+        where: { id: deleteTaskDto.taskListId },
+        data: {
+          numTasks: { decrement: 1 },
+          numTasksCompleted: { decrement: 1 },
+        },
+      });
+    } else {
+      await this.prisma.taskList.update({
+        where: { id: deleteTaskDto.taskListId },
+        data: { numTasks: { decrement: 1 } },
+      });
+    }
 
     return this.prisma.task.delete({
       where: { id: deleteTaskDto.id },

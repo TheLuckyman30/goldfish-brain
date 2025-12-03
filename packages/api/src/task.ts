@@ -31,5 +31,6 @@ export type UpdateTask = z.infer<typeof UpdateTask>;
 export const DeleteTask = z.object({
   id: z.uuid(),
   taskListId: z.uuid(),
+  completed: z.boolean(),
 });
 export type DeleteTask = z.infer<typeof DeleteTask>;

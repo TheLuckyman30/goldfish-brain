@@ -28,6 +28,7 @@ export function EditTaskForm({
         taskListId: task.taskListId,
         name: taskName,
         description: taskDescription,
+        completed: null,
         dueBy: null,
       });
     }

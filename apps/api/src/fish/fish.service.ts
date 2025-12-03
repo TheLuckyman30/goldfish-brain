@@ -4,10 +4,9 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateFish, FishOut, UpdateAllFish } from '@repo/api/fish';
+import { FishOut, UpdateAllFish } from '@repo/api/fish';
 import { TasksService } from 'src/tasks/tasks.service';
 import { UpdateTask } from '@repo/api/task';
-import { Prisma } from '@repo/database';
 
 @Injectable()
 export class FishService {

@@ -1,6 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { TasksService } from './tasks.service';
-import { CreateTask, TaskOut, UpdateTask } from '@repo/api/task';
+import { CreateTask, DeleteTask, TaskOut, UpdateTask } from '@repo/api/task';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
@@ -12,30 +21,44 @@ export class TasksController {
   @UseGuards(AuthGuard('jwt'))
   @Get()
   findAll(@CurrentUser() user: JwtUser): Promise<TaskOut[]> {
-    return this.tasksService.findAllTasks({where: {taskList: {userId: user.userId}}});
+    return this.tasksService.findAllTasks({
+      where: { taskList: { userId: user.userId } },
+    });
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
-  find(@Param('id') taskId: string, @CurrentUser() user: JwtUser): Promise<TaskOut> {
+  find(
+    @Param('id') taskId: string,
+    @CurrentUser() user: JwtUser,
+  ): Promise<TaskOut> {
     return this.tasksService.findTask({ id: taskId }, user.userId);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Body() newTaskDto: CreateTask, @CurrentUser() user: JwtUser): Promise<TaskOut> {
+  create(
+    @Body() newTaskDto: CreateTask,
+    @CurrentUser() user: JwtUser,
+  ): Promise<TaskOut> {
     return this.tasksService.createTask(newTaskDto, user.userId);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Patch()
-  update(@Body() updateTaskDto: UpdateTask, @CurrentUser() user: JwtUser): Promise<TaskOut> {
+  update(
+    @Body() updateTaskDto: UpdateTask,
+    @CurrentUser() user: JwtUser,
+  ): Promise<TaskOut> {
     return this.tasksService.updateTask(updateTaskDto, user.userId);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete()
-  delete(@Body() updateTaskDto: UpdateTask, @CurrentUser() user: JwtUser): Promise<TaskOut> {
-    return this.tasksService.deleteTask(updateTaskDto, user.userId);
+  delete(
+    @Body() deleteTaskDto: DeleteTask,
+    @CurrentUser() user: JwtUser,
+  ): Promise<TaskOut> {
+    return this.tasksService.deleteTask(deleteTaskDto, user.userId);
   }
 }
