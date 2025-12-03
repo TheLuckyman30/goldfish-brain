@@ -89,6 +89,11 @@ export class TasksService {
       },
     });
 
+    await this.prisma.taskList.update({
+      where: { id: newTaskDto.taskListId },
+      data: { numTasks: { increment: 1 } },
+    });
+
     const game = await this.prisma.game.findUnique({
       where: { userId: userId },
       select: { id: true, linkedTaskListId: true },
@@ -161,6 +166,11 @@ export class TasksService {
     if (taskList.userId !== userId) {
       throw new ForbiddenException();
     }
+
+    await this.prisma.taskList.update({
+      where: { id: deleteTaskDto.taskListId },
+      data: { numTasks: { decrement: 1 } },
+    });
 
     return this.prisma.task.delete({
       where: { id: deleteTaskDto.id },
