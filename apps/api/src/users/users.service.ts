@@ -1,11 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { UpdateUser, UserOut } from '@repo/api/user';
 import { Prisma } from '@repo/database';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+  ) {}
+  private readonly domain = process.env.AUTH0_DOMAIN!;
+  private readonly clientId = process.env.AUTH0_CLIENT_ID!;
+  private readonly clientSecret = process.env.AUTH0_CLIENT_SECRET!;
+  private readonly audience = `https://${this.domain}/api/v2/`;
 
   findAllUsers(params: { where?: Prisma.UserWhereInput }): Promise<UserOut[]> {
     const { where } = params;
@@ -33,5 +39,37 @@ export class UsersService {
     return {
       provider: auth.provider,
     };
+  }
+
+  async updateUsernameForMe(userId: string, newUsername: string) {
+    const auth = await this.prisma.authentication.findUnique({
+      where: { userId },
+    });
+
+    if (auth.provider !== 'auth0') {
+      throw new BadRequestException('External accounts cannot change username');
+    }
+
+    const updated = await this.prisma.user.update({
+      where: { id: userId },
+      data: { username: newUsername },
+    });
+
+    return updated;
+  }
+
+  async sendPasswordResetEmail(email: string) {
+    const res = await fetch(`https://${this.domain}/dbconnections/change_password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        client_id: process.env.AUTH0_CLIENT_ID,
+        email,
+        connection: 'Username-Password-Authentication',
+      }),
+    });
+
+    const body = await res.text();
+    return { ok: res.ok, body };
   }
 }
