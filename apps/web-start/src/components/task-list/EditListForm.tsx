@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApiMutation } from '../../integrations/api';
 import { Modal, ModalHeader } from '../shared-ui/Modal';
 import Form from '../shared-ui/Form';
@@ -18,12 +18,8 @@ export function EditListForm({
   showEditForm,
   setShowEditForm,
 }: CreateFormProps): React.JSX.Element {
-  const [newListName, setNewListName] = useState<string>(
-    selectedTaskList?.name ?? '',
-  );
-  const [newlistDescription, setNewListDescription] = useState<string>(
-    selectedTaskList?.description ?? '',
-  );
+  const [newListName, setNewListName] = useState<string>('');
+  const [newlistDescription, setNewListDescription] = useState<string>('');
   const mutation = useApiMutation<UpdateTaskList, TaskListOut>({
     endpoint: () => ({
       path: '/task-lists',
@@ -44,9 +40,16 @@ export function EditListForm({
     }
   };
 
+  useEffect(() => {
+    if (selectedTaskList) {
+      setNewListName(selectedTaskList.name);
+      setNewListDescription(selectedTaskList.description ?? '');
+    }
+  }, [selectedTaskList]);
+
   return (
     <Modal show={showEditForm} setShow={setShowEditForm} backdrop>
-      <ModalHeader>Edit a Task</ModalHeader>
+      <ModalHeader>Edit a Task List</ModalHeader>
       <Form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6">
           <div>

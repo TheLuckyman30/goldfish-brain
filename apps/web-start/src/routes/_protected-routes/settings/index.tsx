@@ -7,7 +7,6 @@ import Button from '../../../components/shared-ui/Button';
 import { useApiMutation, useApiQuery } from '../../../integrations/api';
 import { EditUsernameForm } from '../../../components/settings/EditUsernameForm'
 
-
 export const Route = createFileRoute('/_protected-routes/settings/')({
   component: Settings,
 });
@@ -43,9 +42,7 @@ function Settings() {
   }
 
   if (isFetching) {
-    return (
-      <Loading></Loading>
-    );
+    return <Loading></Loading>;
   }
 
   return (
@@ -59,8 +56,11 @@ function Settings() {
         <h1 className="text-5xl text-center rounded-md bg-[#fddbcd] p-10 text-[#794531fb]">
           Settings Page
         </h1>
-        
-        <Link to="/" className="buttonStyling shadow-lg shadow-black/20 max-w-2.5 m-5 text-center">
+
+        <Link
+          to="/"
+          className="buttonStyling shadow-lg shadow-black/20 max-w-2.5 m-5 text-center"
+        >
           Home
         </Link>
         <div className="text-2xl text-center items-center ml-35 rounded-md bg-[#fddbcd] p-10 text-[#794531fb] max-w-5xl justify-center">
@@ -83,4 +83,3 @@ function Settings() {
     </div>
   );
 }
-

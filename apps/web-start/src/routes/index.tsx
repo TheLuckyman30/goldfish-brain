@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import fishAnimate from '../images/fishAnimate.gif';
 import fishTiny from '../images/fishTiny.png';
 import './../styles.css';
@@ -11,12 +11,12 @@ export const Route = createFileRoute('/')({
 });
 
 function Home() {
-  const { sideBarOpen, setSidebarOpen } = useSideBarStore();
+  const sideBarOpen = useSideBarStore((state) => state.sideBarOpen);
 
   return (
     <>
-      <Navbar setSideBarOpen={setSidebarOpen} />
-      {sideBarOpen && <Sidebar setIsOpen={setSidebarOpen} />}
+      <Navbar />
+      {sideBarOpen && <Sidebar />}
       <div
         className="flex justify-center items-center min-h-lvh w-lvw pt-20 bg-cover bg-no-repeat bg-top"
         style={{
@@ -37,7 +37,7 @@ function Home() {
               position: 'absolute',
               left: '20vh',
               bottom: '35vh',
-              zIndex: '1000',
+              zIndex: '10',
               transform: 'scaleX(-1)',
             }}
           />
@@ -50,19 +50,29 @@ function Home() {
               position: 'absolute',
               left: '135vh',
               bottom: '35vh',
-              zIndex: '1000',
+              zIndex: '10',
             }}
           />
 
-          <div
+          <Link
+            to="/task-lists"
             style={{ position: 'relative' }}
-            className="bg-[#538f97] hover:bg-[#397078] shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]  flex justify-center items-center  text-white text-4xl rounded-[20px] w-[50vh] h-[50vh] cursor-pointer mt-[40vh]"
+            className=" items-center relative inline-flex text-4xl rounded-[60px] w-[50vh] h-[50vh] cursor-pointer mt-[40vh] 
+            group justify-center border-b-4 border-l-2 active:border-[#397078] active:shadow-none shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] bg-linear-to-tr from-[#397078] to-[#538f97]  border-[#397078] text-white"
           >
-            Create List
-          </div>
-          <div className=" bg-[#538f97] hover:bg-[#397078] shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]  flex justify-center items-center  text-white text-4xl rounded-[20px] w-[50vh] h-[50vh] cursor-pointer mt-[40vh]">
-            View Lists
-          </div>
+            <span className="items-center text-center absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-[60px] group-hover:w-[50vh] group-hover:h-[50vh] opacity-10"></span>
+            <span className="items-center text-center">Create List</span>
+          </Link>
+
+          <Link
+            to="/pond"
+            style={{ position: 'relative' }}
+            className=" items-center relative inline-flex text-4xl rounded-[60px] w-[50vh] h-[50vh] cursor-pointer mt-[40vh] 
+            group justify-center border-b-4 border-l-2 active:border-[#397078] active:shadow-none shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] bg-linear-to-tr from-[#397078] to-[#538f97]  border-[#397078] text-white"
+          >
+            <span className="items-center text-center absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-[60px] group-hover:w-[50vh] group-hover:h-[50vh] opacity-10"></span>
+            <span className="items-center text-center">Go to Pond</span>
+          </Link>
         </div>
       </div>
     </>

@@ -1,10 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { Link } from '@tanstack/react-router';
 import '../navbar.css';
-
-interface NavbarProps {
-  setSideBarOpen: (sideBarOpen: boolean) => void;
-}
+import { useSideBarStore } from '../../zustand/sidebar-store';
 
 const getNavItems = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -17,15 +14,16 @@ const getNavItems = (isAuthenticated: boolean) => {
   return [];
 };
 
-export function Navbar({ setSideBarOpen }: NavbarProps) {
+export function Navbar() {
   const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const setSidebarOpen = useSideBarStore((state) => state.setSidebarOpen);
   const navItems = getNavItems(isAuthenticated);
 
   return (
-    <div className="flex items-center justify-between w-full absolute mt-[5vh] pl-[8vh]">
+    <div className="flex items-center justify-between w-full absolute mt-[5vh] pl-[8vh] z-20">
       <button
         className="bg-[#6c3b27d7] text-white rounded-[50%] w-[6vh] h-[6vh] border-none cursor-pointer"
-        onClick={() => setSideBarOpen(true)}
+        onClick={() => setSidebarOpen(true)}
       >
         ☰
       </button>
@@ -33,18 +31,23 @@ export function Navbar({ setSideBarOpen }: NavbarProps) {
         {navItems.map((item, index) => (
           <Link
             to={item.link}
-            className="bg-white hover:bg-sky-100 rounded-md p-5"
+            className="bg-white hover:bg-sky-100 rounded-md p-5 duration-200  "
             key={index}
           >
-            {item.name}
+            <span className="relative group-hover:text-white">{item.name}</span>
+            
           </Link>
+
+
+
         ))}
         {!isAuthenticated && (
           <button
             onClick={() =>
               loginWithRedirect({ authorizationParams: { prompt: 'consent' } })
             }
-            className="bg-white hover:bg-sky-100 rounded-md p-5 cursor-pointer"
+            className="bg-white hover:bg-sky-100 rounded-md p-5 cursor-pointer duration-200"
+            
           >
             Login
           </button>
