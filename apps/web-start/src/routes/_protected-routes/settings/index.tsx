@@ -1,10 +1,10 @@
 import { Link, createFileRoute } from '@tanstack/react-router';
 import '../../../components/button.css';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import fishAnimate from '../../../images/fishAnimate.gif';
 import { Loading } from '../../../components/loading/loadingScreen';
 import Button from '../../../components/shared-ui/Button';
-import { useApiQuery } from '../../../integrations/api';
+import { useApiMutation, useApiQuery } from '../../../integrations/api';
 import { EditUsernameForm } from '../../../components/settings/EditUsernameForm'
 
 
@@ -12,22 +12,34 @@ export const Route = createFileRoute('/_protected-routes/settings/')({
   component: Settings,
 });
 
-function resetPassword() {
-  // update password api call
-}
-
 function toggleNight() {
 
 }
 
 function Settings() {
   const [showForm, setShowForm] = useState<boolean>(false);
+  const [PasswordText, setPasswordText] = useState<string>("");
   const {data, isFetching} = useApiQuery<{provider: string}>(['auth-type'], '/users/me/auth-type');
   const provider = data?.provider ?? 'external';
   const isExternalAccount = provider !== 'auth0';
+  const resetPasswordMutation = useApiMutation({
+    endpoint: () => ({
+      path: '/users/reset-password',
+      method: 'POST',
+    }),
+  });
 
   function updateUsername() {
    setShowForm(true); 
+  }
+
+  function resetPassword() {
+    try {
+      resetPasswordMutation.mutate({});
+      setPasswordText("Password reset email sent!");
+    } catch {
+      setPasswordText("Email failed to send!");
+    }
   }
 
   if (isFetching) {
@@ -56,6 +68,7 @@ function Settings() {
           <br></br>{isExternalAccount ? "You may not edit details from an external account, please update those details from your " + provider + " account." : ""}
           <Button onClick={() => updateUsername()} disabled={isExternalAccount}>Update Username</Button>
           <Button onClick={() => resetPassword()} disabled={isExternalAccount}>Send Password Reset Email</Button>
+          <p>{PasswordText}</p>
         </div>
         <br></br>
         <div className="text-2xl text-center items-center ml-35 rounded-md bg-[#fddbcd] p-10 text-[#794531fb] max-w-5xl justify-center">

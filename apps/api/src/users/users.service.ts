@@ -8,6 +8,10 @@ export class UsersService {
   constructor(
     private prisma: PrismaService,
   ) {}
+  private readonly domain = process.env.AUTH0_DOMAIN!;
+  private readonly clientId = process.env.AUTH0_CLIENT_ID!;
+  private readonly clientSecret = process.env.AUTH0_CLIENT_SECRET!;
+  private readonly audience = `https://${this.domain}/api/v2/`;
 
   findAllUsers(params: { where?: Prisma.UserWhereInput }): Promise<UserOut[]> {
     const { where } = params;
@@ -52,5 +56,20 @@ export class UsersService {
     });
 
     return updated;
+  }
+
+  async sendPasswordResetEmail(email: string) {
+    const res = await fetch(`https://${this.domain}/dbconnections/change_password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        client_id: process.env.AUTH0_CLIENT_ID,
+        email,
+        connection: 'Username-Password-Authentication',
+      }),
+    });
+
+    const body = await res.text();
+    return { ok: res.ok, body };
   }
 }
