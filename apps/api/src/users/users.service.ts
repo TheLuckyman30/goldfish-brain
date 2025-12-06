@@ -48,7 +48,8 @@ export class UsersService {
       throw new BadRequestException('External accounts cannot change username');
     }
 
-    await this.auth0Service.updateUsername(auth.providerId, newUsername);
+    const auth0UserId = auth.provider+"|"+auth.providerId;
+    await this.auth0Service.updateUsername(auth0UserId, newUsername);
 
     const updated = await this.prisma.user.update({
       where: { id: userId },
