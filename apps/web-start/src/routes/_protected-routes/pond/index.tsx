@@ -46,7 +46,9 @@ function Pond() {
           }}
         >
           <div className="flex flex-row h-full items-center">
-            <div className=" w-[50%] min-h-full h-full items-center justify-center text-center flex flex-row flex-wrap p-10 pr-10">
+            <div>
+
+              <div className=" w-[50%] min-h-full h-full items-center justify-center text-center flex flex-row flex-wrap p-10 pr-10">
               <button
                 className=" min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
                 onClick={catchRandomFish}
@@ -54,20 +56,9 @@ function Pond() {
               >
                 Reel
               </button>
-              <button
-                className=" min-w-[12vw] flex w-[12vw] min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white hover:bg-[#8ac5cd] hover:text-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3"
-                onClick={markComplete}
-                disabled={!uncompletedFish.length}
-              >
-                Send to Cooler
-              </button>
-              <button
-                className=" min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
-                onClick={releaseFish}
-                disabled={!activeFish || !uncompletedFish.length}
-              >
-                Release
-              </button>
+
+            </div>
+              
               <button
                 className=" min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
                 onClick={resetGame}
@@ -92,11 +83,31 @@ function Pond() {
 
         </div>
         
-        <div className=" bg-[#538f97] flex text-left items-center text-3xl rounded-[10px] text-white p-5 w-[40vw] h-[70vh] min-h-[70vh] justify-center shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]">
-
+        <div className=" bg-[#538f97] flex flex-col text-left items-center text-3xl rounded-[10px] text-white p-5 w-[40vw] h-[70vh] min-h-[70vh] justify-center shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]">
+          
+            <div>
             Fish Caught:
             <br></br>
             {activeFish && <CaughtFish caughtFish={activeFish} />}
+            </div>
+
+          <div className= "flex flex-row mt-20">
+            <button
+                className=" min-w-[12vw] flex w-[12vw] min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white hover:bg-[#8ac5cd] hover:text-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3"
+                onClick={markComplete}
+                disabled={!uncompletedFish.length}
+              >
+                Send to Cooler
+              </button>
+              <button
+                className=" min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
+                onClick={releaseFish}
+                disabled={!activeFish || !uncompletedFish.length}
+              >
+                Release
+              </button>
+          </div> 
+
           </div>
           
          
