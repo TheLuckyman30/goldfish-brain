@@ -27,7 +27,7 @@ export function Navbar() {
       >
         ☰
       </button>
-      <div className="absolute left-[50%] gap-[10vh] rounded-[90vh] bg-white min-h-[8vh] max-h-[10vh] min-w-[40%] max-w-[60%] items-center justify-center flex text-[#6c3b27d7] transform -translate-x-[50%]">
+      <div className="absolute left-[50%] gap-[5vw] rounded-[90vh] bg-white min-h-[8vh] max-h-[10vh] min-w-[40%] max-w-[60%] items-center justify-center flex text-[#6c3b27d7] transform -translate-x-[50%]">
         {navItems.map((item, index) => (
           <Link
             to={item.link}
