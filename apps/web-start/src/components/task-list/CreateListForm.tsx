@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useApiMutation } from '../../integrations/api';
 import Form from '../shared-ui/Form';
 import InputLabel from '../shared-ui/InputLabel';
-import Input from '../shared-ui/Input';
 import { Modal, ModalHeader } from '../shared-ui/Modal';
 import Button from '../shared-ui/Button';
 import type { CreateTaskList, TaskListOut } from '@repo/api/task-list';
@@ -41,20 +40,30 @@ export function CreateListForm({
       <Form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6  ">
           <div>
-            <InputLabel htmlFor="list-name" style={{color:"white", fontSize:"18px"}}>List Name</InputLabel>
+            <InputLabel
+              htmlFor="list-name"
+              style={{ color: 'white', fontSize: '18px' }}
+            >
+              List Name
+            </InputLabel>
             <textarea
               id="list-name"
-              className= "bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
+              className="bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
               placeholder="List Name"
               value={listName}
               onChange={(e) => setListName(e.target.value)}
             ></textarea>
           </div>
           <div>
-            <InputLabel htmlFor="list-description"style={{color:"white", fontSize:"18px"}}>List Description</InputLabel>
+            <InputLabel
+              htmlFor="list-description"
+              style={{ color: 'white', fontSize: '18px' }}
+            >
+              List Description
+            </InputLabel>
             <textarea
               id="list-description"
-              className= "bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
+              className="bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
               placeholder="List Description"
               value={listDescription}
               onChange={(e) => setListDescription(e.target.value)}

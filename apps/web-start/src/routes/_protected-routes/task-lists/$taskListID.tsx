@@ -8,6 +8,7 @@ import { EditTaskForm } from '../../../components/task/EditTaskForm';
 import type { TaskListTasksOut } from '@repo/api/task-list';
 import type { TaskOut } from '@repo/api/task';
 import { Loading } from '../../../components/loading/loadingScreen';
+import Button from '../../../components/shared-ui/Button';
 
 export const Route = createFileRoute(
   '/_protected-routes/task-lists/$taskListID',
@@ -20,7 +21,7 @@ function TaskList() {
   const [createForm, setCreateForm] = useState<boolean>(false);
   const [editForm, setEditForm] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<TaskOut | null>(null);
-  const { data, isFetching, refetch, error } = useApiQuery<TaskListTasksOut>(
+  const { data, isFetching, refetch } = useApiQuery<TaskListTasksOut>(
     ['tasks', taskListID],
     `/task-lists/${taskListID}/tasks`,
   );
@@ -38,40 +39,25 @@ function TaskList() {
   if (data) {
     return (
       <div
-        className="flex justify-center min-h-screen  w-lvw pt-45 bg-no-repeat bg-cover bg-top"
+        className="flex justify-center min-h-screen w-lvw pt-45 bg-no-repeat bg-cover bg-top"
         style={{
           backgroundImage: `url(${fishAnimate})`,
         }}
       >
         <div className="flex flex-col w-[75%] bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]">
-          <h1 className="text-5xl text-center rounded-md bg-[#fddbcd] p-10 text-[#794531fb]">
-            Task List: {data.name}
+          <h1 className="text-5xl text-center rounded-md bg-[#fddbcd] p-10 text-[#794531fb] font-bold">
+            {data.name} Tasks
           </h1>
           <div className="flex flex-col gap-8 ml-5">
-            <div className="flex gap-15 mt-15 ">
-              <Link
-                to="/task-lists"
-                className="buttonStyling shadow-lg shadow-black/20"
-              >
-                Back
+            <div className="flex gap-5 mt-5 ">
+              <Link to="/task-lists">
+                <Button>Back</Button>
               </Link>
-
-              <div
-                className="buttonStyling shadow-lg shadow-black/20"
-                onClick={() => setCreateForm(true)}
-              >
-                Create a Task
-              </div>
-              <div
-                className="buttonStyling shadow-lg shadow-black/20"
-                onClick={() => refetch()}
-              >
-                Refresh
-              </div>
+              <Button onClick={() => setCreateForm(true)}>Create a Task</Button>
+              <Button onClick={() => refetch()}>Refresh</Button>
             </div>
             <hr className="bg-[#fddbcdeb] text-[#fddbcdeb] w-[90%] border-2 border-[#fddbcdeb]"></hr>
-            <div className="text-3xl text-[#f8d8d1]">Tasks</div>
-            <div className="flex flex-wrap gap-5 justify-left">
+            <div className="flex flex-col flex-wrap gap-10 items-center">
               {data.tasks.map((task) => (
                 <TaskCard
                   key={task.id}
@@ -92,12 +78,6 @@ function TaskList() {
             <EditTaskForm task={selectedTask} setEditForm={setEditForm} />
           )}
         </div>
-      </div>
-    );
-  } else {
-    return (
-      <div className="bg-[#815656] flex justify-center items-center min-h-lvh w-lvw pt-20">
-        {error?.message}
       </div>
     );
   }

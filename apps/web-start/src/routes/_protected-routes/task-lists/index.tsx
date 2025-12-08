@@ -32,9 +32,7 @@ function TaskLists() {
   }, [taskLists]);
 
   if (isFetching) {
-    return (
-      <Loading></Loading>
-    );
+    return <Loading></Loading>;
   }
 
   return (
@@ -45,7 +43,7 @@ function TaskLists() {
       }}
     >
       <div className="flex flex-col w-[75%] bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]">
-        <h1 className="text-5xl text-center rounded-md bg-[#fddbcd] p-10 text-[#794531fb]">
+        <h1 className="text-5xl text-center rounded-md bg-[#fddbcd] p-10 text-[#794531fb] font-bold">
           Your Task Lists
         </h1>
         <div className="p-5">
