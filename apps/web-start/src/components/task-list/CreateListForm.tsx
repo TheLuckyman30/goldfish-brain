@@ -41,12 +41,7 @@ export function CreateListForm({
       <Form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6  ">
           <div>
-            <InputLabel
-              htmlFor="list-name"
-              style={{ color: 'white', fontSize: '18px' }}
-            >
-              List Name
-            </InputLabel>
+            <InputLabel htmlFor="list-name">List Name</InputLabel>
             <TextArea
               id="list-name"
               placeholder="List Name"

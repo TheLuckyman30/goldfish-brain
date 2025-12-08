@@ -3,9 +3,9 @@ import { useApiMutation } from '../../integrations/api';
 import { Modal, ModalHeader } from '../shared-ui/Modal';
 import Form from '../shared-ui/Form';
 import InputLabel from '../shared-ui/InputLabel';
-import Input from '../shared-ui/Input';
 import Button from '../shared-ui/Button';
 import type { TaskListOut, UpdateTaskList } from '@repo/api/task-list';
+import { TextArea } from '../shared-ui/TextArea';
 
 interface CreateFormProps {
   selectedTaskList: TaskListOut | null;
@@ -54,9 +54,8 @@ export function EditListForm({
         <div className="flex flex-col gap-6">
           <div>
             <InputLabel htmlFor="list-name">List Name</InputLabel>
-            <Input
+            <TextArea
               id="list-name"
-              type="text"
               placeholder="List Name"
               value={newListName}
               onChange={(e) => setNewListName(e.target.value)}
@@ -64,9 +63,8 @@ export function EditListForm({
           </div>
           <div>
             <InputLabel htmlFor="list-description">List Description</InputLabel>
-            <Input
+            <TextArea
               id="list-description"
-              type="text"
               placeholder="List Description"
               value={newlistDescription}
               onChange={(e) => setNewListDescription(e.target.value)}

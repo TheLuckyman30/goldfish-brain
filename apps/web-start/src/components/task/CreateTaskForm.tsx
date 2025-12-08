@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useApiMutation } from '../../integrations/api';
 import type { CreateTask, TaskOut } from '@repo/api/task';
-import Input from '../shared-ui/Input';
 import InputLabel from '../shared-ui/InputLabel';
 import Form from '../shared-ui/Form';
 import { Modal, ModalHeader } from '../shared-ui/Modal';
 import Button from '../shared-ui/Button';
+import { TextArea } from '../shared-ui/TextArea';
 
 interface CreateFormProps {
   taskListId: string;
@@ -36,30 +36,27 @@ export function CreateTaskForm({
   return (
     <Modal show={true} setShow={setCreateForm} backdrop>
       <ModalHeader>Create a Task</ModalHeader>
-      <Form onSubmit={handleSubmit} >
+      <Form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6 ">
           <div>
-            <InputLabel htmlFor="taskName" style={{color:"white", fontSize:"18px"}}>Task Name</InputLabel>
-            <textarea
+            <InputLabel htmlFor="taskName">Task Name</InputLabel>
+            <TextArea
               id="taskName"
-              className= "bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
               placeholder="Name"
               value={taskName}
               onChange={(e) => setTaskName(e.target.value)}
-            ></textarea>
+            />
           </div>
 
           <div>
-            <InputLabel htmlFor="taskDescription" style={{color:"white", fontSize:"18px"}}>Task Description</InputLabel>
-            <textarea
+            <InputLabel htmlFor="taskDescription">Task Description</InputLabel>
+            <TextArea
               id="taskDescription"
-              className= "bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
               placeholder="Description"
               value={taskDescription}
               onChange={(e) => setTaskDescription(e.target.value)}
-            ></textarea>
+            />
           </div>
-
           <div>
             <Button type="submit">Submit</Button>
             {mutation.isPending && <div>Loading...</div>}
