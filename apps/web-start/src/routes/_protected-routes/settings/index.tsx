@@ -6,18 +6,20 @@ import { Loading } from '../../../components/loading/loadingScreen';
 import Button from '../../../components/shared-ui/Button';
 import { useApiMutation, useApiQuery } from '../../../integrations/api';
 import userImage from '../../../images/user.png';
-import type { UserOut } from '@repo/api/user';
+import { UpdateUsername, type UserOut } from '@repo/api/user';
 import Input from '../../../components/shared-ui/Input';
-import { Pencil, X } from 'lucide-react';
+import { Check, Pencil, X } from 'lucide-react';
 
 export const Route = createFileRoute('/_protected-routes/settings/')({
   component: Settings,
 });
 
 function Settings() {
-  const [showForm, setShowForm] = useState<boolean>(false);
-  const [PasswordText, setPasswordText] = useState<string>('');
+  const [showUsernameForm, setShowUsernameForm] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
+  const [showEmailForm, setShowEmailForm] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('');
+  const [PasswordText, setPasswordText] = useState<string>('');
 
   // Provider Data
   const { data: providerData, isFetching: isFetchingProvider } = useApiQuery<{
@@ -34,22 +36,32 @@ function Settings() {
   useEffect(() => {
     if (userData) {
       setUsername(userData.username);
+      setEmail(userData.email);
     } else {
       setUsername('Failed to fetch username.');
+      setEmail('Failed to fetch email');
     }
   }, [userData]);
-  const email = userData?.email;
 
-  // Reset password
+  // Reset Password
   const resetPasswordMutation = useApiMutation({
     endpoint: () => ({
       path: '/users/reset-password',
       method: 'POST',
     }),
   });
+  // Update Username
+  const updateUsernameMutation = useApiMutation<UpdateUsername, UserOut>({
+    endpoint: () => ({
+      path: '/users/me/username',
+      method: 'PATCH',
+    }),
+    invalidateKeys: [['me']],
+  });
 
   function updateUsername() {
-    setShowForm(true);
+    setShowUsernameForm(false);
+    updateUsernameMutation.mutate({ username });
   }
 
   function resetPassword() {
@@ -61,7 +73,11 @@ function Settings() {
     }
   }
 
-  if (isFetchingProvider || isFetchingUser) {
+  if (
+    isFetchingProvider ||
+    isFetchingUser ||
+    updateUsernameMutation.isPending
+  ) {
     return <Loading />;
   }
 
@@ -95,8 +111,8 @@ function Settings() {
               </div>
               <div className="text-left wrap-break-word min-h-1/2 w-fit">
                 <div className="flex gap-2 items-center">
-                  {!showForm && <p className="p-4">{username}</p>}
-                  {showForm && (
+                  {!showUsernameForm && <p className="p-4">{username}</p>}
+                  {showUsernameForm && (
                     <Input
                       id="new-username"
                       type="text"
@@ -105,37 +121,63 @@ function Settings() {
                       onChange={(e) => setUsername(e.target.value)}
                     />
                   )}
-                  <span
-                    className="bg-[#794531fb] p-2 h-fit wi-fit rounded-lg"
-                    onClick={() => setShowForm(!showForm)}
-                  >
-                    {!showForm && <Pencil className="text-white" />}
-                    {showForm && <X className="text-white" />}
-                  </span>
+                  <div className="bg-stone-50 p-2 h-fit wi-fit rounded-lg">
+                    {!showUsernameForm && (
+                      <Pencil
+                        className="text-blue-300 cursor-pointer hover:scale-110 duration-150"
+                        onClick={() => setShowUsernameForm(!showUsernameForm)}
+                      />
+                    )}
+                    {showUsernameForm && (
+                      <div className="flex gap-5">
+                        <Check
+                          className="text-emerald-300 cursor-pointer hover:scale-115 duration-150"
+                          onClick={updateUsername}
+                        />
+                        <X
+                          className="text-rose-400 cursor-pointer hover:scale-115 duration-150"
+                          onClick={() => setShowUsernameForm(!showUsernameForm)}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
-
-                <p className="p-4">{email}</p>
+                <div className="flex gap-2 items-center">
+                  {!showEmailForm && <p className="p-4">{email}</p>}
+                  {showEmailForm && (
+                    <Input
+                      id="new-email"
+                      type="text"
+                      placeholder="New Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  )}
+                  <div className="bg-stone-50 p-2 h-fit wi-fit rounded-lg">
+                    {!showEmailForm && (
+                      <Pencil
+                        className="text-blue-300 cursor-pointer hover:scale-110 duration-150"
+                        onClick={() => setShowEmailForm(!showEmailForm)}
+                      />
+                    )}
+                    {showEmailForm && (
+                      <div className="flex gap-5">
+                        <Check
+                          className="text-emerald-300 cursor-pointer hover:scale-115 duration-150"
+                          onClick={() => {}}
+                        />
+                        <X
+                          className="text-rose-400 cursor-pointer hover:scale-115 duration-150"
+                          onClick={() => setShowEmailForm(!showEmailForm)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
             <hr className="mt-10"></hr>
-            <div className="rounded-md bg-[#fddbcd] p-10 text-[#794531fb] text-2xl text-center items-center">
-              Edit Account Details
-              <br></br>
-              {isExternalAccount
-                ? 'You may not edit details from an external account, please update those details from your ' +
-                  provider +
-                  ' account.'
-                : ''}
-              <Button
-                style={{
-                  color: 'white',
-                  background: '#6c3b27d7',
-                }}
-                onClick={() => updateUsername()}
-                disabled={isExternalAccount}
-              >
-                Update Username
-              </Button>
+            <div className="flex rounded-md bg-[#fddbcd] p-10 text-[#794531fb] text-2xl text-center justify-center">
               <Button
                 style={{
                   color: 'white',
