@@ -39,6 +39,7 @@ export class GameService {
                 taskListId: true,
                 name: true,
                 description: true,
+                completed: true,
                 dueBy: true,
               },
             },
