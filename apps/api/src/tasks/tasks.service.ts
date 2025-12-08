@@ -7,6 +7,8 @@ import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
 import { CreateTask, DeleteTask, TaskOut, UpdateTask } from '@repo/api/task';
 import { generateFishAttributes } from 'src/utils/fish-generator';
+import { UpdateTaskList } from '@repo/api/task-list';
+import { TaskListsService } from 'src/task-lists/task-lists.service';
 
 @Injectable()
 export class TasksService {
@@ -20,6 +22,7 @@ export class TasksService {
         taskListId: true,
         name: true,
         description: true,
+        completed: true,
         dueBy: true,
       },
       where,
@@ -36,6 +39,7 @@ export class TasksService {
         taskListId: true,
         name: true,
         description: true,
+        completed: true,
         dueBy: true,
         taskList: { select: { userId: true } },
       },
@@ -55,6 +59,7 @@ export class TasksService {
       taskListId: task.taskListId,
       name: task.name,
       description: task.description,
+      completed: task.completed,
       dueBy: task.dueBy,
     };
   }
@@ -79,8 +84,14 @@ export class TasksService {
         taskListId: true,
         name: true,
         description: true,
+        completed: true,
         dueBy: true,
       },
+    });
+
+    await this.prisma.taskList.update({
+      where: { id: newTaskDto.taskListId },
+      data: { numTasks: { increment: 1 } },
     });
 
     const game = await this.prisma.game.findUnique({
@@ -114,6 +125,18 @@ export class TasksService {
       throw new ForbiddenException();
     }
 
+    if (updateTaskDto.completed) {
+      await this.prisma.taskList.update({
+        data: { numTasksCompleted: { increment: 1 } },
+        where: { id: taskList.id },
+      });
+    } else if (updateTaskDto.completed === false) {
+      await this.prisma.taskList.update({
+        data: { numTasksCompleted: { decrement: 1 } },
+        where: { id: taskList.id },
+      });
+    }
+
     return this.prisma.task.update({
       data: updateTaskDto,
       where: { id: updateTaskDto.id },
@@ -122,6 +145,7 @@ export class TasksService {
         taskListId: true,
         name: true,
         description: true,
+        completed: true,
         dueBy: true,
       },
     });
@@ -143,6 +167,21 @@ export class TasksService {
       throw new ForbiddenException();
     }
 
+    if (deleteTaskDto.completed) {
+      await this.prisma.taskList.update({
+        where: { id: deleteTaskDto.taskListId },
+        data: {
+          numTasks: { decrement: 1 },
+          numTasksCompleted: { decrement: 1 },
+        },
+      });
+    } else {
+      await this.prisma.taskList.update({
+        where: { id: deleteTaskDto.taskListId },
+        data: { numTasks: { decrement: 1 } },
+      });
+    }
+
     return this.prisma.task.delete({
       where: { id: deleteTaskDto.id },
       select: {
@@ -150,6 +189,7 @@ export class TasksService {
         taskListId: true,
         name: true,
         description: true,
+        completed: true,
         dueBy: true,
       },
     });

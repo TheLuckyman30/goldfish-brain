@@ -13,7 +13,7 @@ function InputLabel({
   ...labelParams
 }: InputLabelProps) {
   const labelClasses = {
-    primary: 'text-gray-900',
+    primary: 'text-white text-[18px]',
   };
 
   return (

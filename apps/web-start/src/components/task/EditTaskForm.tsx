@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { useApiMutation } from '../../integrations/api';
 import type { TaskOut, UpdateTask } from '@repo/api/task';
+import { Modal, ModalHeader } from '../shared-ui/Modal';
+import Form from '../shared-ui/Form';
+import InputLabel from '../shared-ui/InputLabel';
+import { TextArea } from '../shared-ui/TextArea';
+import Button from '../shared-ui/Button';
 
 interface EditFormProps {
   task: TaskOut | null;
@@ -28,50 +33,44 @@ export function EditTaskForm({
         taskListId: task.taskListId,
         name: taskName,
         description: taskDescription,
+        completed: null,
         dueBy: null,
       });
     }
   };
 
   return (
-    <div
-      className="fixed flex justify-center items-center inset-0 w-lvw h-lvh bg-white/10 backdrop-blur-sm"
-      style={{ zIndex: 20 }}
-    >
-      <div className="flex flex-col items-center bg-white shadow-md p-5 rounded-lg w-[25%]">
-        <span
-          className="self-end text-orange-900 cursor-pointer text-2xl"
-          onClick={() => setEditForm(false)}
-        >
-          x
-        </span>
-        <form onSubmit={handleSubmit} className="text-orange-950">
-          <label htmlFor="taskName">Task Name</label>
-          <input
-            type="text"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-            id="taskName"
-          ></input>
-          <br></br>
-          <label htmlFor="taskDescription">Task Description</label>
-          <input
-            type="text"
-            value={taskDescription}
-            onChange={(e) => setTaskDescription(e.target.value)}
-            id="taskDescription"
-          ></input>
-          <div style={{ margin: '5vh' }}></div>
+    <Modal show={true} setShow={setEditForm} backdrop>
+      <ModalHeader>Edit Task</ModalHeader>
+      <Form onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-6 ">
           <div>
-            <button type="submit" className="button">
-              Submit
-            </button>
+            <InputLabel htmlFor="taskName">Task Name</InputLabel>
+            <TextArea
+              id="taskName"
+              placeholder="Name"
+              value={taskName}
+              onChange={(e) => setTaskName(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <InputLabel htmlFor="taskDescription">Task Description</InputLabel>
+            <TextArea
+              id="taskDescription"
+              placeholder="Description"
+              value={taskDescription}
+              onChange={(e) => setTaskDescription(e.target.value)}
+            />
+          </div>
+          <div>
+            <Button type="submit">Submit</Button>
             {mutation.isPending && <div>Loading...</div>}
             {mutation.isError && <div>{mutation.error.message}</div>}
-            {mutation.isSuccess && <div>Task Edited</div>}
+            {mutation.isSuccess && <div>Task Added</div>}
           </div>
-        </form>
-      </div>
-    </div>
+        </div>
+      </Form>
+    </Modal>
   );
 }

@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Param, Patch, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Param, Patch, Post, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdateUser, UserOut } from '@repo/api/user';
+import { UpdateUser, UpdateUsername, UserOut } from '@repo/api/user';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
@@ -43,5 +43,26 @@ export class UsersController {
       throw new UnauthorizedException();
     }
     return this.usersService.getProvider(auth.userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('/me/username')
+  async updateMyUsername(
+    @CurrentUser() auth: JwtUser,
+    @Body() body: UpdateUsername,
+   ) {
+    return this.usersService.updateUsernameForMe(auth.userId, body.username);
+   }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('reset-password')
+  async resetPassword(@CurrentUser() user: JwtUser) {
+    if (user.provider !== 'auth0') {
+      throw new BadRequestException('External accounts cannot reset password');
+    }
+
+    const dbUser = await this.usersService.findUser({ id: user.userId });
+
+    return this.usersService.sendPasswordResetEmail(dbUser.email);
   }
 }
