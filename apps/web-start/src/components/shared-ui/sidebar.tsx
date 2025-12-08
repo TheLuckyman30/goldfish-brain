@@ -65,12 +65,8 @@ export function Sidebar() {
             Task Lists
           </Link>
           <br />
-          <Link to="/profile" className="buttonStyle buttonJump">
-            Profile
-          </Link>
-          <br />
           <Link to="/settings" className="buttonStyle buttonJump">
-            Settings
+            Profile
           </Link>
           <br />
         </div>

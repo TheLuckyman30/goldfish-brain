@@ -8,7 +8,7 @@ const getNavItems = (isAuthenticated: boolean) => {
     return [
       { name: 'Home', link: '/' },
       { name: 'Task Lists', link: '/task-lists' },
-      { name: 'Settings', link: '/settings' },
+      { name: 'Profile', link: '/settings' },
     ];
   }
   return [];

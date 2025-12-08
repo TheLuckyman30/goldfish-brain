@@ -9,11 +9,13 @@ import Button from '../shared-ui/Button';
 interface EditUsernameFormProps {
   showForm: boolean;
   setShowForm: (show: boolean) => void;
+  setUsername: (newUsername: string) => void;
 }
 
 export function EditUsernameForm({
   showForm,
   setShowForm,
+  setUsername,
 }: EditUsernameFormProps): React.JSX.Element {
   const [newUsername, setNewUsername] = useState<string>("");
   const updateUsernameMutation = useApiMutation({
@@ -27,6 +29,7 @@ export function EditUsernameForm({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // prevent page reload
     if (newUsername) {
+      setUsername(newUsername);
       updateUsernameMutation.mutate({
         username: newUsername,
       });
