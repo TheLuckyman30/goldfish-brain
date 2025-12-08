@@ -1,13 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { UpdateUser, UserOut } from '@repo/api/user';
+import { UpdateUser, UpdateUsername, UserOut } from '@repo/api/user';
 import { Prisma } from '@repo/database';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private prisma: PrismaService,
-  ) {}
+  constructor(private prisma: PrismaService) {}
   private readonly domain = process.env.AUTH0_DOMAIN!;
   private readonly clientId = process.env.AUTH0_CLIENT_ID!;
   private readonly audience = `https://${this.domain}/api/v2/`;
@@ -28,7 +26,11 @@ export class UsersService {
   }
 
   updateUser(updateUserDto: UpdateUser): Promise<UserOut> {
-    return this.prisma.user.update({select: { id: true, name: true, username: true, email: true }, where: {id: updateUserDto.id}, data: updateUserDto})
+    return this.prisma.user.update({
+      select: { id: true, name: true, username: true, email: true },
+      where: { id: updateUserDto.id },
+      data: updateUserDto,
+    });
   }
 
   async getProvider(userId: string): Promise<{ provider: string }> {
@@ -40,33 +42,30 @@ export class UsersService {
     };
   }
 
-  async updateUsernameForMe(userId: string, newUsername: string) {
-    const auth = await this.prisma.authentication.findUnique({
-      where: { userId },
-    });
-
-    if (auth.provider !== 'auth0') {
-      throw new BadRequestException('External accounts cannot change username');
-    }
-
-    const updated = await this.prisma.user.update({
+  updateUsernameForMe(
+    upadteUsernameDto: UpdateUsername,
+    userId: string,
+  ): Promise<UserOut> {
+    return this.prisma.user.update({
       where: { id: userId },
-      data: { username: newUsername },
+      data: upadteUsernameDto,
+      select: { id: true, name: true, email: true, username: true },
     });
-
-    return updated;
   }
 
   async sendPasswordResetEmail(email: string) {
-    const res = await fetch(`https://${this.domain}/dbconnections/change_password`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        client_id: process.env.AUTH0_CLIENT_ID,
-        email,
-        connection: 'Username-Password-Authentication',
-      }),
-    });
+    const res = await fetch(
+      `https://${this.domain}/dbconnections/change_password`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          client_id: process.env.AUTH0_CLIENT_ID,
+          email,
+          connection: 'Username-Password-Authentication',
+        }),
+      },
+    );
 
     const body = await res.text();
     return { ok: res.ok, body };
