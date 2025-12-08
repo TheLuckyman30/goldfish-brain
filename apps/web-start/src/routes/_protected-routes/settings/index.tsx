@@ -109,7 +109,7 @@ function Settings() {
                 <p className="p-4">Username:</p>
                 <p className="p-4">Email:</p>
               </div>
-              <div className="text-left wrap-break-word min-h-1/2 w-fit">
+              <div className="text-left wrap-break-word w-fit">
                 <div className="flex gap-2 items-center">
                   {!showUsernameForm && <p className="p-4">{username}</p>}
                   {showUsernameForm && (
