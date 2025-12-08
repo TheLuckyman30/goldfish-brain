@@ -52,8 +52,8 @@ function TaskList() {
           <h1 className="text-5xl text-center rounded-md bg-[#fddbcd] p-10 text-[#794531fb] font-bold">
             {data.name} Tasks
           </h1>
-          <div className="flex flex-col gap-8 ml-5">
-            <div className="flex gap-5 mt-5 ">
+          <div className="flex flex-col gap-8 ">
+            <div className="flex gap-5 mt-5 ml-5">
               <Link to="/task-lists">
                 <Button>Back</Button>
               </Link>
@@ -61,9 +61,9 @@ function TaskList() {
               <Button onClick={() => refetch()}>Refresh</Button>
             </div>
             <hr className="bg-[#fddbcdeb] text-[#fddbcdeb] w-[90%] border-2 border-[#fddbcdeb]"></hr>
-            <div className="flex w-full justify-center">
-              <div className="flex flex-col gap-5 w-[60%]">
-                <div className="flex flex-wrap gap-5">
+            <div className="flex flex-col w-full min-w-full items-center justify-center">
+              <div className="flex flex-col gap-5 justify-center items-center ">
+                <div className="flex flex-wrap gap-5 w-[50vw] min-w-[50vw]">
                   {tasks.map((task) => (
                     <>
                       {!task.completed && (
@@ -77,12 +77,17 @@ function TaskList() {
                     </>
                   ))}
                 </div>
-                {tasks.length > 0 && (
+                
+              </div>
+              
+            </div>
+            <div className="items-center justify-center w-full flex flex-col mb-5">
+            {tasks.length > 0 && (
                   <div
-                    className="buttonStyling shadow-lg shadow-black/20 max-w-[30%]"
+                    className="buttonStyling shadow-lg shadow-black/20 min-w-[50vw] w-[50vw] p-2 mb-5"
                     onClick={() => setShowComplete(!showComplete)}
                   >
-                    <div className="flex justify-between items-center w-full">
+                    <div className="flex justify-between items-center gap-4">
                       <span>Completed Tasks ({completeTasks.length})</span>
                       <span>
                         {showComplete ? <ChevronDown /> : <ChevronUp />}
@@ -92,7 +97,7 @@ function TaskList() {
                 )}
                 {showComplete &&
                   (completeTasks.length > 0 ? (
-                    <div className="flex flex-wrap gap-5 justify-center">
+                    <div className="flex flex-wrap gap-5 justify-center w-[50vw] min-w-[50vw]">
                       {completeTasks.map((task) => (
                         <TaskCard
                           key={task.id}
@@ -103,12 +108,11 @@ function TaskList() {
                       ))}
                     </div>
                   ) : (
-                    <p className="p-2 rounded-md shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl w-[80%]">
+                    <p className="p-2 rounded-md shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl mt-5 w-[80%]">
                       No completed tasks in this list!
                     </p>
                   ))}
-              </div>
-            </div>
+                  </div>
           </div>
           {createForm && (
             <CreateTaskForm

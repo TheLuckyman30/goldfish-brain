@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { useApiMutation } from '../../integrations/api';
 import type { DeleteTaskList, TaskListOut } from '@repo/api/task-list';
 import { Loading } from '../loading/loadingScreen';
+import '../TaskCard.css'
 
 interface TaskListCardProps {
   taskList: TaskListOut;
@@ -24,7 +25,7 @@ function TaskListCard({
     <Link
       to="/task-lists/$taskListID"
       params={{ taskListID: taskList.id }}
-      className="flex flex-col flex-wrap rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] w-[40vh] bg-[#815656] text-[#f8d8d1]"
+      className="flex flex-col flex-wrap rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] w-[40vh] bg-[#815656] text-[#f8d8d1] buttonJump"
     >
       <header className="flex items-center relative p-[1vh] h-[6vh]">
         <div className="text-2xl font-bold">{taskList.name}</div>

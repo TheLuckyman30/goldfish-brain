@@ -1,0 +1,16 @@
+.buttonJump {
+  cursor: pointer;
+  transition: transform 0.6s ease-out; /* smooth lift on hover */
+}
+
+.buttonJump:hover {
+  animation: floatUp 1.4s ease-in-out infinite;
+}
+
+/* Floaty upward movement */
+@keyframes floatUp {
+  0%   { transform: translateY(0px); opacity: 1; }
+  50% { transform: translateY(-6px); } /* settle slightly above */
+  100% { transform: translateY(0px); } /* settle slightly above */
+
+}

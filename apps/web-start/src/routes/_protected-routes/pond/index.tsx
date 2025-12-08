@@ -138,19 +138,19 @@ function Pond() {
 
               <div className="flex flex-row mt-auto mb-5">
                 <button
-                  className=" shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
+                  className=" cursor-pointer shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
                   onClick={resetGame}
                 >
                   Reset Pond
                 </button>
                 <button
-                  className=" shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] w-[12vw] flex text-center items-center justify-center min-h-[8vh] h-[8vh] bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
+                  className=" cursor-pointer shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] w-[12vw] flex text-center items-center justify-center min-h-[8vh] h-[8vh] bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
                   onClick={saveGame}
                 >
                   Save Game{' '}
                 </button>
                 <button
-                  className=" shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[5vw] w-[12vw] flex min-h-[5vh] h-[8vh] text-center items-center justify-center bg-[#8ac5cd] rounded-[60px] text-2xl text-white mb-3 ml-3  hover:bg-[#78caa4] hover:text-white"
+                  className="cursor-pointer shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[5vw] w-[12vw] flex min-h-[5vh] h-[8vh] text-center items-center justify-center bg-[#8ac5cd] rounded-[60px] text-2xl text-white mb-3 ml-3  hover:bg-[#78caa4] hover:text-white"
                   onClick={endGame}
                 >
                   End Game
@@ -163,7 +163,7 @@ function Pond() {
             <div className="absolute top-5 left-1/2 -translate-x-1/2">
               <button
                 id="showButton"
-                className=" min-w-[15vw] w-[15vw] flex min-h-[10vh] h-[10vh] text-center items-center justify-center bg-[#538f97] rounded-[60px] 
+                className=" cursor-pointer min-w-[15vw] w-[15vw] flex min-h-[10vh] h-[10vh] text-center items-center justify-center bg-[#538f97] rounded-[60px] 
                 text-3xl text-white shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] hover:bg-[#8ac5cd] hover:text-white"
                 onClick={catchRandomFish}
                 disabled={activeFish !== null || !uncompletedFish.length}
@@ -181,23 +181,24 @@ function Pond() {
             </div>
 
             {activeFish && (
-              <div className=" bg-[#538f97] absolute flex-col z-20 text-left items-center text-3xl mt-[14vh] rounded-[10px] text-white p-5 w-[30vw] h-[68vh] min-h-[68vh] justify-center shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]">
-                <div>
+              <div className=" bg-[#538f97] absolute flex-col z-20 text-left items-center text-3xl mt-[14vh] rounded-[10px] text-white p-5 w-[30vw] h-[70vh] min-h-[70vh] justify-center shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]">
+                <div className="mb-5 mt-3 ml-5 text-4xl ">
                   Fish Caught:
-                  <br></br>
-                  {activeFish && <CaughtFish caughtFish={activeFish} />}
+                  
                 </div>
+                
+                <div>{activeFish && <CaughtFish caughtFish={activeFish} />}</div>
 
-                <div className="flex flex-row mt-auto bottom-0 absolute">
+                <div className="flex flex-row mt-auto bottom-0 absolute mb-3">
                   <button
-                    className=" shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] flex w-[12vw] min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white hover:bg-[#8ac5cd] hover:text-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3"
+                    className=" cursor-pointer shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] flex w-[12vw] min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white hover:bg-[#8ac5cd] hover:text-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3"
                     onClick={markComplete}
                     disabled={!uncompletedFish.length}
                   >
                     Send to Cooler
                   </button>
                   <button
-                    className=" shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
+                    className=" cursor-pointer shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
                     onClick={releaseFish}
                     disabled={!activeFish || !uncompletedFish.length}
                   >

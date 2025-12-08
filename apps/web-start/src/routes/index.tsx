@@ -82,7 +82,7 @@ function Home() {
           </section>
         </div>
       </div>
-      <div className=" min-w-full w-full min-h-[60vh] h-[80vh] bg-[#397078] "></div>
+      {/* <div className=" min-w-full w-full min-h-[60vh] h-[80vh] bg-[#397078] "></div>*/}
     </>
   );
 }
