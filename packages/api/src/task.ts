@@ -23,7 +23,7 @@ export const UpdateTask = z.object({
   taskListId: z.uuid(),
   name: z.uuid().nullable(),
   description: z.string().nullable(),
-  completed: z.boolean().nullable(),
+  completed: z.boolean().optional(),
   dueBy: z.iso.datetime().nullable(),
 });
 export type UpdateTask = z.infer<typeof UpdateTask>;
