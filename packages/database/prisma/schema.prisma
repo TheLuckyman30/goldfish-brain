@@ -47,16 +47,18 @@ model Folder {
 }
 
 model TaskList {
-  id          String   @id @default(uuid())
-  userId      String
-  folderId    String?
-  name        String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  folder      Folder?  @relation(fields: [folderId], references: [id], onDelete: SetNull)
-  tasks       Task[]
+  id                String   @id @default(uuid())
+  userId            String
+  folderId          String?
+  name              String
+  numTasks          Int      @default(0)
+  numTasksCompleted Int      @default(0)
+  description       String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folder            Folder?  @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  tasks             Task[]
 }
 
 model Task {
@@ -64,6 +66,7 @@ model Task {
   taskListId  String?
   name        String
   description String?
+  completed   Boolean   @default(false)
   dueBy       DateTime?
   hasFish     Boolean   @default(false)
   createdAt   DateTime  @default(now())

@@ -34,7 +34,11 @@ function TaskCard({ task, setSelectedTask, setEditForm }: TaskCardProps) {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                mutation.mutate({ id: task.id, taskListId: task.taskListId });
+                mutation.mutate({
+                  id: task.id,
+                  taskListId: task.taskListId,
+                  completed: task.completed,
+                });
               }}
               className="bg-transparent border-2 rounded-sm p-1.5 text-[#815656] cursor-pointer hover:bg-yellow-950/20"
             >

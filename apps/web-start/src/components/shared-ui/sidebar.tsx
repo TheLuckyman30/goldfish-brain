@@ -57,15 +57,15 @@ export function Sidebar() {
             }}
           />
           <br />
-          <Link to="/pond" className="buttonStyle">
+          <Link to="/pond" className="buttonStyle buttonJump">
             Pond
           </Link>
           <br />
-          <Link to="/task-lists" className="buttonStyle">
+          <Link to="/task-lists" className="buttonStyle buttonJump">
             Task Lists
           </Link>
           <br />
-          <Link to="/settings" className="buttonStyle">
+          <Link to="/settings" className="buttonStyle buttonJump">
             Profile
           </Link>
           <br />

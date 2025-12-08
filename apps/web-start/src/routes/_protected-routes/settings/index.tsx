@@ -46,9 +46,9 @@ function Settings() {
   function resetPassword() {
     try {
       resetPasswordMutation.mutate({});
-      setPasswordText("Password reset email sent!");
+      setPasswordText('Password reset email sent!');
     } catch {
-      setPasswordText("Email failed to send!");
+      setPasswordText('Email failed to send!');
     }
   }
 

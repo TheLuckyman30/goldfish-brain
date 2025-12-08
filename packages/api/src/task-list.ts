@@ -7,6 +7,8 @@ export const TaskListOut = z.object({
   folderId: z.uuid().nullable(),
   name: z.string(),
   description: z.string().nullable(),
+  numTasks: z.int(),
+  numTasksCompleted: z.int(),
 });
 export type TaskListOut = z.infer<typeof TaskListOut>;
 
@@ -16,27 +18,29 @@ export const TaskListTasksOut = z.object({
   folderId: z.uuid().nullable(),
   name: z.string(),
   description: z.string().nullable(),
-  tasks: z.array(TaskOut)
+  tasks: z.array(TaskOut),
 });
-export type TaskListTasksOut = z.infer<typeof TaskListTasksOut>
+export type TaskListTasksOut = z.infer<typeof TaskListTasksOut>;
 
 export const CreateTaskList = z.object({
   name: z.string(),
   description: z.string().nullable(),
   folderId: z.uuid().nullable(),
 });
-export type CreateTaskList = z.infer<typeof CreateTaskList>
+export type CreateTaskList = z.infer<typeof CreateTaskList>;
 
 export const UpdateTaskList = z.object({
   id: z.uuid(),
   userId: z.uuid(),
   name: z.string().nullable(),
   description: z.string().nullable(),
+  numTasks: z.int().nullable(),
+  numTasksCompleted: z.int().nullable(),
 });
 export type UpdateTaskList = z.infer<typeof UpdateTaskList>;
 
 export const DeleteTaskList = z.object({
   id: z.uuid(),
-  userId: z.uuid()
+  userId: z.uuid(),
 });
 export type DeleteTaskList = z.infer<typeof DeleteTaskList>;

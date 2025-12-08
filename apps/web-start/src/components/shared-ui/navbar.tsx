@@ -27,11 +27,11 @@ export function Navbar() {
       >
         ☰
       </button>
-      <div className="absolute left-[50%] gap-[10vh] rounded-[90vh] bg-white min-h-[8vh] max-h-[10vh] min-w-[40%] max-w-[60%] items-center justify-center flex text-[#6c3b27d7] transform -translate-x-[50%]">
+      <div className="absolute left-[50%] gap-[5vw] rounded-[90vh] bg-white min-h-[8vh] max-h-[10vh] min-w-[40%] max-w-[60%] items-center justify-center flex text-[#6c3b27d7] transform -translate-x-[50%]">
         {navItems.map((item, index) => (
           <Link
             to={item.link}
-            className="bg-white hover:bg-sky-100 rounded-md p-5 duration-200  "
+            className="bg-white hover:bg-sky-100 rounded-md p-5 buttonJump"
             key={index}
           >
             <span className="relative group-hover:text-white">{item.name}</span>
@@ -46,7 +46,7 @@ export function Navbar() {
             onClick={() =>
               loginWithRedirect({ authorizationParams: { prompt: 'consent' } })
             }
-            className="bg-white hover:bg-sky-100 rounded-md p-5 cursor-pointer duration-200"
+            className="bg-white hover:bg-sky-100 rounded-md p-5 cursor-pointer buttonJump"
             
           >
             Login
@@ -57,7 +57,7 @@ export function Navbar() {
             onClick={() =>
               logout({ logoutParams: { returnTo: window.location.origin } })
             }
-            className="bg-white hover:bg-sky-100 rounded-md p-5 cursor-pointer"
+            className="bg-white hover:bg-sky-100 rounded-md p-5 cursor-pointer buttonJump"
           >
             Logout
           </button>
