@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Loading } from '../../../components/loading/loadingScreen';
 import { useGameLogic } from '../../../utils/game-logic';
 import TaskListForm from '../../../components/pond/TaskListForm';
@@ -8,14 +8,18 @@ import pondBackground from '../../../images/pondBackgroundNew.png';
 import fisherman from '../../../images/fisherman.gif';
 import schoolOfFish from '../../../images/1112Fish.gif';
 import '../../../components/button.css';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
   component: Pond,
 });
 
 function Pond() {
-  
 
+  const [showComplete, setShowComplete] = useState<boolean>(true);
+  const [showCompleted, setShowCompleted] = useState<boolean>(true);
+
+  
 
   const {
     allFish,
@@ -51,91 +55,102 @@ function Pond() {
               backgroundRepeat: 'no-repeat',
             }}
           >
-
             <div className="flex flex-col h-full items-center">
+              <section className="flex-col flex items-center">
+                <div className=" bg-white min-w-[30vw] min-h-[60vh] h-[60vh] w-[35vw] rounded-[60px] ml-5 m-2 mt-10 p-3 flex flex-col text-center ">
+                  <div className="flex flex-row ">
+                    
 
-
-
-
-<section className="flex-col flex items-center">
-            <div  className=" bg-white min-w-[30vw] min-h-[60vh] h-[60vh] w-[35vw] rounded-[60px] ml-5 m-2 mt-10 p-3 flex flex-col text-center ">
-              <div className= "flex flex-row ">
-                
-                <div className=" flex text-3xl text-center items-center justify-center rounded-md p-5 text-[#794531fb]">
-                  Uncompleted Tasks:{' '}
-              </div>
-              
-              </div>
-              <section className=" flex flex-col w-full overflow-y-auto mb-3">
-                {uncompletedFish && (
-                  <div className="w-full p-5">
-                    {uncompletedFish.map((fish) => (
+                    <div className=" flex text-3xl text-center items-center justify-center rounded-md p-5 text-[#794531fb]">
                       <div
-                        key={fish.id}
-                        className="flex items-stretch justify-between min-w-[16vw] w-[30vw] min-h-[10vh] mb-3 rounded-[60px] overflow-hidden shadow-sm"
-                      >
-                        <div className=" bg-[#794531fb] min-w-[12vw] w-[12vw] text-white flex text-center items-center justify-center px-6 text-[20px]">
-                          {fish.task.name}
-                        </div>
+                      className="ml-auto mr-5 cursor-pointer text-white text-3xl bg-[#794531fb] rounded-[60px] w-[5vw] h-[5vh] flex items-center justify-center"
+                      onClick={() => setShowComplete(!showComplete)}
+                    >
+                        <span>{showComplete ? <ChevronDown/> : <ChevronUp/>}</span>
+                      
+                    </div>
+                      Uncompleted Tasks:{' '}
+                    </div>
+                  </div>
+                  {showComplete && ( uncompletedFish.length > 0 ? (
+                  <section className=" flex flex-col w-full overflow-y-auto mb-3">
+                    {uncompletedFish && (
+                      <div className="w-full p-5">
+                        {uncompletedFish.map((fish) => (
+                          <div
+                            key={fish.id}
+                            className="flex items-stretch justify-between min-w-[16vw] w-[30vw] min-h-[10vh] mb-3 rounded-[60px] overflow-hidden shadow-sm"
+                          >
+                            <div className=" bg-[#794531fb] min-w-[12vw] w-[12vw] text-white flex text-center items-center justify-center px-6 text-[20px]">
+                              {fish.task.name}
+                            </div>
 
-                        <div className=" bg-[#c98c74fb] text-[#f9efea] min-w-[18vw] w-[18vw] flex items-center justify-left px-4 text-[18px] text-left">
-                          {fish.task.description}
-                        </div>
+                            <div className=" bg-[#c98c74fb] text-[#f9efea] min-w-[18vw] w-[18vw] flex items-center justify-left px-4 text-[18px] text-left">
+                              {fish.task.description}
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                )}
-              </section>
+                    )}
+                  </section>
+                  ): <p className="p-2 rounded-[60px] ml-5 shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl w-[80%]"> All tasks completed !!</p>)}
 
-              <div className=" flex text-3xl text-center items-center justify-center rounded-md p-5 text-[#794531fb]">
-                Completed Tasks:{' '}
-              </div>
-              <section className="flex flex-col  w-full overflow-y-auto mb-3">
-                {allFish && (
-                  <div className="w-full p-5">
-                    {allFish.map((fish) => (
+                  <div className="flex flex-row ">
+                  <div className=" flex text-3xl text-center items-center justify-center rounded-md p-5 text-[#794531fb]">
+                  <div
+                      className="ml-auto mr-5 cursor-pointer text-white text-3xl bg-[#794531fb] rounded-[60px] w-[5vw] h-[5vh] flex items-center justify-center"
+                      onClick={() => setShowCompleted(!showCompleted)}
+                    >
+                        <span>{showCompleted ? <ChevronDown/> : <ChevronUp/>}</span>
                       
-                      <>{(fish.completed) &&
-                      <div
-                        key={fish.id}
-                        className="flex items-stretch justify-between min-w-[16vw] w-[30vw] min-h-[10vh] mb-3 rounded-[60px] overflow-hidden shadow-sm"
-                      >
-                        <div className=" bg-[#794531fb] min-w-[12vw] w-[12vw] text-white flex text-center items-center justify-center px-6 text-[20px]">
-                          {fish.task.name}
-                        </div>
-
-                        <div className=" bg-[#c98c74fb] text-[#f9efea] min-w-[18vw] w-[18vw] flex items-center justify-left px-4 text-[18px] text-left">
-                          {fish.task.description}
-                        </div>
-                      </div>}</>
-                      
-                    ))}
+                    </div>
+                    Completed Tasks:{' '}
                   </div>
-                )}
+                  </div>
+                  {showCompleted && ( allFish.length !== uncompletedFish.length ? (
+                  <section className="flex flex-col  w-full overflow-y-auto mb-3">
+                    {allFish && (
+                      <div className="w-full p-5">
+                        {allFish.map((fish) => (
+                          <>
+                            {fish.completed && (
+                              <div
+                                key={fish.id}
+                                className="flex items-stretch justify-between min-w-[16vw] w-[30vw] min-h-[10vh] mb-3 rounded-[60px] overflow-hidden shadow-sm"
+                              >
+                                <div className=" bg-[#794531fb] min-w-[12vw] w-[12vw] text-white flex text-center items-center justify-center px-6 text-[20px]">
+                                  {fish.task.name}
+                                </div>
+
+                                <div className=" bg-[#c98c74fb] text-[#f9efea] min-w-[18vw] w-[18vw] flex items-center justify-left px-4 text-[18px] text-left">
+                                  {fish.task.description}
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        ))}
+                      </div>
+                    )}
+                  </section>
+                  ): <p className="p-2 rounded-[60px] ml-5 shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl w-[80%]"> No completed tasks yet. </p>)}
+                </div>
               </section>
-
-
-            </div>
-            
-          </section>
-
-
 
               <div className="flex flex-row mt-auto mb-5">
                 <button
-                  className=" min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
+                  className=" shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
                   onClick={resetGame}
                 >
                   Reset Pond
                 </button>
                 <button
-                  className=" min-w-[12vw] w-[12vw] flex text-center items-center justify-center min-h-[8vh] h-[8vh] bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
+                  className=" shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] w-[12vw] flex text-center items-center justify-center min-h-[8vh] h-[8vh] bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
                   onClick={saveGame}
                 >
                   Save Game{' '}
                 </button>
                 <button
-                  className=" min-w-[5vw] w-[12vw] flex min-h-[5vh] h-[8vh] text-center items-center justify-center bg-[#8ac5cd] rounded-[60px] text-2xl text-white mb-3 ml-3  hover:bg-[#78caa4] hover:text-white"
+                  className=" shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[5vw] w-[12vw] flex min-h-[5vh] h-[8vh] text-center items-center justify-center bg-[#8ac5cd] rounded-[60px] text-2xl text-white mb-3 ml-3  hover:bg-[#78caa4] hover:text-white"
                   onClick={endGame}
                 >
                   End Game
@@ -175,14 +190,14 @@ function Pond() {
 
                 <div className="flex flex-row mt-auto bottom-0 absolute">
                   <button
-                    className=" min-w-[12vw] flex w-[12vw] min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white hover:bg-[#8ac5cd] hover:text-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3"
+                    className=" shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] flex w-[12vw] min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white hover:bg-[#8ac5cd] hover:text-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3"
                     onClick={markComplete}
                     disabled={!uncompletedFish.length}
                   >
                     Send to Cooler
                   </button>
                   <button
-                    className=" min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
+                    className=" shadow-[3px_5px_0px_0px_rgba(0,0,0,0.5)] min-w-[12vw] w-[12vw] flex min-h-[8vh] h-[8vh] text-center items-center justify-center bg-white rounded-[60px] text-2xl text-[#538f97] mb-3 ml-3  hover:bg-[#8ac5cd] hover:text-white"
                     onClick={releaseFish}
                     disabled={!activeFish || !uncompletedFish.length}
                   >
