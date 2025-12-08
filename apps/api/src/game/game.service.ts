@@ -68,7 +68,7 @@ export class GameService {
 
     const tasks = await this.prisma.task.findMany({
       where: { taskListId: taskList.id },
-      select: { id: true },
+      select: { id: true, completed: true },
     });
     const fish = fishGenerator(tasks);
 
