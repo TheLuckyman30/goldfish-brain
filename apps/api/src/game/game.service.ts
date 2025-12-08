@@ -53,38 +53,41 @@ export class GameService {
     createGameDto: CreateGame,
     userId: string,
   ): Promise<GameOut> {
-    const taskList = await this.prisma.taskList.findUnique({
-      where: { id: createGameDto.taskListId },
-      select: { id: true, userId: true },
-    });
+    const { taskListId } = createGameDto;
+    try {
+      const tasks = await this.prisma.task.findMany({
+        where: { taskListId, taskList: { userId } },
+        select: { id: true, completed: true },
+      });
+      const fish = fishGenerator(tasks);
 
-    if (!taskList) {
-      throw new NotFoundException();
-    }
-
-    if (taskList.userId !== userId) {
-      throw new ForbiddenException();
-    }
-
-    const tasks = await this.prisma.task.findMany({
-      where: { taskListId: taskList.id },
-      select: { id: true },
-    });
-    const fish = fishGenerator(tasks);
-
-    return this.prisma.game.create({
-      data: {
-        userId: userId,
-        linkedTaskListId: createGameDto.taskListId,
-        fish: {
-          createMany: { data: fish, skipDuplicates: true },
+      return this.prisma.game.create({
+        data: {
+          userId: userId,
+          linkedTaskListId: taskListId,
+          fish: {
+            createMany: { data: fish, skipDuplicates: true },
+          },
         },
-      },
-      select: {
-        id: true,
-        userId: true,
-      },
-    });
+        select: {
+          id: true,
+          userId: true,
+        },
+      });
+    } catch (error) {
+      const taskList = await this.prisma.taskList.findUnique({
+        where: { id: createGameDto.taskListId },
+        select: { id: true, userId: true },
+      });
+
+      if (!taskList) {
+        throw new NotFoundException();
+      }
+
+      if (taskList.userId !== userId) {
+        throw new ForbiddenException();
+      }
+    }
   }
 
   deleteGame(deleteGameDto: DeleteGame, userId: string): Promise<GameOut> {
