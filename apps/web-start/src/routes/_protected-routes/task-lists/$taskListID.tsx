@@ -77,17 +77,19 @@ function TaskList() {
                     </>
                   ))}
                 </div>
-                <div
-                  className="buttonStyling shadow-lg shadow-black/20 max-w-[30%]"
-                  onClick={() => setShowComplete(!showComplete)}
-                >
-                  <div className="flex justify-between items-center w-full">
-                    <span>Completed Tasks ({completeTasks.length})</span>
-                    <span>
-                      {showComplete ? <ChevronDown /> : <ChevronUp />}
-                    </span>
+                {tasks.length > 0 && (
+                  <div
+                    className="buttonStyling shadow-lg shadow-black/20 max-w-[30%]"
+                    onClick={() => setShowComplete(!showComplete)}
+                  >
+                    <div className="flex justify-between items-center w-full">
+                      <span>Completed Tasks ({completeTasks.length})</span>
+                      <span>
+                        {showComplete ? <ChevronDown /> : <ChevronUp />}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )}
                 {showComplete &&
                   (completeTasks.length > 0 ? (
                     <div className="flex flex-wrap gap-5 justify-center">
