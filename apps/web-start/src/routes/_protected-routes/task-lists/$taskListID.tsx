@@ -20,11 +20,13 @@ function TaskList() {
   const { taskListID } = Route.useParams();
   const [createForm, setCreateForm] = useState<boolean>(false);
   const [editForm, setEditForm] = useState<boolean>(false);
+  const [showComplete, setShowComplete] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<TaskOut | null>(null);
   const { data, isFetching, refetch } = useApiQuery<TaskListTasksOut>(
     ['tasks', taskListID],
     `/task-lists/${taskListID}/tasks`,
   );
+  const tasks = data?.tasks ?? [];
 
   useEffect(() => {
     setEditForm(false);
@@ -39,12 +41,12 @@ function TaskList() {
   if (data) {
     return (
       <div
-        className="flex justify-center min-h-screen w-lvw pt-45 bg-no-repeat bg-cover bg-top"
+        className="flex justify-center min-h-screen  w-lvw pt-45 bg-no-repeat bg-cover bg-top pb-5"
         style={{
           backgroundImage: `url(${fishAnimate})`,
         }}
       >
-        <div className="flex flex-col w-[75%] bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]">
+        <div className="flex flex-col w-[75%] bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] pb-5">
           <h1 className="text-5xl text-center rounded-md bg-[#fddbcd] p-10 text-[#794531fb] font-bold">
             {data.name} Tasks
           </h1>
@@ -57,15 +59,48 @@ function TaskList() {
               <Button onClick={() => refetch()}>Refresh</Button>
             </div>
             <hr className="bg-[#fddbcdeb] text-[#fddbcdeb] w-[90%] border-2 border-[#fddbcdeb]"></hr>
-            <div className="flex flex-col flex-wrap gap-10 items-center">
-              {data.tasks.map((task) => (
-                <TaskCard
-                  key={task.id}
-                  task={task}
-                  setSelectedTask={setSelectedTask}
-                  setEditForm={setEditForm}
-                />
-              ))}
+            <div className="flex w-full justify-center">
+              <div className="flex flex-col gap-5 w-[60%]">
+                <div className="flex flex-wrap gap-5">
+                  {tasks.map((task) => (
+                    <>
+                      {!task.completed && (
+                        <TaskCard
+                          key={task.id}
+                          task={task}
+                          setSelectedTask={setSelectedTask}
+                          setEditForm={setEditForm}
+                        />
+                      )}
+                    </>
+                  ))}
+                </div>
+                <div
+                  className="buttonStyling shadow-lg shadow-black/20 max-w-[30%]"
+                  onClick={() => setShowComplete(!showComplete)}
+                >
+                  <div className="flex justify-between items-center w-full">
+                    <span>Completed Tasks</span>
+                    <span>{showComplete ? '^' : 'v'}</span>
+                  </div>
+                </div>
+                {showComplete && (
+                  <div className="flex flex-wrap gap-5 justify-center">
+                    {tasks.map((task) => (
+                      <>
+                        {task.completed && (
+                          <TaskCard
+                            key={task.id}
+                            task={task}
+                            setSelectedTask={setSelectedTask}
+                            setEditForm={setEditForm}
+                          />
+                        )}
+                      </>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           {createForm && (

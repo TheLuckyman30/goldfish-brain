@@ -15,7 +15,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CreateUserIndexRouteImport } from './routes/create-user/index'
 import { Route as ProtectedRoutesTaskListsIndexRouteImport } from './routes/_protected-routes/task-lists/index'
 import { Route as ProtectedRoutesSettingsIndexRouteImport } from './routes/_protected-routes/settings/index'
-import { Route as ProtectedRoutesProfileIndexRouteImport } from './routes/_protected-routes/profile/index'
 import { Route as ProtectedRoutesPondIndexRouteImport } from './routes/_protected-routes/pond/index'
 import { Route as ProtectedRoutesCreateTaskIndexRouteImport } from './routes/_protected-routes/create-task/index'
 import { Route as ProtectedRoutesTaskListsTaskListIDRouteImport } from './routes/_protected-routes/task-lists/$taskListID'
@@ -51,12 +50,6 @@ const ProtectedRoutesSettingsIndexRoute =
     path: '/settings/',
     getParentRoute: () => ProtectedRoutesRouteRoute,
   } as any)
-const ProtectedRoutesProfileIndexRoute =
-  ProtectedRoutesProfileIndexRouteImport.update({
-    id: '/profile/',
-    path: '/profile/',
-    getParentRoute: () => ProtectedRoutesRouteRoute,
-  } as any)
 const ProtectedRoutesPondIndexRoute =
   ProtectedRoutesPondIndexRouteImport.update({
     id: '/pond/',
@@ -83,7 +76,6 @@ export interface FileRoutesByFullPath {
   '/task-lists/$taskListID': typeof ProtectedRoutesTaskListsTaskListIDRoute
   '/create-task': typeof ProtectedRoutesCreateTaskIndexRoute
   '/pond': typeof ProtectedRoutesPondIndexRoute
-  '/profile': typeof ProtectedRoutesProfileIndexRoute
   '/settings': typeof ProtectedRoutesSettingsIndexRoute
   '/task-lists': typeof ProtectedRoutesTaskListsIndexRoute
 }
@@ -94,7 +86,6 @@ export interface FileRoutesByTo {
   '/task-lists/$taskListID': typeof ProtectedRoutesTaskListsTaskListIDRoute
   '/create-task': typeof ProtectedRoutesCreateTaskIndexRoute
   '/pond': typeof ProtectedRoutesPondIndexRoute
-  '/profile': typeof ProtectedRoutesProfileIndexRoute
   '/settings': typeof ProtectedRoutesSettingsIndexRoute
   '/task-lists': typeof ProtectedRoutesTaskListsIndexRoute
 }
@@ -107,7 +98,6 @@ export interface FileRoutesById {
   '/_protected-routes/task-lists/$taskListID': typeof ProtectedRoutesTaskListsTaskListIDRoute
   '/_protected-routes/create-task/': typeof ProtectedRoutesCreateTaskIndexRoute
   '/_protected-routes/pond/': typeof ProtectedRoutesPondIndexRoute
-  '/_protected-routes/profile/': typeof ProtectedRoutesProfileIndexRoute
   '/_protected-routes/settings/': typeof ProtectedRoutesSettingsIndexRoute
   '/_protected-routes/task-lists/': typeof ProtectedRoutesTaskListsIndexRoute
 }
@@ -120,7 +110,6 @@ export interface FileRouteTypes {
     | '/task-lists/$taskListID'
     | '/create-task'
     | '/pond'
-    | '/profile'
     | '/settings'
     | '/task-lists'
   fileRoutesByTo: FileRoutesByTo
@@ -131,7 +120,6 @@ export interface FileRouteTypes {
     | '/task-lists/$taskListID'
     | '/create-task'
     | '/pond'
-    | '/profile'
     | '/settings'
     | '/task-lists'
   id:
@@ -143,7 +131,6 @@ export interface FileRouteTypes {
     | '/_protected-routes/task-lists/$taskListID'
     | '/_protected-routes/create-task/'
     | '/_protected-routes/pond/'
-    | '/_protected-routes/profile/'
     | '/_protected-routes/settings/'
     | '/_protected-routes/task-lists/'
   fileRoutesById: FileRoutesById
@@ -199,13 +186,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedRoutesSettingsIndexRouteImport
       parentRoute: typeof ProtectedRoutesRouteRoute
     }
-    '/_protected-routes/profile/': {
-      id: '/_protected-routes/profile/'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProtectedRoutesProfileIndexRouteImport
-      parentRoute: typeof ProtectedRoutesRouteRoute
-    }
     '/_protected-routes/pond/': {
       id: '/_protected-routes/pond/'
       path: '/pond'
@@ -234,7 +214,6 @@ interface ProtectedRoutesRouteRouteChildren {
   ProtectedRoutesTaskListsTaskListIDRoute: typeof ProtectedRoutesTaskListsTaskListIDRoute
   ProtectedRoutesCreateTaskIndexRoute: typeof ProtectedRoutesCreateTaskIndexRoute
   ProtectedRoutesPondIndexRoute: typeof ProtectedRoutesPondIndexRoute
-  ProtectedRoutesProfileIndexRoute: typeof ProtectedRoutesProfileIndexRoute
   ProtectedRoutesSettingsIndexRoute: typeof ProtectedRoutesSettingsIndexRoute
   ProtectedRoutesTaskListsIndexRoute: typeof ProtectedRoutesTaskListsIndexRoute
 }
@@ -244,7 +223,6 @@ const ProtectedRoutesRouteRouteChildren: ProtectedRoutesRouteRouteChildren = {
     ProtectedRoutesTaskListsTaskListIDRoute,
   ProtectedRoutesCreateTaskIndexRoute: ProtectedRoutesCreateTaskIndexRoute,
   ProtectedRoutesPondIndexRoute: ProtectedRoutesPondIndexRoute,
-  ProtectedRoutesProfileIndexRoute: ProtectedRoutesProfileIndexRoute,
   ProtectedRoutesSettingsIndexRoute: ProtectedRoutesSettingsIndexRoute,
   ProtectedRoutesTaskListsIndexRoute: ProtectedRoutesTaskListsIndexRoute,
 }

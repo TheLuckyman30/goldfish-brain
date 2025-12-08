@@ -15,7 +15,7 @@ function TaskCard({ task, setSelectedTask, setEditForm }: TaskCardProps) {
   });
 
   return (
-    <div className="flex flex-col flex-wrap shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] w-[70%]">
+    <div className="flex flex-col flex-wrap shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] w-full">
       <div className="flex text-[24px] h-[20vh]">
         <div className="relative flex justify-center items-center h-full w-[20%] p-5 text-[#f8d8d1] bg-[#815656]">
           <span className="font-bold">{task.name}</span>
