@@ -34,8 +34,8 @@ export const UpdateTaskList = z.object({
   userId: z.uuid(),
   name: z.string().nullable(),
   description: z.string().nullable(),
-  numTasks: z.int().nullable(),
-  numTasksCompleted: z.int().nullable(),
+  numTasks: z.int().optional(),
+  numTasksCompleted: z.int().optional(),
 });
 export type UpdateTaskList = z.infer<typeof UpdateTaskList>;
 

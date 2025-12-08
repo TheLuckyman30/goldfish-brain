@@ -13,7 +13,7 @@ function Button({ color = 'primary', children, ...buttonParams }: ButtonProps) {
   };
   return (
     <button
-      className={`flex justify-center items-center p-2 rounded-md shadow-md not-disabled:cursor-pointer not-disabled:hover:hover:scale-102 duration-75 disabled:bg-gray-100 disabled:text-gray-700 ${colorClasses[color]}`}
+      className={`flex justify-center items-center p-2 rounded-md shadow-md not-disabled:cursor-pointer not-disabled:hover:hover:scale-102 duration-75 disabled:bg-gray-100 disabled:text-gray-700 text-xl ${colorClasses[color]}`}
       {...buttonParams}
     >
       {children}

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useApiMutation } from '../../integrations/api';
 import Form from '../shared-ui/Form';
 import InputLabel from '../shared-ui/InputLabel';
-import Input from '../shared-ui/Input';
 import { Modal, ModalHeader } from '../shared-ui/Modal';
 import Button from '../shared-ui/Button';
 import type { CreateTaskList, TaskListOut } from '@repo/api/task-list';
+import { TextArea } from '../shared-ui/TextArea';
 
 interface CreateFormProps {
   showCreateForm: boolean;
@@ -41,24 +41,27 @@ export function CreateListForm({
       <Form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6  ">
           <div>
-            <InputLabel htmlFor="list-name" style={{color:"white", fontSize:"18px"}}>List Name</InputLabel>
-            <textarea
+            <InputLabel htmlFor="list-name">List Name</InputLabel>
+            <TextArea
               id="list-name"
-              className= "bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
               placeholder="List Name"
               value={listName}
               onChange={(e) => setListName(e.target.value)}
-            ></textarea>
+            />
           </div>
           <div>
-            <InputLabel htmlFor="list-description"style={{color:"white", fontSize:"18px"}}>List Description</InputLabel>
-            <textarea
+            <InputLabel
+              htmlFor="list-description"
+              style={{ color: 'white', fontSize: '18px' }}
+            >
+              List Description
+            </InputLabel>
+            <TextArea
               id="list-description"
-              className= "bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
               placeholder="List Description"
               value={listDescription}
               onChange={(e) => setListDescription(e.target.value)}
-            ></textarea>
+            />
           </div>
           <div>
             <Button type="submit">Submit</Button>
