@@ -113,8 +113,9 @@ export class TasksService {
     updateTaskDto: UpdateTask,
     userId: string,
   ): Promise<TaskOut> {
+    const { taskListId, ...updatedTask } = updateTaskDto;
     const taskList = await this.prisma.taskList.findUnique({
-      where: { id: updateTaskDto.taskListId },
+      where: { id: taskListId },
     });
 
     if (!taskList) {
@@ -128,18 +129,18 @@ export class TasksService {
     if (updateTaskDto.completed) {
       await this.prisma.taskList.update({
         data: { numTasksCompleted: { increment: 1 } },
-        where: { id: taskList.id },
+        where: { id: taskListId },
       });
     } else if (updateTaskDto.completed === false) {
       await this.prisma.taskList.update({
         data: { numTasksCompleted: { decrement: 1 } },
-        where: { id: taskList.id },
+        where: { id: taskListId },
       });
     }
 
     return this.prisma.task.update({
-      data: updateTaskDto,
-      where: { id: updateTaskDto.id },
+      data: updatedTask,
+      where: { id: updatedTask.id },
       select: {
         id: true,
         taskListId: true,
