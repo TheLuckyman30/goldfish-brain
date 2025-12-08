@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Loading } from '../../../components/loading/loadingScreen';
 import { useGameLogic } from '../../../utils/game-logic';
 import TaskListForm from '../../../components/pond/TaskListForm';
@@ -43,7 +43,7 @@ function Pond() {
         backgroundImage: `url(${pondBackground})`,
       }}
     >
-      {allFish.length > 0 && (
+      {data && (
         <>
           <div
             className="flex w-[40vw] ml-10 h-[80vh] min-h-[80vh] mt-10 bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] "
@@ -219,7 +219,7 @@ function Pond() {
           </section>
         </>
       )}
-      {allFish.length === 0 && <TaskListForm />}
+      {!data && <TaskListForm />}
     </div>
   );
 }
