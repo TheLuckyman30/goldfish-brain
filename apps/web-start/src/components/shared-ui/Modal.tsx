@@ -29,7 +29,7 @@ export function Modal({
   ...divParmas
 }: ModalProps) {
   const colorClasses = {
-    primary: 'bg-white',
+    primary: 'bg-[#538f97]',
   };
 
   if (backdrop) {
@@ -74,10 +74,10 @@ extends React.DetailedHTMLProps<
 export function ModalHeader({ color = 'primary', children, ...divParams }: ModalHeaderProps) {
   const context = useContext(ModalContext);
   const textColorClasses = {
-    primary: 'text-black',
+    primary: 'text-white',
   };
   const closeColorClasses = {
-    primary: 'text-gray-400 hover:text-gray-500',
+    primary: 'text-white hover:bg-blue-300 hover:rounded-[60px] ',
   };
 
   if (!context || context.setShow === undefined) {
@@ -85,7 +85,7 @@ export function ModalHeader({ color = 'primary', children, ...divParams }: Modal
       <div className="flex gap-15 justify-between " {...divParams}>
         
         <div
-          className={`flex flex-wrap text-3xl font-bold ${textColorClasses[color]}`}
+          className={`flex flex-wrap text-3xl font-bold  ${textColorClasses[color]}`}
         >
           {children}
         </div>
