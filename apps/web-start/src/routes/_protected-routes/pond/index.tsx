@@ -15,13 +15,11 @@ export const Route = createFileRoute('/_protected-routes/pond/')({
 });
 
 function Pond() {
-
   const [showComplete, setShowComplete] = useState<boolean>(true);
   const [showCompleted, setShowCompleted] = useState<boolean>(true);
 
-  
-
   const {
+    data,
     allFish,
     uncompletedFish,
     activeFish,
@@ -59,61 +57,24 @@ function Pond() {
               <section className="flex-col flex items-center">
                 <div className=" bg-white min-w-[30vw] min-h-[60vh] h-[60vh] w-[35vw] rounded-[60px] ml-5 m-2 mt-10 p-3 flex flex-col text-center ">
                   <div className="flex flex-row ">
-                    
-
                     <div className=" flex text-3xl text-center items-center justify-center rounded-md p-5 text-[#794531fb]">
                       <div
-                      className="ml-auto mr-5 cursor-pointer text-white text-3xl bg-[#794531fb] rounded-[60px] w-[5vw] h-[5vh] flex items-center justify-center"
-                      onClick={() => setShowComplete(!showComplete)}
-                    >
-                        <span>{showComplete ? <ChevronDown/> : <ChevronUp/>}</span>
-                      
-                    </div>
+                        className="ml-auto mr-5 cursor-pointer text-white text-3xl bg-[#794531fb] rounded-[60px] w-[5vw] h-[5vh] flex items-center justify-center"
+                        onClick={() => setShowComplete(!showComplete)}
+                      >
+                        <span>
+                          {showComplete ? <ChevronDown /> : <ChevronUp />}
+                        </span>
+                      </div>
                       Uncompleted Tasks:{' '}
                     </div>
                   </div>
-                  {showComplete && ( uncompletedFish.length > 0 ? (
-                  <section className=" flex flex-col w-full overflow-y-auto mb-3">
-                    {uncompletedFish && (
-                      <div className="w-full p-5">
-                        {uncompletedFish.map((fish) => (
-                          <div
-                            key={fish.id}
-                            className="flex items-stretch justify-between min-w-[16vw] w-[30vw] min-h-[10vh] mb-3 rounded-[60px] overflow-hidden shadow-sm"
-                          >
-                            <div className=" bg-[#794531fb] min-w-[12vw] w-[12vw] text-white flex text-center items-center justify-center px-6 text-[20px]">
-                              {fish.task.name}
-                            </div>
-
-                            <div className=" bg-[#c98c74fb] text-[#f9efea] min-w-[18vw] w-[18vw] flex items-center justify-left px-4 text-[18px] text-left">
-                              {fish.task.description}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </section>
-                  ): <p className="p-2 rounded-[60px] ml-5 shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl w-[80%]"> All tasks completed !!</p>)}
-
-                  <div className="flex flex-row ">
-                  <div className=" flex text-3xl text-center items-center justify-center rounded-md p-5 text-[#794531fb]">
-                  <div
-                      className="ml-auto mr-5 cursor-pointer text-white text-3xl bg-[#794531fb] rounded-[60px] w-[5vw] h-[5vh] flex items-center justify-center"
-                      onClick={() => setShowCompleted(!showCompleted)}
-                    >
-                        <span>{showCompleted ? <ChevronDown/> : <ChevronUp/>}</span>
-                      
-                    </div>
-                    Completed Tasks:{' '}
-                  </div>
-                  </div>
-                  {showCompleted && ( allFish.length !== uncompletedFish.length ? (
-                  <section className="flex flex-col  w-full overflow-y-auto mb-3">
-                    {allFish && (
-                      <div className="w-full p-5">
-                        {allFish.map((fish) => (
-                          <>
-                            {fish.completed && (
+                  {showComplete &&
+                    (uncompletedFish.length > 0 ? (
+                      <section className=" flex flex-col w-full overflow-y-auto mb-3">
+                        {uncompletedFish && (
+                          <div className="w-full p-5">
+                            {uncompletedFish.map((fish) => (
                               <div
                                 key={fish.id}
                                 className="flex items-stretch justify-between min-w-[16vw] w-[30vw] min-h-[10vh] mb-3 rounded-[60px] overflow-hidden shadow-sm"
@@ -126,13 +87,62 @@ function Pond() {
                                   {fish.task.description}
                                 </div>
                               </div>
-                            )}
-                          </>
-                        ))}
+                            ))}
+                          </div>
+                        )}
+                      </section>
+                    ) : (
+                      <p className="p-2 rounded-[60px] ml-5 shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl w-[80%]">
+                        {' '}
+                        All tasks completed !!
+                      </p>
+                    ))}
+
+                  <div className="flex flex-row ">
+                    <div className=" flex text-3xl text-center items-center justify-center rounded-md p-5 text-[#794531fb]">
+                      <div
+                        className="ml-auto mr-5 cursor-pointer text-white text-3xl bg-[#794531fb] rounded-[60px] w-[5vw] h-[5vh] flex items-center justify-center"
+                        onClick={() => setShowCompleted(!showCompleted)}
+                      >
+                        <span>
+                          {showCompleted ? <ChevronDown /> : <ChevronUp />}
+                        </span>
                       </div>
-                    )}
-                  </section>
-                  ): <p className="p-2 rounded-[60px] ml-5 shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl w-[80%]"> No completed tasks yet. </p>)}
+                      Completed Tasks:{' '}
+                    </div>
+                  </div>
+                  {showCompleted &&
+                    (allFish.length !== uncompletedFish.length ? (
+                      <section className="flex flex-col  w-full overflow-y-auto mb-3">
+                        {allFish && (
+                          <div className="w-full p-5">
+                            {allFish.map((fish) => (
+                              <>
+                                {fish.completed && (
+                                  <div
+                                    key={fish.id}
+                                    className="flex items-stretch justify-between min-w-[16vw] w-[30vw] min-h-[10vh] mb-3 rounded-[60px] overflow-hidden shadow-sm"
+                                  >
+                                    <div className=" bg-[#794531fb] min-w-[12vw] w-[12vw] text-white flex text-center items-center justify-center px-6 text-[20px]">
+                                      {fish.task.name}
+                                    </div>
+
+                                    <div className=" bg-[#c98c74fb] text-[#f9efea] min-w-[18vw] w-[18vw] flex items-center justify-left px-4 text-[18px] text-left">
+                                      {fish.task.description}
+                                    </div>
+                                  </div>
+                                )}
+                              </>
+                            ))}
+                          </div>
+                        )}
+                      </section>
+                    ) : (
+                      <p className="p-2 rounded-[60px] ml-5 shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl w-[80%]">
+                        {' '}
+                        No completed tasks yet.{' '}
+                      </p>
+                    ))}
                 </div>
               </section>
 
@@ -182,12 +192,11 @@ function Pond() {
 
             {activeFish && (
               <div className=" bg-[#538f97] absolute flex-col z-20 text-left items-center text-3xl mt-[14vh] rounded-[10px] text-white p-5 w-[30vw] h-[70vh] min-h-[70vh] justify-center shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]">
-                <div className="mb-5 mt-3 ml-5 text-4xl ">
-                  Fish Caught:
-                  
+                <div className="mb-5 mt-3 ml-5 text-4xl ">Fish Caught:</div>
+
+                <div>
+                  {activeFish && <CaughtFish caughtFish={activeFish} />}
                 </div>
-                
-                <div>{activeFish && <CaughtFish caughtFish={activeFish} />}</div>
 
                 <div className="flex flex-row mt-auto bottom-0 absolute mb-3">
                   <button
