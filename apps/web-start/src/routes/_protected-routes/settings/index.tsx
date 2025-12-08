@@ -105,13 +105,13 @@ function Settings() {
               <div>
                 <img src={userImage} className="max-w-[100px]"></img>
               </div>
-              <div className="text-left">
-                <p className="p-4">Username:</p>
+              <div className="text-left p-1">
+                <p className="p-4 mb-2">Username:</p>
                 <p className="p-4">Email:</p>
               </div>
               <div className="text-left wrap-break-word w-fit">
                 <div className="flex gap-2 items-center">
-                  {!showUsernameForm && <p className="p-4">{username}</p>}
+                  {!showUsernameForm && <p className="p-4 mb-2">{username}</p>}
                   {showUsernameForm && (
                     <Input
                       id="new-username"
@@ -119,9 +119,10 @@ function Settings() {
                       placeholder="New Username"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
+                      className="w-fit min-w-fit p-4 bg-white rounded-[60px] border border-gray-300 mb-1"
                     />
                   )}
-                  <div className="bg-stone-50 p-2 h-fit wi-fit rounded-lg">
+                  <div className="bg-stone-50 p-2 h-fit w-fit rounded-lg">
                     {!showUsernameForm && (
                       <Pencil
                         className="text-blue-300 cursor-pointer hover:scale-110 duration-150"
@@ -151,6 +152,7 @@ function Settings() {
                       placeholder="New Email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      className="w-fit min-w-fit p-4 bg-white rounded-[60px] border border-gray-300"
                     />
                   )}
                   <div className="bg-stone-50 p-2 h-fit wi-fit rounded-lg">
