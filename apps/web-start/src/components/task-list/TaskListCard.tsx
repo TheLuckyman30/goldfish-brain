@@ -23,6 +23,7 @@ function TaskListCard({
   return (
     <div className="flex flex-col flex-wrap rounded-md shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] w-[40vh] bg-[#815656] text-[#f8d8d1]">
       <header className="flex items-center relative p-[1vh] h-[6vh]">
+        <div className="text-2xl font-bold">{taskList.name}</div>
         <details className="absolute top-2 right-2 z-10 list-none">
           <summary className="list-none bg-transparent hover:bg-yellow-950/30 rounded-md pl-5 pr-5 pt-1 pb-2 m-0 cursor-pointer text-[#f8d8d1] text-[30px]">
             ⋮
@@ -58,12 +59,29 @@ function TaskListCard({
       <Link
         to="/task-lists/$taskListID"
         params={{ taskListID: taskList.id }}
-        className="bg-[#f8d8d1] text-[#815656] text-center min-h-[20vh] pt-[5vh] text-[24px]"
+        className="bg-[#f8d8d1] text-[#815656] min-h-[20vh]  text-[24px] p-2"
       >
-        <div className="text-3xl"> {taskList.name}</div>
-        <br></br>
-        <div className=" w-[40vh] h-[10vh] text-2xl bg-white p-2">
-          {'>'} {taskList.description}
+        <div className="flex flex-col justify-between h-full">
+          <div
+            className={`text-2xl h-full w-full ${taskList.description ? '' : 'flex justify-center items-center'}`}
+          >
+            {taskList.description !== '' && (
+              <span className="block font-bold">Description</span>
+            )}
+            <hr className="mt-2 mb-2"></hr>
+            <span className="block">
+              {taskList.description ? taskList.description : 'No Description'}
+            </span>
+          </div>
+          <div>
+            <hr className="mb-1"></hr>
+            <div className="flex justify-between pr-5">
+              <span>Tasks:</span>
+              <span>
+                {taskList.numTasksCompleted}/{taskList.numTasks}
+              </span>
+            </div>
+          </div>
         </div>
       </Link>
     </div>
