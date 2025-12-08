@@ -9,6 +9,7 @@ import type { TaskListTasksOut } from '@repo/api/task-list';
 import type { TaskOut } from '@repo/api/task';
 import { Loading } from '../../../components/loading/loadingScreen';
 import Button from '../../../components/shared-ui/Button';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export const Route = createFileRoute(
   '/_protected-routes/task-lists/$taskListID',
@@ -27,6 +28,7 @@ function TaskList() {
     `/task-lists/${taskListID}/tasks`,
   );
   const tasks = data?.tasks ?? [];
+  const completeTasks = tasks.filter((t) => t.completed);
 
   useEffect(() => {
     setEditForm(false);
@@ -80,26 +82,29 @@ function TaskList() {
                   onClick={() => setShowComplete(!showComplete)}
                 >
                   <div className="flex justify-between items-center w-full">
-                    <span>Completed Tasks</span>
-                    <span>{showComplete ? '^' : 'v'}</span>
+                    <span>Completed Tasks ({completeTasks.length})</span>
+                    <span>
+                      {showComplete ? <ChevronDown /> : <ChevronUp />}
+                    </span>
                   </div>
                 </div>
-                {showComplete && (
-                  <div className="flex flex-wrap gap-5 justify-center">
-                    {tasks.map((task) => (
-                      <>
-                        {task.completed && (
-                          <TaskCard
-                            key={task.id}
-                            task={task}
-                            setSelectedTask={setSelectedTask}
-                            setEditForm={setEditForm}
-                          />
-                        )}
-                      </>
-                    ))}
-                  </div>
-                )}
+                {showComplete &&
+                  (completeTasks.length > 0 ? (
+                    <div className="flex flex-wrap gap-5 justify-center">
+                      {completeTasks.map((task) => (
+                        <TaskCard
+                          key={task.id}
+                          task={task}
+                          setSelectedTask={setSelectedTask}
+                          setEditForm={setEditForm}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="p-2 rounded-md shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl w-[80%]">
+                      No completed tasks in this list!
+                    </p>
+                  ))}
               </div>
             </div>
           </div>
