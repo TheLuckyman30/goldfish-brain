@@ -39,26 +39,26 @@ export function CreateListForm({
     <Modal show={showCreateForm} setShow={setShowCreateForm} backdrop>
       <ModalHeader>Create a Task</ModalHeader>
       <Form onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6  ">
           <div>
-            <InputLabel htmlFor="list-name">List Name</InputLabel>
-            <Input
+            <InputLabel htmlFor="list-name" style={{color:"white", fontSize:"18px"}}>List Name</InputLabel>
+            <textarea
               id="list-name"
-              type="text"
+              className= "bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
               placeholder="List Name"
               value={listName}
               onChange={(e) => setListName(e.target.value)}
-            />
+            ></textarea>
           </div>
           <div>
-            <InputLabel htmlFor="list-description">List Description</InputLabel>
-            <Input
+            <InputLabel htmlFor="list-description"style={{color:"white", fontSize:"18px"}}>List Description</InputLabel>
+            <textarea
               id="list-description"
-              type="text"
+              className= "bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
               placeholder="List Description"
               value={listDescription}
               onChange={(e) => setListDescription(e.target.value)}
-            />
+            ></textarea>
           </div>
           <div>
             <Button type="submit">Submit</Button>
