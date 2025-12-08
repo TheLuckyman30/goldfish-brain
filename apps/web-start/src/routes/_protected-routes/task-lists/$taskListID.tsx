@@ -19,16 +19,21 @@ function TaskList() {
   const { taskListID } = Route.useParams();
   const [createForm, setCreateForm] = useState<boolean>(false);
   const [editForm, setEditForm] = useState<boolean>(false);
+  const [showComplete, setShowComplete] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<TaskOut | null>(null);
   const { data, isFetching, refetch, error } = useApiQuery<TaskListTasksOut>(
     ['tasks', taskListID],
     `/task-lists/${taskListID}/tasks`,
   );
+  const tasks = data?.tasks ?? [];
+  const incompleteTasks = tasks.filter((t) => !t.completed);
+  const completeTasks = tasks.filter((t) => t.completed);
 
   useEffect(() => {
     setEditForm(false);
     setCreateForm(false);
     setSelectedTask(null);
+
   }, [data]);
 
   if (isFetching) {
@@ -38,12 +43,12 @@ function TaskList() {
   if (data) {
     return (
       <div
-        className="flex justify-center min-h-screen  w-lvw pt-45 bg-no-repeat bg-cover bg-top"
+        className="flex justify-center min-h-screen  w-lvw pt-45 bg-no-repeat bg-cover bg-top pb-[20px]"
         style={{
           backgroundImage: `url(${fishAnimate})`,
         }}
       >
-        <div className="flex flex-col w-[75%] bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]">
+        <div className="flex flex-col w-[75%] bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] pb-[20px]">
           <h1 className="text-5xl text-center rounded-md bg-[#fddbcd] p-10 text-[#794531fb]">
             Task List: {data.name}
           </h1>
@@ -72,7 +77,7 @@ function TaskList() {
             <hr className="bg-[#fddbcdeb] text-[#fddbcdeb] w-[90%] border-2 border-[#fddbcdeb]"></hr>
             <div className="text-3xl text-[#f8d8d1]">Tasks</div>
             <div className="flex flex-wrap gap-5 justify-left">
-              {data.tasks.map((task) => (
+              {incompleteTasks.map((task) => (
                 <TaskCard
                   key={task.id}
                   task={task}
@@ -81,6 +86,26 @@ function TaskList() {
                 />
               ))}
             </div>
+            <div
+              className="buttonStyling shadow-lg shadow-black/20 max-w-[30%]"
+              onClick={() => setShowComplete(!showComplete)}
+            >
+              <div className="flex justify-between items-center w-full">
+                <span>Completed Tasks</span><span>{showComplete ? "^" : "v"}</span>
+              </div>
+            </div>
+            {showComplete && ( completeTasks.length > 0 ? (
+            <div className="flex flex-wrap gap-5 justify-left">
+              {completeTasks.map((task) => (
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  setSelectedTask={setSelectedTask}
+                  setEditForm={setEditForm}
+                />
+              ))}
+            </div>
+            ) : <p className="p-2 rounded-md shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl w-[80%]">No completed tasks in this list!</p>)}
           </div>
           {createForm && (
             <CreateTaskForm
