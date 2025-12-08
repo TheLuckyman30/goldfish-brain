@@ -111,7 +111,7 @@ function TaskList() {
                     ))}
                   </div>
                 ) : (
-                  <p className="p-2 rounded-md shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl mt-5 w-[80%]">
+                  <p className="p-2 rounded-md shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl mt-5 w-[50vw]">
                     No completed tasks in this list!
                   </p>
                 ))}
