@@ -5,6 +5,7 @@ import InputLabel from '../shared-ui/InputLabel';
 import { Modal, ModalHeader } from '../shared-ui/Modal';
 import Button from '../shared-ui/Button';
 import type { CreateTaskList, TaskListOut } from '@repo/api/task-list';
+import { TextArea } from '../shared-ui/TextArea';
 
 interface CreateFormProps {
   showCreateForm: boolean;
@@ -46,13 +47,12 @@ export function CreateListForm({
             >
               List Name
             </InputLabel>
-            <textarea
+            <TextArea
               id="list-name"
-              className="bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
               placeholder="List Name"
               value={listName}
               onChange={(e) => setListName(e.target.value)}
-            ></textarea>
+            />
           </div>
           <div>
             <InputLabel
@@ -61,13 +61,12 @@ export function CreateListForm({
             >
               List Description
             </InputLabel>
-            <textarea
+            <TextArea
               id="list-description"
-              className="bg-gray-100/60 border border-gray-300 min-w-[30vh] w-[30vh] rounded-[10px] pl-3 pt-3"
               placeholder="List Description"
               value={listDescription}
               onChange={(e) => setListDescription(e.target.value)}
-            ></textarea>
+            />
           </div>
           <div>
             <Button type="submit">Submit</Button>
