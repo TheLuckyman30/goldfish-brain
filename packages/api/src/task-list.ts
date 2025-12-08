@@ -41,6 +41,5 @@ export type UpdateTaskList = z.infer<typeof UpdateTaskList>;
 
 export const DeleteTaskList = z.object({
   id: z.uuid(),
-  userId: z.uuid(),
 });
 export type DeleteTaskList = z.infer<typeof DeleteTaskList>;
