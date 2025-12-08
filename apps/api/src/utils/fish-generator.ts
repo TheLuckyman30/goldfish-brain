@@ -2,7 +2,7 @@ import { TaskOut } from '@repo/api/task';
 import { CreateFish } from '@repo/api/fish';
 
 export function generateFishAttributes() {
-  const size = Math.floor(Math.random() * 5);
+  const size = Math.floor(Math.random() * 9 + 1);
   const rarity = Math.floor(Math.random() * 11);
   return { size, rarity };
 }
