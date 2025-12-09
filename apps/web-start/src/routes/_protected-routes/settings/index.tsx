@@ -190,8 +190,8 @@ function Settings() {
                 <p className="p-4">{email}</p>
               </div>
             </div>
-            <hr className="mt-10"></hr>
-            <div className="flex rounded-md bg-[#fddbcd] p-10 text-[#794531fb] text-2xl text-center justify-center">
+            <hr className="mt-10 mb-5"></hr>
+            <div className="flex flex-col rounded-md bg-[#fddbcd] p-10 text-[#794531fb] text-2xl text-center justify-center">
               <Button
                 style={{
                   color: 'white',
