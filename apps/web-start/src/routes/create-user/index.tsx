@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-import goldfishBrain from '../../images/GoldfishBrain.png';
+import goldfishBrain from '../../images/fishAnimate.gif';
+import fishTiny from '../../images/fishTiny.png';
+
 import { useApiMutation, useCurrentUser } from '../../integrations/api';
 import type { UpdateUser, UserOut } from '@repo/api/user';
 import { Loading } from '../../components/loading/loadingScreen';
@@ -44,35 +46,48 @@ function CreateUser() {
       style={{ backgroundImage: `url(${goldfishBrain})` }}
     >
       <div className="fixed flex justify-center items-center inset-0 w-lvw h-lvh bg-white/10 backdrop-blur-sm">
-        <div className="flex flex-col bg-white p-10 rounded-lg w-[30%]">
-          <h1 className="block text-2xl font-bold mb-5">Create Account</h1>
+      <img
+            src={fishTiny}
+            alt="Animated Fish"
+            className="w-[30vh] h-[30vh]"
+            style={{
+              float: 'left',
+              position: 'absolute',
+              left: '58vw',
+              top: '12vh',
+              zIndex: '20',
+            }}
+          />
+        <div className="flex flex-col bg-[#538f97] p-10 rounded-lg w-[30%] shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)]">
+          <h1 className="block text-2xl text-white font-bold mb-5">Create Account</h1>
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
-              <div>
+              <div className= "text-white">
                 <label
-                  className="block mb-2 font-medium text-sm text-gray-900"
+                  className="block mb-2 font-medium text-sm "
                   htmlFor="name"
                 >
                   Name
                 </label>
                 <input
-                  className="block border border-gray-300 p-2.5 bg-gray-50 rounded-lg text-sm w-full focus:outline-blue-400"
+                  className="block border border-gray-300 p-2.5 text-gray-700 text-sm w-full focus:outline-blue-400 min-w-fit h-[6vh] bg-white rounded-[60px] mb-1"
                   placeholder="Name"
                   type="text"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   id="name"
+
                 ></input>
               </div>
               <div>
                 <label
-                  className="block mb-2 font-medium text-sm text-gray-900"
+                  className="block mb-2 font-medium text-sm text-white"
                   htmlFor="username"
                 >
                   Username
                 </label>
                 <input
-                  className="block border border-gray-300 p-2.5 bg-gray-50 rounded-lg text-sm w-full focus:outline-blue-400"
+                  className="block border border-gray-300 p-2.5 text-gray-700 text-sm w-full focus:outline-blue-400 min-w-fit h-[6vh] bg-white rounded-[60px] mb-1"
                   placeholder="Username"
                   type="text"
                   value={newUserName}
@@ -82,13 +97,13 @@ function CreateUser() {
               </div>
               <div>
                 <label
-                  className="block mb-2 font-medium text-sm text-gray-900"
+                  className="block mb-2 font-medium text-sm text-white"
                   htmlFor="email"
                 >
                   Email
                 </label>
                 <input
-                  className="block border border-gray-300 p-2.5 bg-gray-50 rounded-lg text-sm w-full focus:outline-blue-400"
+                  className="block border border-gray-300 p-2.5 text-gray-700 text-sm w-full focus:outline-blue-400 min-w-fit h-[6vh] bg-white rounded-[60px] mb-1"
                   placeholder="Email"
                   type="text"
                   value={newEmail}
@@ -98,7 +113,7 @@ function CreateUser() {
               </div>
               <div>
                 <button
-                  className="block text-center w-full bg-emerald-400 p-2 rounded-md text-white font-bold text-lg cursor-pointer hover:scale-102 duration-100"
+                  className="block text-center w-full bg-[#5acdb9] p-2 rounded-[60px] h-[6vh] text-white font-bold text-lg cursor-pointer hover:bg-[#4eb89a] hover:scale-102 duration-100"
                   type="submit"
                 >
                   Submit
