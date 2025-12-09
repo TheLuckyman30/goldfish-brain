@@ -1,20 +1,18 @@
-import { useApiMutation } from '../../integrations/api';
-import type { DeleteTask, TaskOut } from '@repo/api/task';
-
+import type { TaskOut } from '@repo/api/task';
 
 interface TaskCardProps {
   task: TaskOut;
   setSelectedTask: (newTask: TaskOut) => void;
   setEditForm: (show: boolean) => void;
+  setDeleteForm: (show: boolean) => void;
 }
 
-function TaskCard({ task, setSelectedTask, setEditForm }: TaskCardProps) {
-  // This is temporary
-  const mutation = useApiMutation<DeleteTask, TaskOut>({
-    endpoint: () => ({ path: '/tasks', method: 'DELETE' }),
-    invalidateKeys: [['tasks', task.taskListId]],
-  });
-
+function TaskCard({
+  task,
+  setSelectedTask,
+  setEditForm,
+  setDeleteForm,
+}: TaskCardProps) {
   return (
     <div className="flex flex-col flex-wrap shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] w-full buttonJump">
       <div className="flex text-[24px] h-[20vh]">
@@ -39,21 +37,14 @@ function TaskCard({ task, setSelectedTask, setEditForm }: TaskCardProps) {
                   Edit
                 </button>
                 <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    mutation.mutate({
-                      id: task.id,
-                      taskListId: task.taskListId,
-                      completed: task.completed,
-                    });
+                  onClick={() => {
+                    setSelectedTask(task);
+                    setDeleteForm(true);
                   }}
                   className="bg-transparent border-2 rounded-sm p-1.5 text-[#815656] cursor-pointer hover:bg-yellow-950/20"
                 >
                   Delete
                 </button>
-                {mutation.isPending && <div>Loading...</div>}
-                {mutation.isError && <div>{mutation.error.message}</div>}
-                {mutation.isSuccess && <div>Task Deleted</div>}
               </div>
             </details>
           </div>

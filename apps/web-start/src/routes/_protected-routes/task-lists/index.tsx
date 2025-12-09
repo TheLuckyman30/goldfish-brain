@@ -8,6 +8,7 @@ import { EditListForm } from '../../../components/task-list/EditListForm';
 import Button from '../../../components/shared-ui/Button';
 import type { TaskListOut } from '@repo/api/task-list';
 import { Loading } from '../../../components/loading/loadingScreen';
+import { DeleteListForm } from '../../../components/task-list/DeleteListForm';
 
 export const Route = createFileRoute('/_protected-routes/task-lists/')({
   component: TaskLists,
@@ -16,6 +17,7 @@ export const Route = createFileRoute('/_protected-routes/task-lists/')({
 function TaskLists() {
   const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
+  const [showDeleteForm, setShowDeleteForm] = useState<boolean>(false);
   const [selectedTaskList, setSelectedTaskList] = useState<TaskListOut | null>(
     null,
   );
@@ -28,6 +30,7 @@ function TaskLists() {
   useEffect(() => {
     setShowCreateForm(false);
     setShowEditForm(false);
+    setShowDeleteForm(false);
     setSelectedTaskList(null);
   }, [taskLists]);
 
@@ -60,6 +63,7 @@ function TaskLists() {
                 taskList={list}
                 setSelectedTaskList={setSelectedTaskList}
                 setShowEditForm={setShowEditForm}
+                setShowDeleteForm={setShowDeleteForm}
               />
             ))}
           </div>
@@ -73,6 +77,11 @@ function TaskLists() {
         selectedTaskList={selectedTaskList}
         showEditForm={showEditForm}
         setShowEditForm={setShowEditForm}
+      />
+      <DeleteListForm
+        selectedTaskList={selectedTaskList}
+        showDeleteForm={showDeleteForm}
+        setDeleteForm={setShowDeleteForm}
       />
     </div>
   );

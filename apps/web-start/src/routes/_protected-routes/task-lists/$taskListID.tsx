@@ -10,6 +10,7 @@ import type { TaskOut } from '@repo/api/task';
 import { Loading } from '../../../components/loading/loadingScreen';
 import Button from '../../../components/shared-ui/Button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { DeleteTaskForm } from '../../../components/task/DeleteTaskForm';
 
 export const Route = createFileRoute(
   '/_protected-routes/task-lists/$taskListID',
@@ -21,6 +22,7 @@ function TaskList() {
   const { taskListID } = Route.useParams();
   const [createForm, setCreateForm] = useState<boolean>(false);
   const [editForm, setEditForm] = useState<boolean>(false);
+  const [deleteForm, setDeleteForm] = useState<boolean>(false);
   const [showComplete, setShowComplete] = useState<boolean>(false);
   const [selectedTask, setSelectedTask] = useState<TaskOut | null>(null);
   const { data, isFetching, refetch } = useApiQuery<TaskListTasksOut>(
@@ -33,6 +35,7 @@ function TaskList() {
   useEffect(() => {
     setEditForm(false);
     setCreateForm(false);
+    setDeleteForm(false);
     setSelectedTask(null);
   }, [data]);
 
@@ -72,47 +75,47 @@ function TaskList() {
                           task={task}
                           setSelectedTask={setSelectedTask}
                           setEditForm={setEditForm}
+                          setDeleteForm={setDeleteForm}
                         />
                       )}
                     </>
                   ))}
                 </div>
-                
               </div>
-              
             </div>
             <div className="items-center justify-center w-full flex flex-col mb-5">
-            {tasks.length > 0 && (
-                  <div
-                    className="buttonStyling shadow-lg shadow-black/20 min-w-[50vw] w-[50vw] p-2 mb-5"
-                    onClick={() => setShowComplete(!showComplete)}
-                  >
-                    <div className="flex justify-between items-center gap-4">
-                      <span>Completed Tasks ({completeTasks.length})</span>
-                      <span>
-                        {showComplete ? <ChevronDown /> : <ChevronUp />}
-                      </span>
-                    </div>
+              {tasks.length > 0 && (
+                <div
+                  className="buttonStyling shadow-lg shadow-black/20 min-w-[50vw] w-[50vw] p-2 mb-5"
+                  onClick={() => setShowComplete(!showComplete)}
+                >
+                  <div className="flex justify-between items-center gap-4">
+                    <span>Completed Tasks ({completeTasks.length})</span>
+                    <span>
+                      {showComplete ? <ChevronDown /> : <ChevronUp />}
+                    </span>
                   </div>
-                )}
-                {showComplete &&
-                  (completeTasks.length > 0 ? (
-                    <div className="flex flex-wrap gap-5 justify-center w-[50vw] min-w-[50vw]">
-                      {completeTasks.map((task) => (
-                        <TaskCard
-                          key={task.id}
-                          task={task}
-                          setSelectedTask={setSelectedTask}
-                          setEditForm={setEditForm}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="p-2 rounded-md shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl mt-5 w-[80%]">
-                      No completed tasks in this list!
-                    </p>
-                  ))}
+                </div>
+              )}
+              {showComplete &&
+                (completeTasks.length > 0 ? (
+                  <div className="flex flex-wrap gap-5 justify-center w-[50vw] min-w-[50vw]">
+                    {completeTasks.map((task) => (
+                      <TaskCard
+                        key={task.id}
+                        task={task}
+                        setSelectedTask={setSelectedTask}
+                        setEditForm={setEditForm}
+                        setDeleteForm={setDeleteForm}
+                      />
+                    ))}
                   </div>
+                ) : (
+                  <p className="p-2 rounded-md shadow-md text-[#794531fb] bg-[#fddbcd] text-2xl mt-5 w-[50vw]">
+                    No completed tasks in this list!
+                  </p>
+                ))}
+            </div>
           </div>
           {createForm && (
             <CreateTaskForm
@@ -122,6 +125,9 @@ function TaskList() {
           )}
           {editForm && (
             <EditTaskForm task={selectedTask} setEditForm={setEditForm} />
+          )}
+          {deleteForm && (
+            <DeleteTaskForm task={selectedTask} setDeleteForm={setDeleteForm} />
           )}
         </div>
       </div>
