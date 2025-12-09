@@ -7,8 +7,6 @@ import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
 import { CreateTask, DeleteTask, TaskOut, UpdateTask } from '@repo/api/task';
 import { generateFishAttributes } from 'src/utils/fish-generator';
-import { UpdateTaskList } from '@repo/api/task-list';
-import { TaskListsService } from 'src/task-lists/task-lists.service';
 
 @Injectable()
 export class TasksService {
@@ -100,9 +98,9 @@ export class TasksService {
     });
 
     if (game && game.linkedTaskListId === taskList.id) {
-      const { size, rarity } = generateFishAttributes();
+      const { size, rarity, imageIndex } = generateFishAttributes();
       await this.prisma.fish.create({
-        data: { gameId: game.id, taskId: task.id, size, rarity },
+        data: { gameId: game.id, taskId: task.id, size, rarity, imageIndex },
       });
     }
 

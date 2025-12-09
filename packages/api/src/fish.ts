@@ -7,6 +7,7 @@ export const FishOut = z.object({
   size: z.int(),
   rarity: z.int(),
   isActive: z.boolean(),
+  imageIndex: z.int(),
   completed: z.boolean(),
 });
 export type FishOut = z.infer<typeof FishOut>;
@@ -17,6 +18,7 @@ export const FishOutWithTask = z.object({
   size: z.int(),
   rarity: z.int(),
   isActive: z.boolean(),
+  imageIndex: z.int(),
   completed: z.boolean(),
   task: TaskOut,
 });
