@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdateUser, UpdateUsername, UserOut } from '@repo/api/user';
+import { UpdateUser, UserOut } from '@repo/api/user';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
@@ -42,8 +42,11 @@ export class UsersController {
 
   @UseGuards(AuthGuard('jwt'))
   @Patch()
-  update(@Body() updateUserDto: UpdateUser): Promise<UserOut> {
-    return this.usersService.updateUser(updateUserDto);
+  update(
+    @Body() updateUserDto: UpdateUser,
+    @CurrentUser() user: JwtUser,
+  ): Promise<UserOut> {
+    return this.usersService.updateUser(updateUserDto, user.userId);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -53,18 +56,6 @@ export class UsersController {
       throw new UnauthorizedException();
     }
     return this.usersService.getProvider(auth.userId);
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Patch('/me/username')
-  async updateMyUsername(
-    @CurrentUser() user: JwtUser,
-    @Body() upadteUsernameDto: UpdateUsername,
-  ): Promise<UserOut> {
-    return this.usersService.updateUsernameForMe(
-      upadteUsernameDto,
-      user.userId,
-    );
   }
 
   @UseGuards(AuthGuard('jwt'))
