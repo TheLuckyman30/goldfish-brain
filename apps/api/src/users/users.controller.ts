@@ -1,6 +1,16 @@
-import { BadRequestException, Body, Controller, Get, Param, Patch, Post, UnauthorizedException, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdateUser, UpdateUsername, UserOut } from '@repo/api/user';
+import { UpdateUser, UserOut } from '@repo/api/user';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from 'src/auth/current-user.decorator';
 import { JwtUser } from 'src/auth/jwt.strategy';
@@ -13,9 +23,9 @@ export class UsersController {
   @Get('/me')
   async getMe(@CurrentUser() auth: JwtUser): Promise<UserOut> {
     if (!auth || !auth.userId) {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException();
     }
-    return this.usersService.findUser({id: auth.userId});
+    return this.usersService.findUser({ id: auth.userId });
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -32,8 +42,11 @@ export class UsersController {
 
   @UseGuards(AuthGuard('jwt'))
   @Patch()
-  update(@Body() updateUserDto: UpdateUser): Promise<UserOut> {
-    return this.usersService.updateUser(updateUserDto)
+  update(
+    @Body() updateUserDto: UpdateUser,
+    @CurrentUser() user: JwtUser,
+  ): Promise<UserOut> {
+    return this.usersService.updateUser(updateUserDto, user.userId);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -44,15 +57,6 @@ export class UsersController {
     }
     return this.usersService.getProvider(auth.userId);
   }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Patch('/me/username')
-  async updateMyUsername(
-    @CurrentUser() auth: JwtUser,
-    @Body() body: UpdateUsername,
-   ) {
-    return this.usersService.updateUsernameForMe(auth.userId, body.username);
-   }
 
   @UseGuards(AuthGuard('jwt'))
   @Post('reset-password')

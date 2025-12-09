@@ -7,8 +7,6 @@ import { Prisma } from '@repo/database';
 import { PrismaService } from 'src/prisma.service';
 import { CreateTask, DeleteTask, TaskOut, UpdateTask } from '@repo/api/task';
 import { generateFishAttributes } from 'src/utils/fish-generator';
-import { UpdateTaskList } from '@repo/api/task-list';
-import { TaskListsService } from 'src/task-lists/task-lists.service';
 
 @Injectable()
 export class TasksService {
@@ -100,9 +98,9 @@ export class TasksService {
     });
 
     if (game && game.linkedTaskListId === taskList.id) {
-      const { size, rarity } = generateFishAttributes();
+      const { size, rarity, imageIndex } = generateFishAttributes();
       await this.prisma.fish.create({
-        data: { gameId: game.id, taskId: task.id, size, rarity },
+        data: { gameId: game.id, taskId: task.id, size, rarity, imageIndex },
       });
     }
 
@@ -113,8 +111,9 @@ export class TasksService {
     updateTaskDto: UpdateTask,
     userId: string,
   ): Promise<TaskOut> {
+    const { taskListId, ...updatedTask } = updateTaskDto;
     const taskList = await this.prisma.taskList.findUnique({
-      where: { id: updateTaskDto.taskListId },
+      where: { id: taskListId },
     });
 
     if (!taskList) {
@@ -128,18 +127,18 @@ export class TasksService {
     if (updateTaskDto.completed) {
       await this.prisma.taskList.update({
         data: { numTasksCompleted: { increment: 1 } },
-        where: { id: taskList.id },
+        where: { id: taskListId },
       });
     } else if (updateTaskDto.completed === false) {
       await this.prisma.taskList.update({
         data: { numTasksCompleted: { decrement: 1 } },
-        where: { id: taskList.id },
+        where: { id: taskListId },
       });
     }
 
     return this.prisma.task.update({
-      data: updateTaskDto,
-      where: { id: updateTaskDto.id },
+      data: updatedTask,
+      where: { id: updatedTask.id },
       select: {
         id: true,
         taskListId: true,

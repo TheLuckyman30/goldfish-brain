@@ -1,26 +1,20 @@
 import { Link } from '@tanstack/react-router';
-import { useApiMutation } from '../../integrations/api';
-import type { DeleteTaskList, TaskListOut } from '@repo/api/task-list';
-import { Loading } from '../loading/loadingScreen';
-import '../TaskCard.css'
+import type { TaskListOut } from '@repo/api/task-list';
+import '../TaskCard.css';
 
 interface TaskListCardProps {
   taskList: TaskListOut;
   setSelectedTaskList: (newList: TaskListOut) => void;
   setShowEditForm: (show: boolean) => void;
+  setShowDeleteForm: (show: boolean) => void;
 }
 
 function TaskListCard({
   taskList,
   setSelectedTaskList,
   setShowEditForm,
+  setShowDeleteForm,
 }: TaskListCardProps) {
-  // This is temporary
-  const mutation = useApiMutation<DeleteTaskList, TaskListOut>({
-    endpoint: () => ({ path: '/task-lists', method: 'DELETE' }),
-    invalidateKeys: [['task-lists']],
-  });
-
   return (
     <Link
       to="/task-lists/$taskListID"
@@ -38,7 +32,9 @@ function TaskListCard({
           </summary>
           <div className="flex flex-col gap-2 absolute bg-[#f8d8d1] text-[#815656] border-[#815656] border rounded-md p-2 min-w-[20vh] right-0 shadow-md">
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
                 setSelectedTaskList(taskList);
                 setShowEditForm(true);
               }}
@@ -49,18 +45,14 @@ function TaskListCard({
             <button
               onClick={(e) => {
                 e.preventDefault();
-                mutation.mutate({
-                  id: taskList.id,
-                  userId: taskList.userId,
-                });
+                e.stopPropagation();
+                setSelectedTaskList(taskList);
+                setShowDeleteForm(true);
               }}
               className="bg-transparent border-2 rounded-sm p-1.5 text-[#815656] cursor-pointer hover:bg-yellow-950/20"
             >
               Delete
             </button>
-            {mutation.isPending && <Loading></Loading>}
-            {mutation.isError && <div>{mutation.error.message}</div>}
-            {mutation.isSuccess && <div>Task List Deleted</div>}
           </div>
         </details>
       </header>

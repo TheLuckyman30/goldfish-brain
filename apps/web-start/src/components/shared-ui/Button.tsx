@@ -4,12 +4,13 @@ interface ButtonProps
     HTMLButtonElement
   > {
   children?: React.ReactNode;
-  color?: 'primary';
+  color?: 'primary' | 'danger';
 }
 
 function Button({ color = 'primary', children, ...buttonParams }: ButtonProps) {
   const colorClasses = {
     primary: ' bg-[#fddbcdeb] text-[#6c3b27ee]',
+    danger: 'bg-rose-400 text-white font-bold',
   };
   return (
     <button
