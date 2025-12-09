@@ -105,7 +105,9 @@ function Pond() {
                                 </div>
 
                                 <div className=" bg-[#c98c74fb] text-[#f9efea] min-w-[18vw] w-[18vw] flex items-center justify-left px-4 text-[18px] text-left">
-                                  {fish.task.description}
+                                  {fish.task.description !== ''
+                                    ? fish.task.description
+                                    : 'No Description'}
                                 </div>
                               </div>
                             ))}
