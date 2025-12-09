@@ -26,6 +26,7 @@ export const CreateFish = z.object({
   taskId: z.uuid(),
   size: z.int(),
   rarity: z.int(),
+  imageIndex: z.int(),
   completed: z.boolean().optional(),
 });
 export type CreateFish = z.infer<typeof CreateFish>;
