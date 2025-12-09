@@ -6,7 +6,7 @@ import { Loading } from '../../../components/loading/loadingScreen';
 import Button from '../../../components/shared-ui/Button';
 import { useApiMutation, useApiQuery } from '../../../integrations/api';
 import userImage from '../../../images/user.png';
-import { UpdateUsername, type UserOut } from '@repo/api/user';
+import { UpdateUser, type UserOut } from '@repo/api/user';
 import Input from '../../../components/shared-ui/Input';
 import { Check, Pencil, X } from 'lucide-react';
 
@@ -53,10 +53,10 @@ function Settings() {
       method: 'POST',
     }),
   });
-  // Update Username
-  const updateUsernameMutation = useApiMutation<UpdateUsername, UserOut>({
+  // Update User
+  const updateUserMutation = useApiMutation<UpdateUser, UserOut>({
     endpoint: () => ({
-      path: '/users/me/username',
+      path: '/users',
       method: 'PATCH',
     }),
     invalidateKeys: [['me']],
@@ -64,11 +64,12 @@ function Settings() {
 
   function updateUsername() {
     setShowUsernameForm(false);
-    updateUsernameMutation.mutate({ username });
+    updateUserMutation.mutate({ username });
   }
 
   function updateName() {
     setShowNameForm(false);
+    updateUserMutation.mutate({ name });
   }
 
   function resetPassword() {
@@ -80,11 +81,7 @@ function Settings() {
     }
   }
 
-  if (
-    isFetchingProvider ||
-    isFetchingUser ||
-    updateUsernameMutation.isPending
-  ) {
+  if (isFetchingProvider || isFetchingUser || updateUserMutation.isPending) {
     return <Loading />;
   }
 
