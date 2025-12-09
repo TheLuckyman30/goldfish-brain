@@ -40,6 +40,10 @@ function CreateUser() {
     }
   }
 
+  if (mutation.isPending) {
+    return <Loading />;
+  }
+
   return (
     <div
       className="bg-cover bg-no-repeat bg-top h-full w-full"
@@ -118,7 +122,7 @@ function CreateUser() {
                 >
                   Submit
                 </button>
-                {mutation.isPending && <Loading></Loading>}
+                
                 {mutation.isError && <div>{mutation.error.message}</div>}
                 {mutation.isSuccess && <div>Updated</div>}
               </div>
