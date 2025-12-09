@@ -18,7 +18,7 @@ function Home() {
   return (
     <>
       <Navbar />
-      {sideBarOpen && <Sidebar />}
+      {sideBarOpen && <Sidebar/>}
       <div
         className="flex justify-center items-center min-h-lvh w-lvw pt-20 bg-cover bg-no-repeat bg-top bg-fixed" 
         style={{
