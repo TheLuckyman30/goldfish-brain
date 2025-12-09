@@ -32,6 +32,7 @@ export class GameService {
             size: true,
             rarity: true,
             isActive: true,
+            imageIndex: true,
             completed: true,
             task: {
               select: {

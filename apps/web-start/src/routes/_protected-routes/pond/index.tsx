@@ -9,6 +9,15 @@ import fisherman from '../../../images/fisherman.gif';
 import schoolOfFish from '../../../images/1112Fish.gif';
 import '../../../components/button.css';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import fish1 from '../../../images/fishAssets1.png';
+import fish2 from '../../../images/fishAssets2.png';
+import fish3 from '../../../images/fishAssets3.png';
+import fish4 from '../../../images/fishAssets4.png';
+import fish5 from '../../../images/fishAssets5.png';
+import fish6 from '../../../images/fishAssets6.png';
+import fish7 from '../../../images/fishAssets7.png';
+import fish8 from '../../../images/fishAssets8.png';
+import fish9 from '../../../images/fishAssets9.png';
 
 export const Route = createFileRoute('/_protected-routes/pond/')({
   component: Pond,
@@ -31,6 +40,18 @@ function Pond() {
     saveGame,
     endGame,
   } = useGameLogic();
+
+  const fishArray = [
+    fish1,
+    fish2,
+    fish3,
+    fish4,
+    fish5,
+    fish6,
+    fish7,
+    fish8,
+    fish9,
+  ];
 
   if (isFetching) {
     return <Loading />;
@@ -128,7 +149,13 @@ function Pond() {
                                     </div>
 
                                     <div className=" bg-[#c98c74fb] text-[#f9efea] min-w-[18vw] w-[18vw] flex items-center justify-left px-4 text-[18px] text-left">
-                                      {fish.task.description}
+                                      {
+                                        <img
+                                          src={fishArray[fish.imageIndex]}
+                                          alt="Caught Fish"
+                                          className="w-auto h-[10vh] mb-2 rounded-[30px] mx-auto"
+                                        />
+                                      }
                                     </div>
                                   </div>
                                 )}
