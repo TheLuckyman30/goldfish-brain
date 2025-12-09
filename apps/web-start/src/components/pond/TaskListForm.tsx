@@ -39,13 +39,12 @@ function TaskListForm() {
     <Backdrop>
       <div className="bg-[#538f97] min-w-[70%] min-h-[75%] w-[70%] h-[75%] rounded-[60px] flex items-center flex-col mt-5 ">
         <div className="text-4xl text-center rounded-md p-10 text-white">
-          {' '}
-          Select A Task List to Play{' '}
+          Select A Task List to Play
         </div>
         <section className="flex-row flex gap-2">
           <div className="bg-white min-w-[20vw] min-h-[50vh] w-[25vw] h-[56vh] rounded-[60px] mr-5 m-2 p-3 flex items-center flex-col text-blue-600">
             <div className=" flex text-3xl text-center justify-center rounded-md p-5 text-[#794531fb]">
-              Lists:{' '}
+              Lists:
             </div>
             <section className="flex flex-col overflow-y-auto">
               <Link
@@ -58,7 +57,7 @@ function TaskListForm() {
               <hr className="border  text-[#8d4f36ef] flex mb-5"></hr>
               {lists.map((list) => (
                 <button
-                  className="min-w-[12vw] w-[18vw] min-h-[6vh] p-1 mb-3 bg-[#794531fb] hover:bg-[#8d4f36ef] duration-100 rounded-[60px] text-[20px] text-white "
+                  className="min-w-[12vw] w-[18vw] min-h-[6vh] p-1 mb-3 bg-[#794531fb] hover:bg-[#8d4f36ef] duration-100 rounded-[60px] text-[20px] text-white cursor-pointer"
                   key={list.id}
                   value={JSON.stringify(list)}
                   onClick={(e) =>
@@ -89,7 +88,9 @@ function TaskListForm() {
                         </div>
 
                         <div className=" bg-[#c98c74fb] text-[#f9efea] min-w-[18vw] w-[18vw] flex items-center justify-left px-4 text-[18px] text-left">
-                          {task.description}
+                          {task.description !== ''
+                            ? task.description
+                            : 'No Description'}
                         </div>
                       </div>
                     ))}
@@ -98,7 +99,7 @@ function TaskListForm() {
               </section>
             </div>
             <Button
-              className="bg-white hover:bg-[#794531fb] min-w-[30vw] min-h-[10vh] h-[10vh] rounded-[60px] ml-5 m-2 p-3 flex items-center text-center justify-center text-[#794531fb] hover:text-white duration-200 text-3xl"
+              className="bg-white hover:bg-[#794531fb] min-w-[30vw] min-h-[10vh] h-[10vh] rounded-[60px] ml-5 m-2 p-3 flex items-center text-center justify-center text-[#794531fb] hover:text-white duration-200 text-3xl cursor-pointer"
               type="submit"
               disabled={!taskList || taskListIsFetching}
               onClick={handleSubmit}

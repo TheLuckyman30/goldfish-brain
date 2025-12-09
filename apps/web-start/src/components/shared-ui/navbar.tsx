@@ -8,6 +8,7 @@ const getNavItems = (isAuthenticated: boolean) => {
     return [
       { name: 'Home', link: '/' },
       { name: 'Task Lists', link: '/task-lists' },
+      { name: 'Pond', link: '/pond' },
       { name: 'Profile', link: '/settings' },
     ];
   }
@@ -35,11 +36,7 @@ export function Navbar() {
             key={index}
           >
             <span className="relative group-hover:text-white">{item.name}</span>
-            
           </Link>
-
-
-
         ))}
         {!isAuthenticated && (
           <button
@@ -47,7 +44,6 @@ export function Navbar() {
               loginWithRedirect({ authorizationParams: { prompt: 'consent' } })
             }
             className="bg-white hover:bg-sky-100 rounded-md p-5 cursor-pointer buttonJump"
-            
           >
             Login
           </button>

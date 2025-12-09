@@ -37,7 +37,7 @@ export function CreateListForm({
 
   return (
     <Modal show={showCreateForm} setShow={setShowCreateForm} backdrop>
-      <ModalHeader>Create a Task</ModalHeader>
+      <ModalHeader>Create a Task List</ModalHeader>
       <Form onSubmit={handleSubmit}>
         <div className="flex flex-col gap-6  ">
           <div>

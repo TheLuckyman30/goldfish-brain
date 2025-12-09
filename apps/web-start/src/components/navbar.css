@@ -1,31 +1,26 @@
-.navbarring{
-    background-color: #c0e3f1b2;
-    border-Radius:"90vh";
-    min-Height: "8vh";
-    max-Width:"50%";
-    margin-Top:"20%"; 
-    align-Items: "center"; 
-    justify-Content:"center"; 
-    display: "flex";
-    margin: "auto";
-    max-Height: "10vh";
-    color: #6c3b27fb;
-    gap: 10vh;
-
+.navbarring {
+  background-color: #c0e3f1b2;
+  border-radius: '90vh';
+  min-height: '8vh';
+  max-width: '50%';
+  margin-top: '20%';
+  align-items: 'center';
+  justify-content: 'center';
+  display: 'flex';
+  margin: 'auto';
+  max-height: '10vh';
+  color: #6c3b27fb;
+  gap: 10vh;
 }
 
-.tinyButtons{
-    border-Radius:"10vh";
-    background-color: #c3edffb2;
-    border-Radius:"90vh";
-    padding: "5vh";
-    
-
+.tinyButtons {
+  border-radius: '10vh';
+  background-color: #c3edffb2;
+  border-radius: '90vh';
+  padding: '5vh';
 }
-
 
 .buttonJump {
-  cursor: pointer;
   transition: transform 0.6s ease-out; /* smooth lift on hover */
 }
 
@@ -35,8 +30,14 @@
 
 /* Floaty upward movement */
 @keyframes floatUp {
-  0%   { transform: translateY(0px); opacity: 1; }
-  50% { transform: translateY(-10px); } /* settle slightly above */
-  100% { transform: translateY(0px); } /* settle slightly above */
-
+  0% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-10px);
+  } /* settle slightly above */
+  100% {
+    transform: translateY(0px);
+  } /* settle slightly above */
 }

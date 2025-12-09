@@ -105,5 +105,5 @@ model Authentication {
   userId     String @unique
   provider   String
   providerId String
-  user       User   @relation(references: [id], fields: [userId])
+  user       User   @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
