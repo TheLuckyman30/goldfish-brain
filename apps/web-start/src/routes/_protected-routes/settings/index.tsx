@@ -17,7 +17,8 @@ export const Route = createFileRoute('/_protected-routes/settings/')({
 function Settings() {
   const [showUsernameForm, setShowUsernameForm] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
-  const [showEmailForm, setShowEmailForm] = useState<boolean>(false);
+  const [name, setName] = useState<string>('');
+  const [showNameForm, setShowNameForm] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [PasswordText, setPasswordText] = useState<string>('');
 
@@ -36,10 +37,12 @@ function Settings() {
   useEffect(() => {
     if (userData) {
       setUsername(userData.username);
+      setName(userData.name);
       setEmail(userData.email);
     } else {
       setUsername('Failed to fetch username.');
       setEmail('Failed to fetch email');
+      setName('Failed to fetch name');
     }
   }, [userData]);
 
@@ -62,6 +65,10 @@ function Settings() {
   function updateUsername() {
     setShowUsernameForm(false);
     updateUsernameMutation.mutate({ username });
+  }
+
+  function updateName() {
+    setShowNameForm(false);
   }
 
   function resetPassword() {
@@ -107,6 +114,7 @@ function Settings() {
               </div>
               <div className="text-left p-1">
                 <p className="p-4 mb-2">Username:</p>
+                <p className="p-4 mb-2">Name:</p>
                 <p className="p-4">Email:</p>
               </div>
               <div className="text-left wrap-break-word w-fit">
@@ -137,45 +145,52 @@ function Settings() {
                         />
                         <X
                           className="text-rose-400 cursor-pointer hover:scale-115 duration-150"
-                          onClick={() => setShowUsernameForm(!showUsernameForm)}
+                          onClick={() => {
+                            setShowUsernameForm(!showUsernameForm);
+                            setUsername(userData?.username ?? '');
+                          }}
                         />
                       </div>
                     )}
                   </div>
                 </div>
                 <div className="flex gap-2 items-center">
-                  {!showEmailForm && <p className="p-4">{email}</p>}
-                  {showEmailForm && (
+                  {!showNameForm && <p className="p-4 mb-2">{name}</p>}
+                  {showNameForm && (
                     <Input
-                      id="new-email"
+                      id="new-name"
                       type="text"
-                      placeholder="New Email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-fit min-w-fit p-4 bg-white rounded-[60px] border border-gray-300"
+                      placeholder="New Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-fit min-w-fit p-4 bg-white rounded-[60px] border border-gray-300 mb-1"
                     />
                   )}
-                  <div className="bg-stone-50 p-2 h-fit wi-fit rounded-lg">
-                    {!showEmailForm && (
+                  <div className="bg-stone-50 p-2 h-fit w-fit rounded-lg">
+                    {!showNameForm && (
                       <Pencil
                         className="text-blue-300 cursor-pointer hover:scale-110 duration-150"
-                        onClick={() => setShowEmailForm(!showEmailForm)}
+                        onClick={() => setShowNameForm(!showNameForm)}
                       />
                     )}
-                    {showEmailForm && (
+                    {showNameForm && (
                       <div className="flex gap-5">
                         <Check
                           className="text-emerald-300 cursor-pointer hover:scale-115 duration-150"
-                          onClick={() => {}}
+                          onClick={updateName}
                         />
                         <X
                           className="text-rose-400 cursor-pointer hover:scale-115 duration-150"
-                          onClick={() => setShowEmailForm(!showEmailForm)}
+                          onClick={() => {
+                            setShowNameForm(!showNameForm);
+                            setName(userData?.name ?? '');
+                          }}
                         />
                       </div>
                     )}
                   </div>
                 </div>
+                <p className="p-4">{email}</p>
               </div>
             </div>
             <hr className="mt-10"></hr>
