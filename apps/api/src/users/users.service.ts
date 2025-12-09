@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { UpdateUser, UpdateUsername, UserOut } from '@repo/api/user';
+import { UpdateUser, UserOut } from '@repo/api/user';
 import { Prisma } from '@repo/database';
 
 @Injectable()
@@ -25,10 +25,10 @@ export class UsersService {
     });
   }
 
-  updateUser(updateUserDto: UpdateUser): Promise<UserOut> {
+  updateUser(updateUserDto: UpdateUser, userId: string): Promise<UserOut> {
     return this.prisma.user.update({
       select: { id: true, name: true, username: true, email: true },
-      where: { id: updateUserDto.id },
+      where: { id: userId },
       data: updateUserDto,
     });
   }
@@ -40,17 +40,6 @@ export class UsersService {
     return {
       provider: auth.provider,
     };
-  }
-
-  updateUsernameForMe(
-    upadteUsernameDto: UpdateUsername,
-    userId: string,
-  ): Promise<UserOut> {
-    return this.prisma.user.update({
-      where: { id: userId },
-      data: upadteUsernameDto,
-      select: { id: true, name: true, email: true, username: true },
-    });
   }
 
   async sendPasswordResetEmail(email: string) {

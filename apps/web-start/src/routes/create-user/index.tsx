@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import goldfishBrain from '../../images/GoldfishBrain.png';
-import { useApiMutation, useCurrentUser } from '../../integrations/api';
+import { useApiMutation } from '../../integrations/api';
 import type { UpdateUser, UserOut } from '@repo/api/user';
 import { Loading } from '../../components/loading/loadingScreen';
 
@@ -14,7 +14,6 @@ function CreateUser() {
   const [newUserName, setNewUserName] = useState<string>('');
   const [newEmail, setNewEmail] = useState<string>('');
   const navigate = useNavigate();
-  const { data } = useCurrentUser();
   const mutation = useApiMutation<UpdateUser, UserOut>({
     endpoint: () => ({ path: '/users', method: 'PATCH' }),
   });
@@ -27,15 +26,11 @@ function CreateUser() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); // prevent page reload
-
-    if (data) {
-      mutation.mutate({
-        id: data.id,
-        name: newName,
-        username: newUserName,
-        email: newEmail,
-      });
-    }
+    mutation.mutate({
+      name: newName,
+      username: newUserName,
+      email: newEmail,
+    });
   }
 
   return (
