@@ -8,6 +8,7 @@ import pondBackground from '../../../images/pondBackgroundNew.png';
 import fisherman from '../../../images/fisherman.gif';
 import schoolOfFish from '../../../images/1112Fish.gif';
 import '../../../components/button.css';
+import './pond.css';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import fish1 from '../../../images/fishAssets1.png';
 import fish2 from '../../../images/fishAssets2.png';
@@ -67,7 +68,7 @@ function Pond() {
       {data && (
         <>
           <div
-            className="flex w-[40vw] ml-10 h-[80vh] min-h-[80vh] mt-10 bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] "
+            className="flex w-[40vw] ml-10 h-[82vh] min-h-[82vh] mt-10 bg-[#538f97] rounded-lg shadow-[5px_5px_0px_0px_rgba(0,0,0,0.5)] "
             style={{
               backgroundImage: `url(${schoolOfFish})`,
               backgroundSize: 'cover',
@@ -76,29 +77,36 @@ function Pond() {
           >
             <div className="flex flex-col h-full items-center">
               <section className="flex-col flex items-center">
-                <div className=" bg-white min-w-[30vw] min-h-[60vh] h-[60vh] w-[35vw] rounded-[60px] ml-5 m-2 mt-10 p-3 flex flex-col text-center ">
+                <div className=" bg-white min-w-[30vw] min-h-[65vh] h-[65vh] w-[35vw] rounded-[60px] ml-5 m-2 mt-5 p-3 flex flex-col text-center ">
                   <div className="flex flex-row ">
-                    <div className=" flex text-3xl text-center items-center justify-center rounded-md p-5 text-[#794531fb]">
+                    <div className=" flex flex-col text-3xl text-center items-center justify-center rounded-md p-2 text-[#794531fb]">
+                      <div className="flex flex-row items-center justify-center">
                       <div
                         className="ml-auto mr-5 cursor-pointer text-white text-3xl bg-[#794531fb] rounded-[60px] w-[5vw] h-[5vh] flex items-center justify-center"
                         onClick={() => setShowComplete(!showComplete)}
                       >
                         <span>
-                          {showComplete ? <ChevronDown /> : <ChevronUp />}
+                        {showComplete ? <ChevronDown /> : <ChevronUp />}
                         </span>
                       </div>
-                      Uncompleted Tasks:{' '}
+                      In the Pond:
+                      </div>
+                      <div className=" ml-30 italic flex text-xl text-center items-center justify-center rounded-md  text-[#794531fb]">
+                      Uncompleted Tasks
+                      </div>
                     </div>
+                    
+                    
                   </div>
                   {showComplete &&
                     (uncompletedFish.length > 0 ? (
                       <section className=" flex flex-col w-full overflow-y-auto mb-3">
                         {uncompletedFish && (
-                          <div className="w-full p-5">
+                          <div className="w-full p-2">
                             {uncompletedFish.map((fish) => (
                               <div
                                 key={fish.id}
-                                className="flex items-stretch justify-between min-w-[16vw] w-[30vw] min-h-[10vh] mb-3 rounded-[60px] overflow-hidden shadow-sm"
+                                className="flex items-stretch buttonJumping justify-between min-w-[16vw] w-[30vw] min-h-[10vh] mb-3 rounded-[60px] overflow-hidden shadow-sm"
                               >
                                 <div className=" bg-[#794531fb] min-w-[12vw] w-[12vw] text-white flex text-center items-center justify-center px-6 text-[20px]">
                                   {fish.task.name}
@@ -120,7 +128,8 @@ function Pond() {
                     ))}
 
                   <div className="flex flex-row ">
-                    <div className=" flex text-3xl text-center items-center justify-center rounded-md p-5 text-[#794531fb]">
+                    <div className=" flex flex-col text-3xl text-center items-center justify-center rounded-md p-3 text-[#794531fb]">
+                      <div className="flex flex-row items-center justify-center">
                       <div
                         className="ml-auto mr-5 cursor-pointer text-white text-3xl bg-[#794531fb] rounded-[60px] w-[5vw] h-[5vh] flex items-center justify-center"
                         onClick={() => setShowCompleted(!showCompleted)}
@@ -129,20 +138,24 @@ function Pond() {
                           {showCompleted ? <ChevronDown /> : <ChevronUp />}
                         </span>
                       </div>
-                      Completed Tasks:{' '}
+                      In the Cooler:{' '}
                     </div>
+                    <div className=" ml-20 italic flex text-xl text-center items-center justify-center rounded-md  text-[#794531fb]">
+                      Completed Tasks
+                      </div>
+                  </div>
                   </div>
                   {showCompleted &&
                     (allFish.length !== uncompletedFish.length ? (
                       <section className="flex flex-col  w-full overflow-y-auto mb-3">
                         {allFish && (
-                          <div className="w-full p-5">
+                          <div className="w-full p-2">
                             {allFish.map((fish) => (
                               <>
                                 {fish.completed && (
                                   <div
                                     key={fish.id}
-                                    className="flex items-stretch justify-between min-w-[16vw] w-[30vw] min-h-[10vh] mb-3 rounded-[60px] overflow-hidden shadow-sm"
+                                    className="flex items-stretch buttonJumping justify-between min-w-[16vw] w-[30vw] min-h-[10vh] mb-3 rounded-[60px] overflow-hidden shadow-sm"
                                   >
                                     <div className=" bg-[#794531fb] min-w-[12vw] w-[12vw] text-white flex text-center items-center justify-center px-6 text-[20px]">
                                       {fish.task.name}
