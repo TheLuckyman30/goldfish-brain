@@ -86,17 +86,18 @@ model Game {
 }
 
 model Fish {
-  id        String   @id @default(uuid())
-  taskId    String   @unique
-  gameId    String
-  size      Int
-  rarity    Int
-  isActive  Boolean  @default(false)
-  completed Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  id         String   @id @default(uuid())
+  taskId     String   @unique
+  gameId     String
+  size       Int
+  rarity     Int
+  imageIndex Int
+  isActive   Boolean  @default(false)
+  completed  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  task       Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  game       Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
 }
 
 model Authentication {
