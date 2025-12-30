@@ -1,3 +1,6 @@
+# Goldfish brain Wiki Here !
+- https://github.com/UD-CISC474-F25/f25-cisc474-red/wiki/ReadMe 
+
 # cisc474-project-starter
 
 A repo that you can fork to make new projects
