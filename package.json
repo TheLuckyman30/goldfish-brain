@@ -33,6 +33,9 @@
   "dependencies": {
     "@prisma/client": "latest"
   },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-musl": "4.9.5"
+  },
   "packageManager": "npm@10.9.0",
   "workspaces": [
     "apps/*",
