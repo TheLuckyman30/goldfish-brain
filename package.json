@@ -17,7 +17,7 @@
   "devDependencies": {
     "prettier": "^3.6.2",
     "turbo": "^2.5.6",
-    "prisma": "latest",
+    "prisma": "6.17.1",
     "typescript": "5.9.2",
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
@@ -31,7 +31,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@prisma/client": "latest"
+    "@prisma/client": "6.17.1"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-musl": "4.9.5"
